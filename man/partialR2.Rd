@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{partialR2}
 \alias{partialR2}
-\title{partialR2}
+\title{Partial R-squared}
 \usage{
 partialR2(y, x, evecs)
 }

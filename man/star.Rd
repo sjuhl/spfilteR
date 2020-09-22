@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{star}
 \alias{star}
-\title{star}
+\title{Graphical Illustration of Significance Levels}
 \usage{
 star(p)
 }

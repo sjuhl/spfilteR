@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{pfunc}
 \alias{pfunc}
-\title{pfunc}
+\title{Calculate \emph{p}-Value for Standardized Moran Coefficient}
 \usage{
 pfunc(z, alternative)
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/lmfilter.R
 \name{lmfilter}
 \alias{lmfilter}
-\title{lmfilter}
+\title{Eigenvector-Based Spatial Filtering in Linear Regression Models}
 \usage{
 lmfilter(
   y,

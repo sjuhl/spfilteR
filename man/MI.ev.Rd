@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{MI.ev}
 \alias{MI.ev}
-\title{MI.ev}
+\title{Moran Coefficients for Eigenvectors}
 \usage{
 MI.ev(W, evals)
 }

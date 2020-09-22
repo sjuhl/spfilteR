@@ -2,7 +2,8 @@
 % Please edit documentation in R/utils.R
 \name{emp.pfunc}
 \alias{emp.pfunc}
-\title{emp.pfunc}
+\title{Calculate empirical \emph{p}-Value for Standardized
+Moran Coefficient}
 \usage{
 emp.pfunc(draws, z, alternative)
 }

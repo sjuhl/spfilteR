@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{candsetsize}
 \alias{candsetsize}
-\title{candsetsize}
+\title{Ideal Candidate Set Size}
 \usage{
 candsetsize(npos, zMI)
 }

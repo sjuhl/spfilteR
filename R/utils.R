@@ -1,4 +1,4 @@
-#' @title getEVs
+#' @title Extract Eigenvectors and Eigenvalues
 #'
 #' @description Extract eigenvectors and the corresponding eigenvalues from
 #' the matrix \emph{\strong{MWM}}, where \emph{\strong{M}} denotes a symmetric
@@ -17,7 +17,9 @@
 #'
 #' @author Sebastian Juhl
 #'
-#' @seealso \code{\link{lmfilter}}
+#' @seealso \code{\link{lmfilter}}, \code{\link{getEVs}}, \code{\link{MI.ev}},
+#' \code{\link{MI.sf}}, \code{\link{vif.ev}}, \code{\link{partialR2}},
+#' \code{\link{candsetsize}}
 #'
 #' @export
 
@@ -48,7 +50,7 @@ getEVs <- function(W,covars=NULL){
 
 
 
-#' @title vif.ev
+#' @title Variance Inflation Factor for Eigenvectors
 #'
 #' @description Calculate the variance inflation factor (VIF) for
 #' the eigenvectors in the spatial filter
@@ -81,7 +83,7 @@ vif.ev <- function(x=NULL,evecs){
 }
 
 
-#' @title pfunc
+#' @title Calculate \emph{p}-Value for Standardized Moran Coefficient
 #'
 #' @description Derive \emph{p}-value for the standardized Moran coefficient
 #'
@@ -108,7 +110,8 @@ pfunc <- function(z,alternative){
 }
 
 
-#' @title emp.pfunc
+#' @title Calculate empirical \emph{p}-Value for Standardized
+#' Moran Coefficient
 #'
 #' @description Derive empirical \emph{p}-value for the standardized
 #' Moran coefficient
@@ -141,7 +144,7 @@ emp.pfunc <- function(draws,z,alternative){
 }
 
 
-#' @title star
+#' @title Graphical Illustration of Significance Levels
 #'
 #' @description Illustrate significance levels for output
 #'
@@ -166,7 +169,7 @@ star <- function(p){
   return(out)
 }
 
-#' @title MI.ev
+#' @title Moran Coefficients for Eigenvectors
 #'
 #' @description Moran coefficient for each eigenvector in the spatial filter
 #'
@@ -197,7 +200,7 @@ MI.ev <- function(W,evals){ # evals = eigenvalues
 }
 
 
-#' @title MI.sf
+#' @title Moran Coefficient of the Spatial Filter
 #'
 #' @description Moran coefficient for the spatial filter
 #'
@@ -222,7 +225,7 @@ MI.sf <- function(gamma,evMI){
 }
 
 
-#' @title partialR2
+#' @title Partial R-squared
 #'
 #' @description Partial R-squared of selected eigenvectors
 #'
@@ -276,7 +279,7 @@ partialR2 <- function(y,x,evecs){
   return(pR2)
 }
 
-#' @title candsetsize
+#' @title Ideal Candidate Set Size
 #'
 #' @description Determine the ideal size of the candidate set
 #'

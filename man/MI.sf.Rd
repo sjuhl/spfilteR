@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{MI.sf}
 \alias{MI.sf}
-\title{MI.sf}
+\title{Moran Coefficient of the Spatial Filter}
 \usage{
 MI.sf(gamma, evMI)
 }

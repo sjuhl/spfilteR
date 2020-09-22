@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{getEVs}
 \alias{getEVs}
-\title{getEVs}
+\title{Extract Eigenvectors and Eigenvalues}
 \usage{
 getEVs(W, covars = NULL)
 }
@@ -26,7 +26,9 @@ and idempotent projection matrix and \emph{\strong{W}} is the spatial
 connectivity matrix.
 }
 \seealso{
-\code{\link{lmfilter}}
+\code{\link{lmfilter}}, \code{\link{getEVs}}, \code{\link{MI.ev}},
+\code{\link{MI.sf}}, \code{\link{vif.ev}}, \code{\link{partialR2}},
+\code{\link{candsetsize}}
 }
 \author{
 Sebastian Juhl

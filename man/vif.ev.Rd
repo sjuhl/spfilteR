@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{vif.ev}
 \alias{vif.ev}
-\title{vif.ev}
+\title{Variance Inflation Factor for Eigenvectors}
 \usage{
 vif.ev(x = NULL, evecs)
 }

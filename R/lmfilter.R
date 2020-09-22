@@ -1,4 +1,4 @@
-#' @title lmfilter
+#' @title Eigenvector-Based Spatial Filtering in Linear Regression Models
 #'
 #' @description Performs spatial filtering with eigenvectors in a
 #' linear regression framework
