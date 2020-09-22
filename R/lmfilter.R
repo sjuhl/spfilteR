@@ -44,7 +44,7 @@
 #' \item{\code{sf}}{Vector representing the spatial filter}
 #' \item{\code{sfMI}}{Moran coefficient of the spatial filter}
 #' \item{\code{model}}{Class of the regression model}
-#' \item{\code{MX}}{TRUE/ FALSE: covariates included in projection matrix
+#' \item{\code{MX}}{TRUE/ FALSE: include covariates in the projection matrix
 #' \emph{\strong{M}}}
 #' \item{\code{dependence}}{Filtered for positive or negative spatial dependence}
 #' \item{\code{objfn}}{Selection criteria specified in the objective function of
