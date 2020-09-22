@@ -15,8 +15,8 @@ of the projection matrix \emph{\strong{M}}}
 \value{
 A list containing the following objects:
 \describe{
-\item{vectors}{A matrix containing \emph{n} eigenvectors}
-\item{values}{A vector of the corresponding eigenvalues}
+\item{\code{vectors}}{A matrix containing \emph{n} eigenvectors}
+\item{\code{values}}{A vector of the corresponding eigenvalues}
 }
 }
 \description{

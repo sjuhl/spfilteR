@@ -11,8 +11,8 @@
 #'
 #' @return A list containing the following objects:
 #' \describe{
-#' \item{vectors}{A matrix containing \emph{n} eigenvectors}
-#' \item{values}{A vector of the corresponding eigenvalues}
+#' \item{\code{vectors}}{A matrix containing \emph{n} eigenvectors}
+#' \item{\code{values}}{A vector of the corresponding eigenvalues}
 #' }
 #'
 #' @author Sebastian Juhl
@@ -62,7 +62,7 @@ getEVs <- function(W,covars=NULL){
 #'
 #' @author Sebastian Juhl
 #'
-#' @seealso \code{\link{lmfilter}}
+#' @seealso \code{\link{lmfilter}}, \code{\link{getEVs}}
 #'
 #' @export
 

@@ -55,38 +55,38 @@ autocorrelation at which the eigenvector selection terminates}
 \value{
 An object of class \code{spfilter} containing the following
 information:
-\describe{
-\item{Estimates}{Summary statistics of the parameter estimates}
-\item{varcovar}{Estimated variance-covariance matrix}
-\item{selvecs}{Matrix of selected eigenvectors}
-\item{evMI}{Moran coefficient of eigenvectors in the spatial filter}
-\item{moran}{Residual autocorrelation for the initial and the filtered model}
-\item{fit}{Adjusted R-squared of the initial and the filtered model}
-\item{residuals}{Model residuals}
-\item{other}{A list providing supplementary information:
-\describe{
-\item{ncandidates}{Number of candidate eigenvectors considered}
-\item{nev}{Number of selected eigenvectors}
-\item{sel_id}{ID of selected eigenvectors}
-\item{sf}{Vector representing the spatial filter}
-\item{sfMI}{Moran coefficient of the spatial filter}
-\item{model}{Class of the regression model}
-\item{MX}{TRUE/ FALSE: covariates included in projection matrix
+\tabular{lcl}{
+\code{Estimates}\tab \tab Summary statistics of the parameter estimates\cr
+\code{varcovar}\tab\tab Estimated variance-covariance matrix\cr
+\code{selvecs}\tab\tab Matrix of selected eigenvectors\cr
+\code{evMI}\tab\tab Moran coefficient of eigenvectors in the spatial filter\cr
+\code{moran}\tab\tab Residual autocorrelation for the initial and the
+filtered model\cr
+\code{fit}\tab\tab Adjusted R-squared of the initial and the filtered model\cr
+\code{residuals}\tab\tab Model residuals\cr
+\code{other}\tab\tab A list providing supplementary information:\cr
+\tab\tab \describe{
+\item{\code{ncandidates}}{Number of candidate eigenvectors considered}
+\item{\code{nev}}{Number of selected eigenvectors}
+\item{\code{sel_id}}{ID of selected eigenvectors}
+\item{\code{sf}}{Vector representing the spatial filter}
+\item{\code{sfMI}}{Moran coefficient of the spatial filter}
+\item{\code{model}}{Class of the regression model}
+\item{\code{MX}}{TRUE/ FALSE: covariates included in projection matrix
 \emph{\strong{M}}}
-\item{dependence}{Filtered for positive or negative spatial dependence}
-\item{objfn}{Selection criteria specified in the objective function of
+\item{\code{dependence}}{Filtered for positive or negative spatial dependence}
+\item{\code{objfn}}{Selection criteria specified in the objective function of
 the stepwise regression procedure}
-\item{bonferroni}{TRUE/ FALSE: bonferroni-adjusted significance level
+\item{\code{bonferroni}}{TRUE/ FALSE: bonferroni-adjusted significance level
 (if \code{objfn='p'})}
-\item{siglevel}{If \code{objfn='p'}: actual (unadjusted/ adjusted)
+\item{\code{siglevel}}{If \code{objfn='p'}: actual (unadjusted/ adjusted)
 significance level}
 }
 }
 }
-}
 \description{
-Performs spatial filtering with eigenvectors in a
-linear regression framework
+Perform spatial filtering with eigenvectors in a
+linear regression framework using OLS
 }
 \examples{
 data(toydata)

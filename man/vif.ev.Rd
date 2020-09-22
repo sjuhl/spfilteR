@@ -19,7 +19,7 @@ Calculate the variance inflation factor (VIF) for
 the eigenvectors in the spatial filter
 }
 \seealso{
-\code{\link{lmfilter}}
+\code{\link{lmfilter}}, \code{\link{getEVs}}
 }
 \author{
 Sebastian Juhl
