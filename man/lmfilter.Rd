@@ -58,12 +58,13 @@ information:
 \tabular{lcl}{
 \code{Estimates}\tab \tab Summary statistics of the parameter estimates\cr
 \code{varcovar}\tab\tab Estimated variance-covariance matrix\cr
+\code{EV}\tab\tab Matrix with summary statistics of selected eigenvectors\cr
 \code{selvecs}\tab\tab Matrix of selected eigenvectors\cr
 \code{evMI}\tab\tab Moran coefficient of eigenvectors in the spatial filter\cr
 \code{moran}\tab\tab Residual autocorrelation for the initial and the
 filtered model\cr
 \code{fit}\tab\tab Adjusted R-squared of the initial and the filtered model\cr
-\code{residuals}\tab\tab Model residuals\cr
+\code{residuals}\tab\tab Initial and filtered model residuals\cr
 \code{other}\tab\tab A list providing supplementary information:\cr
 \tab\tab \describe{
 \item{\code{ncandidates}}{Number of candidate eigenvectors considered}
@@ -72,7 +73,7 @@ filtered model\cr
 \item{\code{sf}}{Vector representing the spatial filter}
 \item{\code{sfMI}}{Moran coefficient of the spatial filter}
 \item{\code{model}}{Class of the regression model}
-\item{\code{MX}}{TRUE/ FALSE: covariates included in projection matrix
+\item{\code{MX}}{TRUE/ FALSE: include covariates in the projection matrix
 \emph{\strong{M}}}
 \item{\code{dependence}}{Filtered for positive or negative spatial dependence}
 \item{\code{objfn}}{Selection criteria specified in the objective function of
