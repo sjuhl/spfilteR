@@ -25,7 +25,7 @@
 #' autocorrelation at which the eigenvector selection terminates
 #' @param na.rm Removes missing values in covariates (TRUE/ FALSE)
 #'
-#' @return An object of class \code{spfilter} containing the following
+#' @return An object of class \code{spfilter} with the following
 #' information:
 #' \tabular{lcl}{
 #' \code{Estimates}\tab \tab Summary statistics of the parameter estimates\cr
