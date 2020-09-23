@@ -1,18 +1,20 @@
 #' Fake Dataset
 #'
 #' An artificially generated cross-sectional dataset together with
-#' an accompanying binary connectivity matrix \emph{\strong{W}} to
-#' illustrate the use of the package. The \eqn{10 x 10} matrix connects
-#' the \eqn{n=100} units based on rook's adjacency definition of contiguity.
+#' an accompanying binary connectivity matrix \emph{\strong{W}}. The
+#' \eqn{n=100} units are located on a regular grid and \emph{\strong{W}}
+#' is defined according to rook's adjacency definition of contiguity.
+#' The synthetic data can be used to illustrate the functionality
+#' of this package.
+#'
+#' @usage data(fakedata)
 #'
 #' @docType data
 #'
-#' @usage data(toydata)
-#'
 #' @return The file contains two objects:
 #' \tabular{lcl}{
-#' \code{fakedataset}\tab \tab a synthetic dataset of dimensionality \eqn{100 x 8}\cr
-#' \code{W}\tab\tab a binary connectivity matrix
+#' \code{fakedataset}\tab \tab a synthetic dataset\cr
+#' \code{W}\tab\tab an artificial \eqn{100 x 100} connectivity matrix
 #' }
 #'
 #' @keywords dataset
