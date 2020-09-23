@@ -1,6 +1,43 @@
+#' @title Moran Coefficient for Residual Spatial Autocorrelation
+#'
+#' @description This function assesses the degree of spatial
+#' autocorrelation in regression residuals by means of the Moran
+#' coefficient.
+#'
+#' @param y vector of regressands
+#' @param x matrix of regressors (default = NULL)
+#' @param fitted.values a vector of fitted values from a regression model (default = NULL)
+#' @param W spatial connectivity matrix
+#' @param alternative specification of alternative hypothesis as 'greater' (default),
+#' 'lower', or 'two.sided'
+#' @param boot optional integer specifying the number of bootstrap iterations
+#' to compute the variance. If NULL (default), variance calculated under normality
+#'
+#' @return A \code{data.frame} object with the following elements:
+#' \tabular{lcl}{
+#' \code{I}\tab \tab observed value of the Moran coefficient\cr
+#' \code{EI}\tab\tab expected value of Moran's I\cr
+#' \code{VarI}\tab \tab variance of Moran's I\cr
+#' \code{zI}\tab\tab standardized Moran coefficient\cr
+#' \code{pI}\tab\tab \emph{p}-value of the test statistic
+#' }
+#'
+#' @author Sebastian Juhl
+#'
+#' @references Tiefelsdorf, Michael and Barry Boots (1995): The Exact Distribution
+#' of Moran's I. Environment and Planning A: Economy and Space, 27 (6):
+#' pp. 985 - 999.
+#'
+#' Tiefelsdorf, Michael and Daniel A. Griffith (2007):
+#' Semiparametric filtering of spatial autocorrelation: the eigenvector
+#' approach. Environment and Planning A: Economy and Space, 39 (5):
+#' pp. 1193 - 1221.
+#'
+#' @seealso \code{\link{lmFilter}}, \code{\link{MI.vec}}
+#'
+#' @export
 
-# Moran Coefficient for residuals
-getmoran <- function(y,x=NULL,fitted.values=NULL,W,alternative="greater",boot=NULL){
+getMoran <- function(y,x=NULL,fitted.values=NULL,W,alternative="greater",boot=NULL){
   if(!(alternative %in% c("greater","lower", "two.sided"))){
     stop("Invalid input: 'alternative' must be either 'greater', 'lower', or 'two.sided'")
   }
@@ -25,16 +62,23 @@ getmoran <- function(y,x=NULL,fitted.values=NULL,W,alternative="greater",boot=NU
       boot.I[i] <- n/crossprod(rep(1,n),W%*%rep(1,n)) * crossprod(resid[ind],W%*%resid[ind]) / crossprod(resid[ind])
     }
     VarI <- var(boot.I)
-    ZI <- (I-EI)/sqrt(VarI)
+    zI <- (I-EI)/sqrt(VarI)
     pI <- emp.pfunc(draws=boot.I,obs=I,alternative=alternative)
   } else {
     num <- sum(diag(M%*%W%*%M%*%t(W))) + sum(diag(M%*%W%*%M%*%W)) + sum(diag(M%*%W))^2
     denom <- (n-ncol(x))*(n-ncol(x)+2)
     VarI <- num/denom - EI^2
     if(VarI<=0){
-      ZI <- 0
-    } else ZI <- (I-EI)/sqrt(VarI)
-    pI <- pfunc(z=ZI,alternative=alternative)
+      zI <- 0
+    } else zI <- (I-EI)/sqrt(VarI)
+    pI <- pfunc(z=zI,alternative=alternative)
   }
-  return(list(I=I,EI=EI,VarI=VarI,ZI=ZI,pI=pI))
+
+  #####
+  # Output
+  #####
+  out <- data.frame(I,EI,VarI,zI,pI,NA)
+  colnames(out) <- c("I","EI","VarI","zI","pI","")
+  out[1,6] <- star(p=out[1,"pI"])
+  return(out)
 }

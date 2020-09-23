@@ -1,66 +1,66 @@
 #' @title Eigenvector-Based Spatial Filtering in Linear Regression Models
 #'
-#' @description Perform spatial filtering with eigenvectors in a
-#' linear regression framework using OLS
+#' @description This function implements the eigenvector-based semiparametric
+#' spatial filtering approach in a linear regression framework using OLS.
 #'
-#' @param y Vector of regressands
-#' @param x Matrix of regressors (default = NULL)
-#' @param W Spatial connectivity matrix
-#' @param objfn Specifies the objective function to be used for eigenvector
+#' @param y vector of regressands
+#' @param x matrix of regressors (default = NULL)
+#' @param W spatial connectivity matrix
+#' @param objfn specifies the objective function to be used for eigenvector
 #' selection. Possible criteria are: the maximization of the
 #' adjusted R-squared ('R2'), minimization of residual autocorrelation ('MI'),
 #' significance level of candidate eigenvectors ('p'), or
 #' all eigenvectors in the candidate set ('all')
-#' @param MX Covariates used to construct the projection matrix (TRUE/ FALSE)
-#' @param sig Significance level to be used for eigenvector selection
+#' @param MX covariates used to construct the projection matrix (TRUE/ FALSE)
+#' @param sig significance level to be used for eigenvector selection
 #' if \code{objfn='p'}
 #' @param bonferroni Bonferroni adjustment for the significance level
 #' (TRUE/ FALSE)
-#' @param positive Restrict search to eigenvectors associated with positive
+#' @param positive restrict search to eigenvectors associated with positive
 #' levels of spatial autocorrelation (TRUE/ FALSE)
-#' @param ideal.setsize If \code{positive=TRUE}, uses the formula proposed in
+#' @param ideal.setsize if \code{positive=TRUE}, uses the formula proposed in
 #' Chun et al. (2016) to determine the ideal size of the candidate set
 #' (TRUE/ FALSE)
-#' @param tol If \code{objfn='MI'}, determines the amount of remaining residual
+#' @param tol if \code{objfn='MI'}, determines the amount of remaining residual
 #' autocorrelation at which the eigenvector selection terminates
-#' @param na.rm Removes missing values in covariates (TRUE/ FALSE)
+#' @param na.rm removes missing values in covariates (TRUE/ FALSE)
 #'
 #' @return An object of class \code{spfilter} containing the following
 #' information:
 #' \tabular{lcl}{
-#' \code{Estimates}\tab \tab Summary statistics of the parameter estimates\cr
-#' \code{varcovar}\tab\tab Estimated variance-covariance matrix\cr
-#' \code{EV}\tab\tab Matrix with summary statistics of selected eigenvectors\cr
-#' \code{selvecs}\tab\tab Matrix of selected eigenvectors\cr
+#' \code{Estimates}\tab \tab summary statistics of the parameter estimates\cr
+#' \code{varcovar}\tab\tab estimated variance-covariance matrix\cr
+#' \code{EV}\tab\tab a matrix with summary statistics of selected eigenvectors\cr
+#' \code{selvecs}\tab\tab matrix of selected eigenvectors\cr
 #' \code{evMI}\tab\tab Moran coefficient of eigenvectors in the spatial filter\cr
-#' \code{moran}\tab\tab Residual autocorrelation for the initial and the
+#' \code{moran}\tab\tab residual autocorrelation for the initial and the
 #' filtered model\cr
-#' \code{fit}\tab\tab Adjusted R-squared of the initial and the filtered model\cr
-#' \code{residuals}\tab\tab Initial and filtered model residuals\cr
-#' \code{other}\tab\tab A list providing supplementary information:\cr
+#' \code{fit}\tab\tab adjusted R-squared of the initial and the filtered model\cr
+#' \code{residuals}\tab\tab initial and filtered model residuals\cr
+#' \code{other}\tab\tab a list providing supplementary information:\cr
 #' \tab\tab \describe{
-#' \item{\code{ncandidates}}{Number of candidate eigenvectors considered}
-#' \item{\code{nev}}{Number of selected eigenvectors}
+#' \item{\code{ncandidates}}{number of candidate eigenvectors considered}
+#' \item{\code{nev}}{number of selected eigenvectors}
 #' \item{\code{sel_id}}{ID of selected eigenvectors}
-#' \item{\code{sf}}{Vector representing the spatial filter}
+#' \item{\code{sf}}{vector representing the spatial filter}
 #' \item{\code{sfMI}}{Moran coefficient of the spatial filter}
-#' \item{\code{model}}{Class of the regression model}
+#' \item{\code{model}}{class of the regression model}
 #' \item{\code{MX}}{TRUE/ FALSE: include covariates in the projection matrix
 #' \emph{\strong{M}}}
-#' \item{\code{dependence}}{Filtered for positive or negative spatial dependence}
-#' \item{\code{objfn}}{Selection criteria specified in the objective function of
+#' \item{\code{dependence}}{filtered for positive or negative spatial dependence}
+#' \item{\code{objfn}}{selection criteria specified in the objective function of
 #' the stepwise regression procedure}
-#' \item{\code{bonferroni}}{TRUE/ FALSE: bonferroni-adjusted significance level
+#' \item{\code{bonferroni}}{TRUE/ FALSE: Bonferroni-adjusted significance level
 #' (if \code{objfn='p'})}
-#' \item{\code{siglevel}}{If \code{objfn='p'}: actual (unadjusted/ adjusted)
+#' \item{\code{siglevel}}{if \code{objfn='p'}: actual (unadjusted/ adjusted)
 #' significance level}
 #' }
 #' }
 #'
 #' @examples
-#' data(toydata)
+#' data(fakedata)
 #' output_table <- overview_tab(dat = toydata, id = ccode, time = year)
-#' @export
+#'
 #' @references Tiefelsdorf, Michael and Daniel A. Griffith (2007):
 #' Semiparametric filtering of spatial autocorrelation: the eigenvector
 #' approach. Environment and Planning A: Economy and Space, 39 (5):
@@ -78,9 +78,12 @@
 #' Tiefelsdorf, Michael and Barry Boots (1995): The Exact Distribution
 #' of Moran's I. Environment and Planning A: Economy and Space, 27 (6):
 #' pp. 985 - 999.
+#'
+#' @seealso \code{\link{getEVs}}, \code{\link{getMoran}}
+#'
+#' #' @export
 
-
-lmfilter <- function(y,x=NULL,W,objfn="MI",MX=FALSE,sig=.05
+lmFilter <- function(y,x=NULL,W,objfn="MI",MX=FALSE,sig=.05
                      ,bonferroni=TRUE,positive=TRUE,ideal.setsize=FALSE
                      ,alpha=.25,tol=.1,na.rm=TRUE){
 
@@ -139,7 +142,7 @@ lmfilter <- function(y,x=NULL,W,objfn="MI",MX=FALSE,sig=.05
       test <- 2*pt(abs(est/se),df=(n-ncol(xe)),lower.tail=F) # p-value
     }
     if(objfn=="MI"){
-      test <- abs(getmoran(y=y,x=xe,W=W)$ZI) # (absolute) standardized Moran's I
+      test <- abs(getMoran(y=y,x=xe,W=W)$zI) # (absolute) standardized Moran's I
     }
     return(test)
   }
@@ -166,20 +169,20 @@ lmfilter <- function(y,x=NULL,W,objfn="MI",MX=FALSE,sig=.05
   resid_init <- y - x %*% solve(crossprod(x)) %*% crossprod(x,y)
   R2 <- 1-(sum(crossprod(resid_init))/TSS)
   adjR2 <- adjR2_init <- 1-(1-R2)*(n-1)/(n-nx)
-  MI_init <- getmoran(y=y,x=x,W=W)
-  if(objfn=="MI") oldZMI <- abs(MI_init$ZI)
+  MI_init <- getMoran(y=y,x=x,W=W)
+  if(objfn=="MI") oldZMI <- abs(MI_init$zI)
 
   #####
   # Eigenvector Selection:
   # Candidate Set
   #####
-  if(positive | MI_init$ZI >= 0){
+  if(positive | MI_init$zI >= 0){
     if(ideal.setsize){
       # avoids problems of NaN if positive=T but zMI < 0:
-      if(MI_init$ZI < 0){
+      if(MI_init$zI < 0){
         csize <- candsetsize(npos=length(evals[evals > 1e-07]),zMI=0)
       } else {
-        csize <- candsetsize(npos=length(evals[evals > 1e-07]),zMI=MI_init$ZI)
+        csize <- candsetsize(npos=length(evals[evals > 1e-07]),zMI=MI_init$zI)
       }
       if(csize==0) sel <- rep(F,length(evals))
       else sel <- evals %in% evals[1:csize]
@@ -272,7 +275,7 @@ lmfilter <- function(y,x=NULL,W,objfn="MI",MX=FALSE,sig=.05
   resid <- y - xev %*% coefs
   R2 <- 1-(sum(crossprod(resid))/TSS)
   adjR2 <- 1-(1-R2)*(n-1)/(n-ncol(xev))
-  MI_filtered <- getmoran(y=y,x=xev,W=W)
+  MI_filtered <- getMoran(y=y,x=xev,W=W)
 
   #####
   # Output
@@ -307,11 +310,11 @@ lmfilter <- function(y,x=NULL,W,objfn="MI",MX=FALSE,sig=.05
 
   # Moran's I
   if(dep=="positive"){
-    MI_init$pI <- pnorm(MI_init$ZI,lower.tail=F)
-    MI_filtered$pI <- pnorm(MI_filtered$ZI,lower.tail=F)
+    MI_init$pI <- pnorm(MI_init$zI,lower.tail=F)
+    MI_filtered$pI <- pnorm(MI_filtered$zI,lower.tail=F)
   } else{
-    MI_init$pI <- pnorm(MI_init$ZI,lower.tail=T)
-    MI_filtered$pI <- pnorm(MI_filtered$ZI,lower.tail=T)
+    MI_init$pI <- pnorm(MI_init$zI,lower.tail=T)
+    MI_filtered$pI <- pnorm(MI_filtered$zI,lower.tail=T)
   }
   moran <- rbind(MI_init,MI_filtered)
   rownames(moran) <- c("Initial", "Filtered")
