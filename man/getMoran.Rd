@@ -16,7 +16,7 @@ getMoran(
 \arguments{
 \item{y}{vector of regressands}
 
-\item{x}{matrix of regressors (default = NULL)}
+\item{x}{vector/ matrix of regressors (default = NULL)}
 
 \item{fitted.values}{a vector of fitted values from a regression model (default = NULL)}
 

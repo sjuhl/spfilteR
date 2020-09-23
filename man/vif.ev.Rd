@@ -7,7 +7,7 @@
 vif.ev(x = NULL, evecs)
 }
 \arguments{
-\item{x}{matrix of regressors (default = NULL)}
+\item{x}{vector/ matrix of regressors (default = NULL)}
 
 \item{evecs}{selected eigenvectors for inclusion in the spatial filter}
 }
@@ -17,6 +17,13 @@ Returns a vector containing the VIF for each selected eigenvector.
 \description{
 Calculate the variance inflation factor (VIF) for
 the eigenvectors in the spatial filter.
+}
+\examples{
+data("fakedata")
+evecs <- getEVs(W=W)$vectors
+evecs <- evecs[,1:10]
+vif.ev(x=fakedataset$x1,evecs=evecs)
+
 }
 \seealso{
 \code{\link{lmFilter}}, \code{\link{getEVs}}

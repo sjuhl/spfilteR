@@ -3,10 +3,16 @@
 #' @description Calculate the variance inflation factor (VIF) for
 #' the eigenvectors in the spatial filter.
 #'
-#' @param x matrix of regressors (default = NULL)
+#' @param x vector/ matrix of regressors (default = NULL)
 #' @param evecs selected eigenvectors for inclusion in the spatial filter
 #'
 #' @return Returns a vector containing the VIF for each selected eigenvector.
+#'
+#' @examples
+#' data("fakedata")
+#' evecs <- getEVs(W=W)$vectors
+#' evecs <- evecs[,1:10]
+#' vif.ev(x=fakedataset$x1,evecs=evecs)
 #'
 #' @author Sebastian Juhl
 #'
@@ -16,7 +22,8 @@
 
 vif.ev <- function(x=NULL,evecs){
   evecs <- as.matrix(evecs)
-  if(is.null(x)) x <- as.matrix(rep(1,nrow(evecs)))
+  if(is.null(x)) x <- rep(1,nrow(evecs))
+  x <- as.matrix(x)
   if (!all(x[,1]==1)) x <- cbind(1,x)
   inflate <- NULL
   for(i in 1:ncol(evecs)){

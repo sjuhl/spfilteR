@@ -5,7 +5,7 @@
 #' coefficient.
 #'
 #' @param y vector of regressands
-#' @param x matrix of regressors (default = NULL)
+#' @param x vector/ matrix of regressors (default = NULL)
 #' @param fitted.values a vector of fitted values from a regression model (default = NULL)
 #' @param W spatial connectivity matrix
 #' @param alternative specification of alternative hypothesis as 'greater' (default),

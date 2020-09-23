@@ -4,7 +4,7 @@
 #' spatial filtering approach in a linear regression framework using OLS.
 #'
 #' @param y vector of regressands
-#' @param x matrix of regressors (default = NULL)
+#' @param x vector/ matrix of regressors (default = NULL)
 #' @param W spatial connectivity matrix
 #' @param objfn specifies the objective function to be used for eigenvector
 #' selection. Possible criteria are: the maximization of the
@@ -32,7 +32,7 @@
 #' \code{varcovar}\tab\tab estimated variance-covariance matrix\cr
 #' \code{EV}\tab\tab a matrix with summary statistics of selected eigenvectors\cr
 #' \code{selvecs}\tab\tab matrix of selected eigenvectors\cr
-#' \code{evMI}\tab\tab Moran coefficient of eigenvectors in the spatial filter\cr
+#' \code{evMI}\tab\tab Moran coefficient of all eigenvectors\cr
 #' \code{moran}\tab\tab residual autocorrelation for the initial and the
 #' filtered model\cr
 #' \code{fit}\tab\tab adjusted R-squared of the initial and the filtered model\cr
@@ -59,7 +59,12 @@
 #'
 #' @examples
 #' data(fakedata)
-#' output_table <- overview_tab(dat = toydata, id = ccode, time = year)
+#' y <- fakedataset$x1
+#' X <- cbind(fakedataset$x2,fakedataset$x3,fakedataset$x4,fakedataset$x5)
+#' res <- lmFilter(y=y,x=X,W=W,objfn='R2')
+#'
+#' summary(res)
+#' plot(res)
 #'
 #' @references Tiefelsdorf, Michael and Daniel A. Griffith (2007):
 #' Semiparametric filtering of spatial autocorrelation: the eigenvector
@@ -116,10 +121,10 @@ lmFilter <- function(y,x=NULL,W,objfn="MI",MX=FALSE,sig=.05
     stop("Invalid argument: 'alpha' must satisfy the restriction: 0 < alpha <= 1.")
   }
   if(qr(x)$rank!=ncol(x)) stop("Perfect multicollinearity in covariates detected")
-  if(!(class(W) %in% c("matrix","Matrix","data.frame"))){
+  if(!any(class(W) %in% c("matrix","Matrix","data.frame"))){
     stop("W must be of class 'matrix' or 'data.frame'")
   }
-  if(class(W)!="matrix") W <- as.matrix(W)
+  if(any(class(W)!="matrix")) W <- as.matrix(W)
   if(!(objfn %in% c("R2","p","MI","all"))){
     stop("Invalid argument: objfn must be one of 'R2', 'p', 'MI', or'all'")
   }

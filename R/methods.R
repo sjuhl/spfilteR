@@ -102,8 +102,8 @@ plot.spfilter <- function(obj){
           ,col=rgb(red = 0, green = 0, blue = 0, alpha = 0.1)
           ,border=F)
   # not selected EVs
-  points(y=obj$evMI[which(!(1:n %in% obj$other$sel_id))]
-         ,x=which(!(1:n %in% obj$other$sel_id)),pch=16,cex=.4,col="gray")
+  points(y=obj$evMI[which(!(1:length(obj$evMI) %in% obj$other$sel_id))]
+         ,x=which(!(1:length(obj$evMI) %in% obj$other$sel_id)),pch=16,cex=.4,col="gray")
   # selected EVs
   points(y=obj$evMI[obj$other$sel_id],x=obj$other$sel_id,pch=16,cex=.7)
   # legend

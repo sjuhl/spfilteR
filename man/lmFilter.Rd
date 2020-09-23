@@ -22,7 +22,7 @@ lmFilter(
 \arguments{
 \item{y}{vector of regressands}
 
-\item{x}{matrix of regressors (default = NULL)}
+\item{x}{vector/ matrix of regressors (default = NULL)}
 
 \item{W}{spatial connectivity matrix}
 
