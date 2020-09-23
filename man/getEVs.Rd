@@ -2,14 +2,14 @@
 % Please edit documentation in R/getEVs.R
 \name{getEVs}
 \alias{getEVs}
-\title{Extract Eigenvectors and Eigenvalues}
+\title{Eigenfunction Decomposition of a (Transformed) Spatial Connectivity Matrix}
 \usage{
 getEVs(W, covars = NULL)
 }
 \arguments{
-\item{W}{Spatial connectivity matrix}
+\item{W}{spatial connectivity matrix}
 
-\item{covars}{Design matrix of regressors included in the construction
+\item{covars}{vector/ matrix of regressors included in the construction
 of the projection matrix \emph{\strong{M}}}
 }
 \value{
@@ -25,8 +25,13 @@ the matrix \emph{\strong{MWM}}, where \emph{\strong{M}} denotes a symmetric
 and idempotent projection matrix and \emph{\strong{W}} is the spatial
 connectivity matrix.
 }
+\details{
+The eigenfunctions obtained by \code{getEVs}
+can be used to perform supervised eigenvector selection and to
+manually create a spatial filter.
+}
 \seealso{
-\code{\link{lmfilter}}, \code{\link{MI.ev}}, \code{\link{MI.sf}},
+\code{\link{lmFilter}}, \code{\link{MI.ev}}, \code{\link{MI.sf}},
 \code{\link{vif.ev}}, \code{\link{partialR2}}
 }
 \author{

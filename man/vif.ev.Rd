@@ -9,10 +9,10 @@ vif.ev(x = NULL, evecs)
 \arguments{
 \item{x}{vector/ matrix of regressors (default = NULL)}
 
-\item{evecs}{selected eigenvectors for inclusion in the spatial filter}
+\item{evecs}{(selected) eigenvectors}
 }
 \value{
-Returns a vector containing the VIF for each selected eigenvector.
+Returns a vector containing the VIF for each eigenvector.
 }
 \description{
 Calculate the variance inflation factor (VIF) for

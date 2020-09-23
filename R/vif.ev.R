@@ -4,9 +4,9 @@
 #' the eigenvectors in the spatial filter.
 #'
 #' @param x vector/ matrix of regressors (default = NULL)
-#' @param evecs selected eigenvectors for inclusion in the spatial filter
+#' @param evecs (selected) eigenvectors
 #'
-#' @return Returns a vector containing the VIF for each selected eigenvector.
+#' @return Returns a vector containing the VIF for each eigenvector.
 #'
 #' @examples
 #' data("fakedata")

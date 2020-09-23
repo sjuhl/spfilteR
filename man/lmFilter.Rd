@@ -60,7 +60,7 @@ information:
 \code{varcovar}\tab\tab estimated variance-covariance matrix\cr
 \code{EV}\tab\tab a matrix with summary statistics of selected eigenvectors\cr
 \code{selvecs}\tab\tab matrix of selected eigenvectors\cr
-\code{evMI}\tab\tab Moran coefficient of eigenvectors in the spatial filter\cr
+\code{evMI}\tab\tab Moran coefficient of all eigenvectors\cr
 \code{moran}\tab\tab residual autocorrelation for the initial and the
 filtered model\cr
 \code{fit}\tab\tab adjusted R-squared of the initial and the filtered model\cr
@@ -88,10 +88,16 @@ significance level}
 \description{
 This function implements the eigenvector-based semiparametric
 spatial filtering approach in a linear regression framework using OLS.
+Eigenvectors are selected using unsupervised speppwise regressions.
 }
 \examples{
 data(fakedata)
-output_table <- overview_tab(dat = toydata, id = ccode, time = year)
+y <- fakedataset$x1
+X <- cbind(fakedataset$x2,fakedataset$x3,fakedataset$x4,fakedataset$x5)
+res <- lmFilter(y=y,x=X,W=W,objfn='R2')
+
+summary(res)
+plot(res)
 
 }
 \references{

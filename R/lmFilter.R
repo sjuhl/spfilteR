@@ -2,6 +2,7 @@
 #'
 #' @description This function implements the eigenvector-based semiparametric
 #' spatial filtering approach in a linear regression framework using OLS.
+#' Eigenvectors are selected using unsupervised speppwise regressions.
 #'
 #' @param y vector of regressands
 #' @param x vector/ matrix of regressors (default = NULL)

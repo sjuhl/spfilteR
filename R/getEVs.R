@@ -1,12 +1,12 @@
-#' @title Extract Eigenvectors and Eigenvalues
+#' @title Eigenfunction Decomposition of a (Transformed) Spatial Connectivity Matrix
 #'
 #' @description Extract eigenvectors and the corresponding eigenvalues from
 #' the matrix \emph{\strong{MWM}}, where \emph{\strong{M}} denotes a symmetric
 #' and idempotent projection matrix and \emph{\strong{W}} is the spatial
 #' connectivity matrix.
 #'
-#' @param W Spatial connectivity matrix
-#' @param covars Design matrix of regressors included in the construction
+#' @param W spatial connectivity matrix
+#' @param covars vector/ matrix of regressors included in the construction
 #' of the projection matrix \emph{\strong{M}}
 #'
 #' @return A list containing the following objects:
@@ -15,9 +15,13 @@
 #' \item{\code{values}}{A vector of the corresponding eigenvalues}
 #' }
 #'
+#' @details The eigenfunctions obtained by \code{getEVs}
+#' can be used to perform supervised eigenvector selection and to
+#' manually create a spatial filter.
+#'
 #' @author Sebastian Juhl
 #'
-#' @seealso \code{\link{lmfilter}}, \code{\link{MI.ev}}, \code{\link{MI.sf}},
+#' @seealso \code{\link{lmFilter}}, \code{\link{MI.ev}}, \code{\link{MI.sf}},
 #' \code{\link{vif.ev}}, \code{\link{partialR2}}
 #'
 #' @export
