@@ -2,11 +2,8 @@
 
 export(MI.ev)
 export(MI.sf)
-export(candsetsize)
-export(emp.pfunc)
+export(MI.vec)
 export(getEVs)
-export(lmfilter)
+export(getMoran)
 export(partialR2)
-export(pfunc)
-export(star)
 export(vif.ev)
