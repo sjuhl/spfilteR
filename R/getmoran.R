@@ -41,6 +41,10 @@ getMoran <- function(y,x=NULL,fitted.values=NULL,W,alternative="greater",boot=NU
   if(!(alternative %in% c("greater","lower", "two.sided"))){
     stop("Invalid input: 'alternative' must be either 'greater', 'lower', or 'two.sided'")
   }
+  if(!any(class(W) %in% c("matrix","Matrix","data.frame"))){
+    stop("W must be of class 'matrix' or 'data.frame'")
+  }
+  if(any(class(W)!="matrix")) W <- as.matrix(W)
   n <- nrow(W)
   if(is.null(x)) x <- rep(1,n)
   x <- as.matrix(x)
