@@ -34,9 +34,9 @@ is calculated under the normality assumtion.
 Cliff, Andrew D. and John K. Ord (1981): Spatial Processes:
 Models & Applications. Pion, London.
 
-Bivand, Roger S. and David W. S. Wong (2018): Comparing
-Implementations of Global and Local Indicators of Spatial Association.
-TEST 27: pp. 716 - 748.
+Bivand, Roger S. and David W. S. Wong (2018): Comparing Implementations
+of Global and Local Indicators of Spatial Association. #' TEST 27:
+pp. 716 - 748.
 
 Tiefelsdorf, Michael and Barry Boots (1995): The Exact Distribution
 of Moran's I. Environment and Planning A: Economy and Space, 27 (6):

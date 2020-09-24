@@ -1,7 +1,7 @@
 #' @title Moran Test for Residual Spatial Autocorrelation
 #'
 #' @description This function assesses the degree of spatial
-#' autocorrelation in regression residuals by means of the Moran
+#' autocorrelation present in regression residuals by means of the Moran
 #' coefficient.
 #'
 #' @param y vector of regressands
@@ -27,9 +27,8 @@
 #' are supplied, the function assumes a linear intercept-only model and
 #' calculates model residuals accordingly.
 #'
-#' @note Calculations are based on the central moments of Moran's I presented
-#' by Tiefelsdorf (2000, p. 102). See also Tiefelsdorf and Griffith
-#' (2007, p. 1202 - 1203) and Bivand et al. (2009, p. 2861).
+#' @note Calculations are based on Cliff and Ord (1981) and Upton and Fingleton
+#' (1985). See also Tiefelsdorf (2000) and Griffith et al. (2019).
 #'
 #' @author Sebastian Juhl
 #'
@@ -37,14 +36,9 @@
 #' The Identification and Analysis of Spatial Relationships in Regression
 #' Residuals by Means of Moran's I. Springer, Berlin.
 #'
-#' Tiefelsdorf, Michael and Daniel A. Griffith (2007):
-#' Semiparametric filtering of spatial autocorrelation: the eigenvector
-#' approach. Environment and Planning A: Economy and Space, 39 (5):
-#' pp. 1193 - 1221.
-#'
-#' Bivand, Roger S., Werner G. Müller and Markus Reder (2009):
-#' Power calculations for global and local Moran’s I. Computational
-#' Statistics and Data Analysis 53 (8): pp. 2859 - 2872.
+#' Griffith, Daniel A., Yongwan Chun, Bin Li (2019): Spatial Regression
+#' Analysis Using Eigenvector Spatial Filtering. Elsevier Academic Press,
+#' London.
 #'
 #' @examples
 #' data(fakedata)
@@ -76,7 +70,7 @@ getMoran <- function(y,x=NULL,fitted.values=NULL,W,alternative="greater",boot=NU
   I <- n/crossprod(rep(1,n),W%*%rep(1,n)) * crossprod(resid,W%*%resid) / crossprod(resid)
   M <- diag(n)-x%*%qr.solve(crossprod(x),t(x))
   df <- n - qr(x)$rank
-  EI <- sum(diag(M%*%W%*%M))/df
+  EI <- n/crossprod(rep(1,n),W%*%rep(1,n)) * sum(diag((M%*%W)))/df
   if(!is.null(boot)){
     if(boot<100){
       warning(paste0("Number of bootstrap iterations (",boot,") too small. Set to 100"))
@@ -89,11 +83,11 @@ getMoran <- function(y,x=NULL,fitted.values=NULL,W,alternative="greater",boot=NU
     }
     VarI <- var(boot.I)
     zI <- (I-EI)/sqrt(VarI)
-    pI <- emp.pfunc(draws=boot.I,obs=I,alternative=alternative)
+    pI <- emp.pfunc(draws=boot.I,z=I,alternative=alternative)
   } else {
-    num <- 2*(sum(diag(M%*%W%*%M%*%t(W))) + sum(diag(M%*%W%*%M%*%W)) + sum(diag(M%*%W))^2)
-    denom <- df^2*(df+2)
-    VarI <- num/denom - EI^2
+    ratio1 <- sum(diag(M%*%W%*%M%*%W))/(df*(df+2))
+    ratio2 <- sum(diag(M%*%W))^2/df^2
+    VarI <- 2*(n/crossprod(rep(1,n),W%*%rep(1,n)))^2 * (ratio1-ratio2)
     if(VarI<=0){
       zI <- 0
     } else zI <- (I-EI)/sqrt(VarI)
