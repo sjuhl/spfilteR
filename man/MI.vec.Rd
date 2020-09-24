@@ -28,9 +28,16 @@ following information:
 \description{
 Tests for the presence of spatial autocorrelation
 in a vector as indicated by the Moran coefficient. The variance
-is calculated under assumed normality.
+is calculated under the normality assumtion.
 }
 \references{
+Cliff, Andrew D. and John K. Ord (1981): Spatial Processes:
+Models & Applications. Pion, London.
+
+Bivand, Roger S. and David W. S. Wong (2018): Comparing
+Implementations of Global and Local Indicators of Spatial Association.
+TEST 27: pp. 716 - 748.
+
 Tiefelsdorf, Michael and Barry Boots (1995): The Exact Distribution
 of Moran's I. Environment and Planning A: Economy and Space, 27 (6):
 pp. 985 - 999.

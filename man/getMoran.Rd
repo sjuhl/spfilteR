@@ -2,7 +2,7 @@
 % Please edit documentation in R/getMoran.R
 \name{getMoran}
 \alias{getMoran}
-\title{Moran Coefficient for Residual Spatial Autocorrelation}
+\title{Moran Test for Residual Spatial Autocorrelation}
 \usage{
 getMoran(
   y,
@@ -43,15 +43,39 @@ This function assesses the degree of spatial
 autocorrelation in regression residuals by means of the Moran
 coefficient.
 }
+\details{
+The function directly uses fitted values to compute the residuals
+whenever they are supplied. If neither \code{x} nor \code{fitted.values}
+are supplied, the function assumes a linear intercept-only model and
+calculates model residuals accordingly.
+}
+\note{
+Calculations are based on the central moments of Moran's I presented
+by Tiefelsdorf (2000, p. 102). See also Tiefelsdorf and Griffith
+(2007, p. 1202 - 1203) and Bivand et al. (2009, p. 2861).
+}
+\examples{
+data(fakedata)
+y <- fakedataset$x1
+x <- fakedataset$x3
+
+Moran <- getMoran(y=y,x=x,W=W,alternative='greater')
+Moran
+
+}
 \references{
-Tiefelsdorf, Michael and Barry Boots (1995): The Exact Distribution
-of Moran's I. Environment and Planning A: Economy and Space, 27 (6):
-pp. 985 - 999.
+Tiefelsdorf, Michael (2000): Modelling Spatial Processes.
+The Identification and Analysis of Spatial Relationships in Regression
+Residuals by Means of Moran's I. Springer, Berlin.
 
 Tiefelsdorf, Michael and Daniel A. Griffith (2007):
 Semiparametric filtering of spatial autocorrelation: the eigenvector
 approach. Environment and Planning A: Economy and Space, 39 (5):
 pp. 1193 - 1221.
+
+Bivand, Roger S., Werner G. Müller and Markus Reder (2009):
+Power calculations for global and local Moran’s I. Computational
+Statistics and Data Analysis 53 (8): pp. 2859 - 2872.
 }
 \seealso{
 \code{\link{lmFilter}}, \code{\link{MI.vec}}

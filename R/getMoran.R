@@ -1,4 +1,4 @@
-#' @title Moran Coefficient for Residual Spatial Autocorrelation
+#' @title Moran Test for Residual Spatial Autocorrelation
 #'
 #' @description This function assesses the degree of spatial
 #' autocorrelation in regression residuals by means of the Moran
@@ -22,16 +22,37 @@
 #' \code{pI}\tab\tab \emph{p}-value of the test statistic
 #' }
 #'
+#' @details The function directly uses fitted values to compute the residuals
+#' whenever they are supplied. If neither \code{x} nor \code{fitted.values}
+#' are supplied, the function assumes a linear intercept-only model and
+#' calculates model residuals accordingly.
+#'
+#' @note Calculations are based on the central moments of Moran's I presented
+#' by Tiefelsdorf (2000, p. 102). See also Tiefelsdorf and Griffith
+#' (2007, p. 1202 - 1203) and Bivand et al. (2009, p. 2861).
+#'
 #' @author Sebastian Juhl
 #'
-#' @references Tiefelsdorf, Michael and Barry Boots (1995): The Exact Distribution
-#' of Moran's I. Environment and Planning A: Economy and Space, 27 (6):
-#' pp. 985 - 999.
+#' @references Tiefelsdorf, Michael (2000): Modelling Spatial Processes.
+#' The Identification and Analysis of Spatial Relationships in Regression
+#' Residuals by Means of Moran's I. Springer, Berlin.
 #'
 #' Tiefelsdorf, Michael and Daniel A. Griffith (2007):
 #' Semiparametric filtering of spatial autocorrelation: the eigenvector
 #' approach. Environment and Planning A: Economy and Space, 39 (5):
 #' pp. 1193 - 1221.
+#'
+#' Bivand, Roger S., Werner G. Müller and Markus Reder (2009):
+#' Power calculations for global and local Moran’s I. Computational
+#' Statistics and Data Analysis 53 (8): pp. 2859 - 2872.
+#'
+#' @examples
+#' data(fakedata)
+#' y <- fakedataset$x1
+#' x <- fakedataset$x3
+#'
+#' Moran <- getMoran(y=y,x=x,W=W,alternative='greater')
+#' Moran
 #'
 #' @seealso \code{\link{lmFilter}}, \code{\link{MI.vec}}
 #'
@@ -54,7 +75,8 @@ getMoran <- function(y,x=NULL,fitted.values=NULL,W,alternative="greater",boot=NU
   if(!isSymmetric(W)) W <- .5 * (W + t(W)) # symmetric connectivity matrix
   I <- n/crossprod(rep(1,n),W%*%rep(1,n)) * crossprod(resid,W%*%resid) / crossprod(resid)
   M <- diag(n)-x%*%qr.solve(crossprod(x),t(x))
-  EI <- sum(diag(M%*%W))/(n-ncol(x))
+  df <- n - qr(x)$rank
+  EI <- sum(diag(M%*%W%*%M))/df
   if(!is.null(boot)){
     if(boot<100){
       warning(paste0("Number of bootstrap iterations (",boot,") too small. Set to 100"))
@@ -69,8 +91,8 @@ getMoran <- function(y,x=NULL,fitted.values=NULL,W,alternative="greater",boot=NU
     zI <- (I-EI)/sqrt(VarI)
     pI <- emp.pfunc(draws=boot.I,obs=I,alternative=alternative)
   } else {
-    num <- sum(diag(M%*%W%*%M%*%t(W))) + sum(diag(M%*%W%*%M%*%W)) + sum(diag(M%*%W))^2
-    denom <- (n-ncol(x))*(n-ncol(x)+2)
+    num <- 2*(sum(diag(M%*%W%*%M%*%t(W))) + sum(diag(M%*%W%*%M%*%W)) + sum(diag(M%*%W))^2)
+    denom <- df^2*(df+2)
     VarI <- num/denom - EI^2
     if(VarI<=0){
       zI <- 0

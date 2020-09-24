@@ -62,8 +62,8 @@
 #' data(fakedata)
 #' y <- fakedataset$x1
 #' X <- cbind(fakedataset$x2,fakedataset$x3,fakedataset$x4,fakedataset$x5)
-#' res <- lmFilter(y=y,x=X,W=W,objfn='R2')
 #'
+#' res <- lmFilter(y=y,x=X,W=W,objfn='R2')
 #' summary(res)
 #' plot(res)
 #'
