@@ -61,7 +61,7 @@
 #' @examples
 #' data(fakedata)
 #' y <- fakedataset$x1
-#' X <- cbind(fakedataset$count,fakedataset$x2,fakedataset$x3,fakedataset$x4,fakedataset$x5)
+#' X <- cbind(fakedataset$count,fakedataset$x2,fakedataset$x5)
 #'
 #' res <- lmFilter(y=y,x=X,W=W,objfn='R2')
 #' class(res)
@@ -323,9 +323,9 @@ lmFilter <- function(y,x=NULL,W,objfn="MI",MX=FALSE,sig=.05
     MI_init$pI <- pnorm(MI_init$zI,lower.tail=T)
     MI_filtered$pI <- pnorm(MI_filtered$zI,lower.tail=T)
   }
-  moran <- rbind(MI_init,MI_filtered)
+  moran <- rbind(MI_init[,colnames!=""],MI_filtered[,colnames!=""])
   rownames(moran) <- c("Initial", "Filtered")
-  colnames(moran) <- c("Observed","Expected","Variance","z","p-value","")
+  colnames(moran) <- c("Observed","Expected","Variance","z","p-value")
 
   # model fit
   fit <- c(adjR2_init,adjR2)
