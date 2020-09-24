@@ -61,9 +61,10 @@
 #' @examples
 #' data(fakedata)
 #' y <- fakedataset$x1
-#' X <- cbind(fakedataset$x2,fakedataset$x3,fakedataset$x4,fakedataset$x5)
+#' X <- cbind(fakedataset$count,fakedataset$x2,fakedataset$x3,fakedataset$x4,fakedataset$x5)
 #'
 #' res <- lmFilter(y=y,x=X,W=W,objfn='R2')
+#' class(res)
 #' summary(res)
 #' plot(res)
 #'
@@ -324,7 +325,7 @@ lmFilter <- function(y,x=NULL,W,objfn="MI",MX=FALSE,sig=.05
   }
   moran <- rbind(MI_init,MI_filtered)
   rownames(moran) <- c("Initial", "Filtered")
-  colnames(moran) <- c("Observed","Expected","Variance","z","p-value")
+  colnames(moran) <- c("Observed","Expected","Variance","z","p-value","")
 
   # model fit
   fit <- c(adjR2_init,adjR2)
