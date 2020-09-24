@@ -64,7 +64,6 @@
 #' X <- cbind(fakedataset$count,fakedataset$x2,fakedataset$x5)
 #'
 #' res <- lmFilter(y=y,x=X,W=W,objfn='R2')
-#' class(res)
 #' summary(res)
 #' plot(res)
 #'
@@ -323,7 +322,7 @@ lmFilter <- function(y,x=NULL,W,objfn="MI",MX=FALSE,sig=.05
     MI_init$pI <- pnorm(MI_init$zI,lower.tail=T)
     MI_filtered$pI <- pnorm(MI_filtered$zI,lower.tail=T)
   }
-  moran <- rbind(MI_init[,colnames!=""],MI_filtered[,colnames!=""])
+  moran <- rbind(MI_init[,colnames(MI_init)!=""],MI_filtered[,colnames(MI_filtered)!=""])
   rownames(moran) <- c("Initial", "Filtered")
   colnames(moran) <- c("Observed","Expected","Variance","z","p-value")
 
