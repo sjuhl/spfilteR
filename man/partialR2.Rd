@@ -20,6 +20,12 @@ Vector of partial R-squared values for each eigenvector.
 This function computes the partial R-squared of all
 selected eigenvectors in a (filtered) linear regression model.
 }
+\note{
+Note that this function assumes a linear regression model.
+Since the eigenvectors are mutually uncorrelated, \code{partialR2} evaluates
+them sequentially. In generalized linear models, the presence of a link
+function can corrupt the uncorrelatedness of the eigenvectors.
+}
 \seealso{
 \code{\link{lmFilter}}, \code{\link{getEVs}}
 }

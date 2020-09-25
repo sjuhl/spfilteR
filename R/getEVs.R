@@ -1,6 +1,7 @@
-#' @title Eigenfunction Decomposition of a (Transformed) Spatial Connectivity Matrix
+#' @title Eigenfunction Decomposition of a (Transformed) Spatial Connectivity
+#' Matrix
 #'
-#' @description Extract eigenvectors and the corresponding eigenvalues from
+#' @description Extract eigenvectors and corresponding eigenvalues from
 #' the matrix \emph{\strong{MWM}}, where \emph{\strong{M}} denotes a symmetric
 #' and idempotent projection matrix and \emph{\strong{W}} is the spatial
 #' connectivity matrix.
@@ -18,6 +19,9 @@
 #' @details The eigenfunctions obtained by \code{getEVs}
 #' can be used to perform supervised eigenvector selection and to
 #' manually create a spatial filter.
+#'
+#' If \emph{\strong{W}} is not symmetric, \code{getEVs} symmetrizes the
+#' matrix by: \eqn{0.5 * (W + t(W))}.
 #'
 #' @author Sebastian Juhl
 #'

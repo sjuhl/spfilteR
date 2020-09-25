@@ -2,7 +2,8 @@
 % Please edit documentation in R/getEVs.R
 \name{getEVs}
 \alias{getEVs}
-\title{Eigenfunction Decomposition of a (Transformed) Spatial Connectivity Matrix}
+\title{Eigenfunction Decomposition of a (Transformed) Spatial Connectivity
+Matrix}
 \usage{
 getEVs(W, covars = NULL)
 }
@@ -20,7 +21,7 @@ A list containing the following objects:
 }
 }
 \description{
-Extract eigenvectors and the corresponding eigenvalues from
+Extract eigenvectors and corresponding eigenvalues from
 the matrix \emph{\strong{MWM}}, where \emph{\strong{M}} denotes a symmetric
 and idempotent projection matrix and \emph{\strong{W}} is the spatial
 connectivity matrix.
@@ -29,6 +30,9 @@ connectivity matrix.
 The eigenfunctions obtained by \code{getEVs}
 can be used to perform supervised eigenvector selection and to
 manually create a spatial filter.
+
+If \emph{\strong{W}} is not symmetric, \code{getEVs} symmetrizes the
+matrix by: \eqn{0.5 * (W + t(W))}.
 }
 \seealso{
 \code{\link{lmFilter}}, \code{\link{MI.ev}}, \code{\link{MI.sf}},

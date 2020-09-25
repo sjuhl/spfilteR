@@ -9,6 +9,11 @@
 #'
 #' @return Vector of partial R-squared values for each eigenvector.
 #'
+#' @note Note that this function assumes a linear regression model.
+#' Since the eigenvectors are mutually uncorrelated, \code{partialR2} evaluates
+#' them sequentially. In generalized linear models, the presence of a link
+#' function can corrupt the uncorrelatedness of the eigenvectors.
+#'
 #' @author Sebastian Juhl
 #'
 #' @seealso \code{\link{lmFilter}}, \code{\link{getEVs}}

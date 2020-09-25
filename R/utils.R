@@ -1,4 +1,5 @@
-
+#' @name pfunc
+#' @rdname getMoran
 # calculate p-values
 pfunc <- function(z,alternative){
   if(alternative=="greater"){
@@ -9,7 +10,8 @@ pfunc <- function(z,alternative){
   return(p)
 }
 
-
+#' @name emp.pfunc
+#' @rdname getMoran
 # calculate empirical p-values
 emp.pfunc <- function(draws,z,alternative){
   z <- as.numeric(z)
@@ -37,6 +39,8 @@ star <- function(p){
 }
 
 
+#' @name candsetsize
+#' @rdname lmFilter
 # determine ideal candidate set size (e.g., Chun et al. 2016)
 candsetsize <- function(npos, zMI){
   denominator <- 1+exp(2.1480-(6.1808*(zMI+.6)^.1742)/npos^.1298 + 3.3534/(zMI+.6)^.1742)

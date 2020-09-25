@@ -4,7 +4,7 @@
 \alias{MI.vec}
 \title{Moran Test for Spatial Autocorrelation in a Vector}
 \usage{
-MI.vec(x, W, alternative = "greater")
+MI.vec(x, W, alternative = "greater", symmetrize = T)
 }
 \arguments{
 \item{x}{a vector}
@@ -13,6 +13,9 @@ MI.vec(x, W, alternative = "greater")
 
 \item{alternative}{specification of alternative hypothesis as 'greater' (default),
 'lower', or 'two.sided'}
+
+\item{symmetrize}{symmetrizes the connectivity matrix \emph{\strong{W}}
+by: \eqn{0.5 * (W + t(W))} (TRUE/ FALSE).}
 }
 \value{
 Returns an object of class \code{data.frame} that contains the
@@ -30,17 +33,23 @@ Tests for the presence of spatial autocorrelation
 in a vector as indicated by the Moran coefficient. The variance
 is calculated under the normality assumtion.
 }
+\note{
+Estimation of the variance (under the normality assumption)
+follows Cliff and Ord (1981), see also Upton and Fingleton (1985).
+It assumes the connectivity matrix \emph{\strong{W}} to be symmetric.
+For inherently non-symmetric matrices, it is recommended to specify
+\code{symmetrize=TRUE}.
+}
 \references{
 Cliff, Andrew D. and John K. Ord (1981): Spatial Processes:
 Models & Applications. Pion, London.
 
-Bivand, Roger S. and David W. S. Wong (2018): Comparing Implementations
-of Global and Local Indicators of Spatial Association. #' TEST 27:
-pp. 716 - 748.
+Upton, Graham J. G. and Bernard Fingleton (1985): Spatial Data Analysis
+by Example, Volume 1.New York, Wiley.
 
-Tiefelsdorf, Michael and Barry Boots (1995): The Exact Distribution
-of Moran's I. Environment and Planning A: Economy and Space, 27 (6):
-pp. 985 - 999.
+Bivand, Roger S. and David W. S. Wong (2018): Comparing Implementations
+of Global and Local Indicators of Spatial Association. TEST 27:
+pp. 716 - 748.
 }
 \seealso{
 \code{\link{getMoran}}

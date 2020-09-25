@@ -1,8 +1,13 @@
+#' @name lmFilter
 #' @title Eigenvector-Based Spatial Filtering in Linear Regression Models
 #'
 #' @description This function implements the eigenvector-based semiparametric
 #' spatial filtering approach in a linear regression framework using OLS.
-#' Eigenvectors are selected using unsupervised speppwise regressions.
+#' Eigenvectors are selected by an unsupervised steppwise regression
+#' technique. Supported selection criteria are the minimization of residual
+#' autocorrelation, maximization of model fit, and the statistical significance
+#' of eigenvectors. Alternatively, all eigenvectors in the candidate set
+#' can be included as well.
 #'
 #' @param y vector of regressands
 #' @param x vector/ matrix of regressors (default = NULL)
@@ -58,14 +63,21 @@
 #' }
 #' }
 #'
+#' @details If \emph{\strong{W}} is not symmetric, it gets symmetrized by
+#' \eqn{0.5 * (W + t(W))} the eigenfunction decomposition.
+#'
 #' @examples
 #' data(fakedata)
 #' y <- fakedataset$x1
 #' X <- cbind(fakedataset$count,fakedataset$x2,fakedataset$x5)
 #'
 #' res <- lmFilter(y=y,x=X,W=W,objfn='R2')
-#' summary(res)
+#' print(res)
+#' summary(res,EV=F)
 #' plot(res)
+#'
+#' E <- res$selvecs
+#' (lm(y~X+E))
 #'
 #' @references Tiefelsdorf, Michael and Daniel A. Griffith (2007):
 #' Semiparametric filtering of spatial autocorrelation: the eigenvector
@@ -87,7 +99,7 @@
 #'
 #' @seealso \code{\link{getEVs}}, \code{\link{getMoran}}
 #'
-#' #' @export
+#' @export
 
 lmFilter <- function(y,x=NULL,W,objfn="MI",MX=FALSE,sig=.05
                      ,bonferroni=TRUE,positive=TRUE,ideal.setsize=FALSE

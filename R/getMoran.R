@@ -1,3 +1,5 @@
+#' @name getMoran
+#'
 #' @title Moran Test for Residual Spatial Autocorrelation
 #'
 #' @description This function assesses the degree of spatial
@@ -22,10 +24,13 @@
 #' \code{pI}\tab\tab \emph{p}-value of the test statistic
 #' }
 #'
-#' @details The function directly uses fitted values to compute the residuals
-#' whenever they are supplied. If neither \code{x} nor \code{fitted.values}
+#' @details The function directly uses fitted values whenever supplied
+#' to compute the residuals. If neither \code{x} nor \code{fitted.values}
 #' are supplied, the function assumes a linear intercept-only model and
 #' calculates model residuals accordingly.
+#'
+#' If \emph{\strong{W}} is not symmetric, \code{getMoran} automatically
+#' symmetrizes the matrix by: \eqn{0.5 * (W + t(W))}.
 #'
 #' @note Calculations are based on Cliff and Ord (1981) and Upton and Fingleton
 #' (1985). See also Tiefelsdorf (2000) and Griffith et al. (2019).
@@ -39,6 +44,12 @@
 #' Griffith, Daniel A., Yongwan Chun, Bin Li (2019): Spatial Regression
 #' Analysis Using Eigenvector Spatial Filtering. Elsevier Academic Press,
 #' London.
+#'
+#' Cliff, Andrew D. and John K. Ord (1981): Spatial Processes:
+#' Models & Applications. Pion, London.
+#'
+#' Upton, Graham J. G. and Bernard Fingleton (1985): Spatial Data Analysis
+#' by Example, Volume 1.New York, Wiley.
 #'
 #' @examples
 #' data(fakedata)
