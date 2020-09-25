@@ -174,7 +174,7 @@ lmFilter <- function(y,x=NULL,W,objfn="MI",MX=FALSE,sig=.05
       test <- 2*pt(abs(est/se),df=(n-ncol(xe)),lower.tail=F) # p-value
     }
     if(objfn=="MI"){
-      test <- abs(getMoran(y=y,x=xe,W=W)$zI) # (absolute) standardized Moran's I
+      test <- abs(getMoran(resid=resid,x=xe,W=W)$zI) # (absolute) standardized Moran's I
     }
     return(test)
   }
@@ -201,7 +201,7 @@ lmFilter <- function(y,x=NULL,W,objfn="MI",MX=FALSE,sig=.05
   resid_init <- y - x %*% solve(crossprod(x)) %*% crossprod(x,y)
   R2 <- 1-(sum(crossprod(resid_init))/TSS)
   adjR2 <- adjR2_init <- 1-(1-R2)*(n-1)/(n-nx)
-  MI_init <- getMoran(y=y,x=x,W=W)
+  MI_init <- getMoran(resid=resid_init,x=x,W=W)
   if(objfn=="MI") oldZMI <- abs(MI_init$zI)
 
   #####
@@ -307,7 +307,7 @@ lmFilter <- function(y,x=NULL,W,objfn="MI",MX=FALSE,sig=.05
   resid <- y - xev %*% coefs
   R2 <- 1-(sum(crossprod(resid))/TSS)
   adjR2 <- 1-(1-R2)*(n-1)/(n-ncol(xev))
-  MI_filtered <- getMoran(y=y,x=xev,W=W)
+  MI_filtered <- getMoran(resid=resid,x=xev,W=W)
 
   #####
   # Output

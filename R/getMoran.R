@@ -6,9 +6,8 @@
 #' autocorrelation present in regression residuals by means of the Moran
 #' coefficient.
 #'
-#' @param y vector of regressands
+#' @param resid vector of regressands
 #' @param x vector/ matrix of regressors (default=NULL)
-#' @param fitted.values a vector of fitted values from a regression model (default=NULL)
 #' @param W spatial connectivity matrix
 #' @param alternative specification of alternative hypothesis as 'greater' (default),
 #' 'lower', or 'two.sided'
@@ -24,12 +23,8 @@
 #' \code{pI}\tab\tab \emph{p}-value of the test statistic
 #' }
 #'
-#' @details The function directly uses fitted values whenever supplied
-#' to compute the residuals. If neither \code{x} nor \code{fitted.values}
-#' are supplied, the function assumes a linear intercept-only model and
-#' calculates model residuals accordingly.
-#'
-#' If \emph{\strong{W}} is not symmetric, \code{getMoran} automatically
+#' @details The function assumes an intercept-only model if \code{x} is not
+#' supplied. If \emph{\strong{W}} is not symmetric, \code{getMoran} automatically
 #' symmetrizes the matrix by: 0.5 * (\emph{\strong{W}} + \emph{\strong{W}}').
 #'
 #' @note Calculations are based on Cliff and Ord (1981) and Upton and Fingleton
@@ -63,20 +58,21 @@
 #'
 #' @export
 
-getMoran <- function(y,x=NULL,fitted.values=NULL,W,alternative="greater",boot=NULL){
+getMoran <- function(resid,x=NULL,W,alternative="greater",boot=NULL){
   if(!(alternative %in% c("greater","lower", "two.sided"))){
     stop("Invalid input: 'alternative' must be either 'greater', 'lower', or 'two.sided'")
   }
   if(!any(class(W) %in% c("matrix","Matrix","data.frame"))){
     stop("W must be of class 'matrix' or 'data.frame'")
   }
+  if(!(model %in% c("linear","probit","logit","poisson"))){
+    stop("'model' must be either 'linear', 'probit', 'logit', or 'poisson'")
+  }
   if(any(class(W)!="matrix")) W <- as.matrix(W)
   n <- nrow(W)
   if(is.null(x)) x <- rep(1,n)
   x <- as.matrix(x)
   if (!all(x[,1]==1)) x <- cbind(1,x) # add intercept term
-  if(is.null(fitted.values)) fitted.values <- x %*% solve(crossprod(x), crossprod(x, y))
-  resid <- y-fitted.values
   if(!isSymmetric(W)) W <- .5 * (W + t(W)) # symmetric connectivity matrix
   I <- n/crossprod(rep(1,n),W%*%rep(1,n)) * crossprod(resid,W%*%resid) / crossprod(resid)
   M <- diag(n)-x%*%qr.solve(crossprod(x),t(x))
