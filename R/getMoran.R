@@ -7,8 +7,8 @@
 #' coefficient.
 #'
 #' @param y vector of regressands
-#' @param x vector/ matrix of regressors (default = NULL)
-#' @param fitted.values a vector of fitted values from a regression model (default = NULL)
+#' @param x vector/ matrix of regressors (default=NULL)
+#' @param fitted.values a vector of fitted values from a regression model (default=NULL)
 #' @param W spatial connectivity matrix
 #' @param alternative specification of alternative hypothesis as 'greater' (default),
 #' 'lower', or 'two.sided'
@@ -30,7 +30,7 @@
 #' calculates model residuals accordingly.
 #'
 #' If \emph{\strong{W}} is not symmetric, \code{getMoran} automatically
-#' symmetrizes the matrix by: \eqn{0.5 * (W + t(W))}.
+#' symmetrizes the matrix by: 0.5 * (\emph{\strong{W}} + \emph{\strong{W}}').
 #'
 #' @note Calculations are based on Cliff and Ord (1981) and Upton and Fingleton
 #' (1985). See also Tiefelsdorf (2000) and Griffith et al. (2019).

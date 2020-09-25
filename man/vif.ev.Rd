@@ -7,7 +7,7 @@
 vif.ev(x = NULL, evecs)
 }
 \arguments{
-\item{x}{vector/ matrix of regressors (default = NULL)}
+\item{x}{vector/ matrix of regressors (default=NULL)}
 
 \item{evecs}{(selected) eigenvectors}
 }

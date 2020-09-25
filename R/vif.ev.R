@@ -3,7 +3,7 @@
 #' @description Calculate the variance inflation factor (VIF) for
 #' the eigenvectors in the spatial filter.
 #'
-#' @param x vector/ matrix of regressors (default = NULL)
+#' @param x vector/ matrix of regressors (default=NULL)
 #' @param evecs (selected) eigenvectors
 #'
 #' @return Returns a vector containing the VIF for each eigenvector.

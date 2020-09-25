@@ -16,9 +16,9 @@ getMoran(
 \arguments{
 \item{y}{vector of regressands}
 
-\item{x}{vector/ matrix of regressors (default = NULL)}
+\item{x}{vector/ matrix of regressors (default=NULL)}
 
-\item{fitted.values}{a vector of fitted values from a regression model (default = NULL)}
+\item{fitted.values}{a vector of fitted values from a regression model (default=NULL)}
 
 \item{W}{spatial connectivity matrix}
 
@@ -50,7 +50,7 @@ are supplied, the function assumes a linear intercept-only model and
 calculates model residuals accordingly.
 
 If \emph{\strong{W}} is not symmetric, \code{getMoran} automatically
-symmetrizes the matrix by: \eqn{0.5 * (W + t(W))}.
+symmetrizes the matrix by: 0.5 * (\emph{\strong{W}} + \emph{\strong{W}}').
 }
 \note{
 Calculations are based on Cliff and Ord (1981) and Upton and Fingleton

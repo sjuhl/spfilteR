@@ -10,7 +10,7 @@
 #' can be included as well.
 #'
 #' @param y vector of regressands
-#' @param x vector/ matrix of regressors (default = NULL)
+#' @param x vector/ matrix of regressors (default=NULL)
 #' @param W spatial connectivity matrix
 #' @param objfn specifies the objective function to be used for eigenvector
 #' selection. Possible criteria are: the maximization of the
@@ -64,7 +64,21 @@
 #' }
 #'
 #' @details If \emph{\strong{W}} is not symmetric, it gets symmetrized by
-#' \eqn{0.5 * (W + t(W))} the eigenfunction decomposition.
+#' 0.5 * (\emph{\strong{W}} + \emph{\strong{W}}') the eigenfunction decomposition.
+#'
+#' If \code{MX=TRUE}, the function uses the covariates specified in the argument
+#' \code{x} to construct the following projection matrix:
+#'
+#' \emph{\strong{M} = \strong{I} - \strong{X} (\strong{X}'\strong{X})^-1\strong{X}'}
+#'
+#' Eigenvectors from \emph{\strong{MWM}} using this specification of
+#' \emph{\strong{M}} are not only mutually uncorrelated but also orthogonal
+#' to the included regressors. Alternatively, if \code{MX=FALSE}, the projection
+#' matrix becomes \emph{\strong{M} = \strong{I} - \strong{1}
+#' (\strong{1}'\strong{1})^-1\strong{1}'}, where \emph{\strong{1}} is a vector of
+#' ones. Griffith and Tiefelsdorf (2007) show how the choice of the appropriate
+#' \emph{\strong{M}} depends on the underlying process that generates the spatial
+#' dependence.
 #'
 #' @examples
 #' data(fakedata)
