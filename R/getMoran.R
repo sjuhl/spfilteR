@@ -12,8 +12,8 @@
 #' @param W spatial connectivity matrix
 #' @param alternative specification of alternative hypothesis as 'greater' (default),
 #' 'lower', or 'two.sided'
-#' @param boot optional integer specifying the number of bootstrap iterations
-#' to compute the variance. If NULL (default), variance calculated under normality
+#' @param boot optional integer specifying the number of iterations to compute the
+#' variance. If NULL (default), variance calculated under normality
 #'
 #' @return A \code{data.frame} object with the following elements:
 #' \tabular{lcl}{
