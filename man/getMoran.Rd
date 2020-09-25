@@ -4,29 +4,20 @@
 \alias{getMoran}
 \title{Moran Test for Residual Spatial Autocorrelation}
 \usage{
-getMoran(
-  y,
-  x = NULL,
-  fitted.values = NULL,
-  W,
-  alternative = "greater",
-  boot = NULL
-)
+getMoran(resid, x = NULL, W, alternative = "greater", boot = NULL)
 }
 \arguments{
-\item{y}{vector of regressands}
-
-\item{x}{vector/ matrix of regressors (default=NULL)}
-
-\item{fitted.values}{a vector of fitted values from a regression model (default=NULL)}
+\item{resid}{vector of regressands}
 
 \item{W}{spatial connectivity matrix}
 
 \item{alternative}{specification of alternative hypothesis as 'greater' (default),
 'lower', or 'two.sided'}
 
-\item{boot}{optional integer specifying the number of bootstrap iterations
-to compute the variance. If NULL (default), variance calculated under normality}
+\item{boot}{optional integer specifying the number of iterations to compute the
+variance. If NULL (default), variance calculated under normality}
+
+\item{covars}{vector/ matrix of regressors (default=NULL)}
 }
 \value{
 A \code{data.frame} object with the following elements:
@@ -44,11 +35,7 @@ autocorrelation present in regression residuals by means of the Moran
 coefficient.
 }
 \details{
-The function directly uses fitted values whenever supplied
-to compute the residuals. If neither \code{x} nor \code{fitted.values}
-are supplied, the function assumes a linear intercept-only model and
-calculates model residuals accordingly.
-
+The function assumes an intercept-only model if \code{covars=NULL}.
 If \emph{\strong{W}} is not symmetric, \code{getMoran} automatically
 symmetrizes the matrix by: 0.5 * (\emph{\strong{W}} + \emph{\strong{W}}').
 }
@@ -60,8 +47,9 @@ Calculations are based on Cliff and Ord (1981) and Upton and Fingleton
 data(fakedata)
 y <- fakedataset$x1
 x <- fakedataset$x3
+resid <- y-x \%*\% solve(crossprod(x)) \%*\% crossprod(x,y)
 
-Moran <- getMoran(y=y,x=x,W=W,alternative='greater')
+Moran <- getMoran(resid=resid,covars=x,W=W,alternative='greater')
 Moran
 
 }

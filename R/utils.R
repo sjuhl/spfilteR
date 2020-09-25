@@ -68,3 +68,19 @@ residfun <- function(y,fitvals,model){
   out <- data.frame(raw,pearson,deviance)
   return(out)
 }
+
+
+# extract fitted values
+fittedval <- function(x,params,model){
+  mu <- x%*%params
+  if(model=="linear"){
+    yhat <- mu
+  } else if(model=="probit"){
+    yhat <- pnorm(mu)
+  } else if(model=="logit"){
+    yhat <- exp(mu)/(1+exp(mu))
+  } else if(model=="poisson"){
+    yhat <- exp(mu)
+  }
+  return(yhat)
+}

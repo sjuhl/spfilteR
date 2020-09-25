@@ -198,7 +198,8 @@ lmFilter <- function(y,x=NULL,W,objfn="MI",MX=FALSE,sig=.05
   # OLS Regression
   #####
   TSS <- sum((y - mean(y))^2)
-  resid_init <- y - x %*% solve(crossprod(x)) %*% crossprod(x,y)
+  fitvals <- x %*% solve(crossprod(x)) %*% crossprod(x,y)
+  resid_init <- residfun(y=y,fitvals=fitvals,model="linear")$raw
   R2 <- 1-(sum(crossprod(resid_init))/TSS)
   adjR2 <- adjR2_init <- 1-(1-R2)*(n-1)/(n-nx)
   MI_init <- getMoran(resid=resid_init,x=x,W=W)
@@ -304,7 +305,8 @@ lmFilter <- function(y,x=NULL,W,objfn="MI",MX=FALSE,sig=.05
   p.val <- 2*pt(abs(coefs/se),df=(n-ncol(xev)),lower.tail=F)
 
   # fit & spatial autocorrelation
-  resid <- y - xev %*% coefs
+  fitvals <- xev %*% coefs
+  resid <- residfun(y=y,fitvals=fitvals,model="linear")$raw
   R2 <- 1-(sum(crossprod(resid))/TSS)
   adjR2 <- 1-(1-R2)*(n-1)/(n-ncol(xev))
   MI_filtered <- getMoran(resid=resid,x=xev,W=W)

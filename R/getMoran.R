@@ -7,7 +7,7 @@
 #' coefficient.
 #'
 #' @param resid vector of regressands
-#' @param x vector/ matrix of regressors (default=NULL)
+#' @param covars vector/ matrix of regressors (default=NULL)
 #' @param W spatial connectivity matrix
 #' @param alternative specification of alternative hypothesis as 'greater' (default),
 #' 'lower', or 'two.sided'
@@ -23,8 +23,8 @@
 #' \code{pI}\tab\tab \emph{p}-value of the test statistic
 #' }
 #'
-#' @details The function assumes an intercept-only model if \code{x} is not
-#' supplied. If \emph{\strong{W}} is not symmetric, \code{getMoran} automatically
+#' @details The function assumes an intercept-only model if \code{covars=NULL}.
+#' If \emph{\strong{W}} is not symmetric, \code{getMoran} automatically
 #' symmetrizes the matrix by: 0.5 * (\emph{\strong{W}} + \emph{\strong{W}}').
 #'
 #' @note Calculations are based on Cliff and Ord (1981) and Upton and Fingleton
@@ -50,8 +50,9 @@
 #' data(fakedata)
 #' y <- fakedataset$x1
 #' x <- fakedataset$x3
+#' resid <- y - x %*% solve(crossprod(x)) %*% crossprod(x,y)
 #'
-#' Moran <- getMoran(y=y,x=x,W=W,alternative='greater')
+#' Moran <- getMoran(resid=resid,covars=x,W=W,alternative='greater')
 #' Moran
 #'
 #' @seealso \code{\link{lmFilter}}, \code{\link{MI.vec}}
