@@ -50,7 +50,7 @@ Chun et al. (2016) to determine the ideal size of the candidate set
 \item{tol}{if \code{objfn='MI'}, determines the amount of remaining residual
 autocorrelation at which the eigenvector selection terminates}
 
-\item{na.rm}{removes missing values in covariates (TRUE/ FALSE)}
+\item{na.rm}{remove missing values in covariates (TRUE/ FALSE)}
 }
 \value{
 An object of class \code{spfilter} containing the following
