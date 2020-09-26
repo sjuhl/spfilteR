@@ -1,16 +1,18 @@
+#' @name partialR2
+#'
 #' @title Coefficient of Partial Determination
 #'
 #' @description This function computes the partial R-squared of all
 #' selected eigenvectors in a (filtered) linear regression model.
 #'
 #' @param y vector of regressands
-#' @param x vector/ matrix of regressors
+#' @param x vector or matrix of regressors
 #' @param evecs (selected) eigenvectors
 #'
 #' @return Vector of partial R-squared values for each eigenvector.
 #'
-#' @note Note that this function assumes a linear regression model.
-#' Since the eigenvectors are mutually uncorrelated, \code{partialR2} evaluates
+#' @note The function assumes a linear regression model. Since the
+#' eigenvectors are mutually uncorrelated, \code{partialR2} evaluates
 #' them sequentially. In generalized linear models, the presence of a link
 #' function can corrupt the uncorrelatedness of the eigenvectors.
 #'
@@ -42,13 +44,15 @@ partialR2 <- function(y,x,evecs){
   if(qr(x)$rank!=ncol(x)) stop("Perfect multicollinearity in covariates detected")
 
   # R2 reduced model (without eigenvectors)
-  resid_wo <- y - x %*% solve(crossprod(x)) %*% crossprod(x,y)
+  fitvals <- x %*% solve(crossprod(x)) %*% crossprod(x,y)
+  resid_wo <- residfun(y=y,fitvals=fitvals,model="linear")$raw
   pR2 <- rep(NA,nev)
   names(pR2) <- names_evecs
   # loop over all eigenvectors
   for(i in 1:nev){
     xev <- cbind(x,evecs[,i])
-    resid_ev <- y - xev %*% solve(crossprod(xev)) %*% crossprod(xev,y)
+    fitvals_ev <- xev %*% solve(crossprod(xev)) %*% crossprod(xev,y)
+    resid_ev <- residfun(y=y,fitvals=fitvals_ev,model="linear")$raw
     pR2[i] <- (sum(crossprod(resid_wo)) - sum(crossprod(resid_ev)))/sum(crossprod(resid_wo))
   }
 

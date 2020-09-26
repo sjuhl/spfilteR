@@ -1,4 +1,5 @@
 #' @name lmFilter
+#'
 #' @title Eigenvector-Based Spatial Filtering in Linear Regression Models
 #'
 #' @description This function implements the eigenvector-based semiparametric
@@ -317,11 +318,13 @@ lmFilter <- function(y,x=NULL,W,objfn="MI",MX=FALSE,sig=.05
   # OLS estimates (filtered)
   est <- cbind(coefs[1:nx],se[1:nx],p.val[1:nx])
   colnames(est) <- c("Estimate", "SE", "p-value")
-  if(nx==1){
-    rownames(est) <- "(Intercept)"
-  } else rownames(est) <- c("(Intercept)",paste0("beta_",1:(nx-1)))
   varcovar <- vcov[1:nx,1:nx]
-  rownames(varcovar) <- colnames(varcovar) <- rownames(est)
+  if(nx==1){
+    rownames(est) <- names(varcovar) <- "(Intercept)"
+  } else {
+    rownames(est) <- c("(Intercept)",paste0("beta_",1:(nx-1)))
+    rownames(varcovar) <- colnames(varcovar) <- rownames(est)
+  }
 
   # selected eigenvectors & eigenvalues
   if(count!=0){
@@ -343,13 +346,13 @@ lmFilter <- function(y,x=NULL,W,objfn="MI",MX=FALSE,sig=.05
   } else selvecs <- EV <- sf <- sfMI <- NULL
 
   # Moran's I
-  if(dep=="positive"){
-    MI_init$pI <- pnorm(MI_init$zI,lower.tail=F)
-    MI_filtered$pI <- pnorm(MI_filtered$zI,lower.tail=F)
-  } else{
-    MI_init$pI <- pnorm(MI_init$zI,lower.tail=T)
-    MI_filtered$pI <- pnorm(MI_filtered$zI,lower.tail=T)
-  }
+  #if(dep=="positive"){
+  #  MI_init$pI <- pnorm(MI_init$zI,lower.tail=F)
+  #  MI_filtered$pI <- pnorm(MI_filtered$zI,lower.tail=F)
+  #} else{
+  #  MI_init$pI <- pnorm(MI_init$zI,lower.tail=T)
+  #  MI_filtered$pI <- pnorm(MI_filtered$zI,lower.tail=T)
+  #}
   moran <- rbind(MI_init[,colnames(MI_init)!=""],MI_filtered[,colnames(MI_filtered)!=""])
   rownames(moran) <- c("Initial", "Filtered")
   colnames(moran) <- c("Observed","Expected","Variance","z","p-value")

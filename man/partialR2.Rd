@@ -9,7 +9,7 @@ partialR2(y, x, evecs)
 \arguments{
 \item{y}{vector of regressands}
 
-\item{x}{vector/ matrix of regressors}
+\item{x}{vector or matrix of regressors}
 
 \item{evecs}{(selected) eigenvectors}
 }
@@ -21,8 +21,8 @@ This function computes the partial R-squared of all
 selected eigenvectors in a (filtered) linear regression model.
 }
 \note{
-Note that this function assumes a linear regression model.
-Since the eigenvectors are mutually uncorrelated, \code{partialR2} evaluates
+The function assumes a linear regression model. Since the
+eigenvectors are mutually uncorrelated, \code{partialR2} evaluates
 them sequentially. In generalized linear models, the presence of a link
 function can corrupt the uncorrelatedness of the eigenvectors.
 }

@@ -1,3 +1,5 @@
+#' @name MI.sf
+#'
 #' @title Moran Coefficient of the Spatial Filter
 #'
 #' @description Computes the Moran coefficient for the spatial filter.

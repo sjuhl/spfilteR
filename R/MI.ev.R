@@ -1,3 +1,5 @@
+#' @name MI.ev
+#'
 #' @title Moran Coefficients of Eigenvectors
 #'
 #' @description Calculates the Moran coefficient for each eigenvector

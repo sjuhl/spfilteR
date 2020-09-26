@@ -1,11 +1,4 @@
 
-# print function
-print.spfilter <- function(obj){
-  cat(paste(obj$other$nev,"out of",obj$other$ncandidates, "candidate eigenvectors selected"))
-}
-
-
-# summary function
 summary.spfilter <- function(obj,EV=F){
   #####
   # Print Output
@@ -68,6 +61,12 @@ summary.spfilter <- function(obj,EV=F){
   colnames(moran) <- c(colnames(obj$moran),"")
   cat(paste0("\n","Moran's I (Residuals):\n"))
   print(moran)
+}
+
+
+# print function
+print.spfilter <- function(obj){
+  cat(paste(obj$other$nev,"out of",obj$other$ncandidates, "candidate eigenvectors selected"))
 }
 
 

@@ -7,7 +7,7 @@
 MI.vec(x, W, alternative = "greater", symmetrize = T)
 }
 \arguments{
-\item{x}{a vector}
+\item{x}{a vector or matrix}
 
 \item{W}{spatial connectivity matrix}
 
@@ -19,7 +19,7 @@ by: 0.5 * (\emph{\strong{W}} + \emph{\strong{W}}') (TRUE/ FALSE).}
 }
 \value{
 Returns an object of class \code{data.frame} that contains the
-following information:
+following information for each variable in \code{x}:
 \tabular{lcl}{
 \code{I}\tab \tab observed value of the Moran coefficient\cr
 \code{EI}\tab\tab expected value of Moran's I\cr
@@ -30,7 +30,7 @@ following information:
 }
 \description{
 Tests for the presence of spatial autocorrelation
-in a vector as indicated by the Moran coefficient. The variance
+in a variable as indicated by the Moran coefficient. The variance
 is calculated under the normality assumtion.
 }
 \note{

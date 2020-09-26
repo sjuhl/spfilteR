@@ -1,3 +1,5 @@
+#' @name getEVs
+#'
 #' @title Eigenfunction Decomposition of a (Transformed) Spatial Connectivity
 #' Matrix
 #'
@@ -8,7 +10,7 @@
 #'
 #' @param W spatial connectivity matrix
 #' @param covars vector/ matrix of regressors included in the construction
-#' of the projection matrix \emph{\strong{M}} - see details below
+#' of the projection matrix \emph{\strong{M}} - see Details below
 #'
 #' @return A list containing the following objects:
 #' \describe{

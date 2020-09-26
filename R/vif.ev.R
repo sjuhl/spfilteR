@@ -1,3 +1,5 @@
+#' @name vif.ev
+#'
 #' @title Variance Inflation Factor for Eigenvectors
 #'
 #' @description Calculate the variance inflation factor (VIF) for

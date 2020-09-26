@@ -7,7 +7,7 @@
 #' coefficient.
 #'
 #' @param resid vector of regressands
-#' @param covars vector/ matrix of regressors (default=NULL)
+#' @param covars vector or matrix of regressors (default=NULL)
 #' @param W spatial connectivity matrix
 #' @param alternative specification of alternative hypothesis as 'greater' (default),
 #' 'lower', or 'two.sided'
@@ -65,9 +65,6 @@ getMoran <- function(resid,x=NULL,W,alternative="greater",boot=NULL){
   }
   if(!any(class(W) %in% c("matrix","Matrix","data.frame"))){
     stop("W must be of class 'matrix' or 'data.frame'")
-  }
-  if(!(model %in% c("linear","probit","logit","poisson"))){
-    stop("'model' must be either 'linear', 'probit', 'logit', or 'poisson'")
   }
   if(any(class(W)!="matrix")) W <- as.matrix(W)
   n <- nrow(W)

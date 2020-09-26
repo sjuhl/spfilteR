@@ -11,7 +11,7 @@ getEVs(W, covars = NULL)
 \item{W}{spatial connectivity matrix}
 
 \item{covars}{vector/ matrix of regressors included in the construction
-of the projection matrix \emph{\strong{M}} - see details below}
+of the projection matrix \emph{\strong{M}} - see Details below}
 }
 \value{
 A list containing the following objects:

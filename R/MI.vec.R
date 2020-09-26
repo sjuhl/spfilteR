@@ -1,10 +1,12 @@
+#' @name MI.vec
+#'
 #' @title Moran Test for Spatial Autocorrelation in a Vector
 #'
 #' @description Tests for the presence of spatial autocorrelation
-#' in a vector as indicated by the Moran coefficient. The variance
+#' in a variable as indicated by the Moran coefficient. The variance
 #' is calculated under the normality assumtion.
 #'
-#' @param x a vector
+#' @param x a vector or matrix
 #' @param W spatial connectivity matrix
 #' @param alternative specification of alternative hypothesis as 'greater' (default),
 #' 'lower', or 'two.sided'
@@ -12,7 +14,7 @@
 #' by: 0.5 * (\emph{\strong{W}} + \emph{\strong{W}}') (TRUE/ FALSE).
 #'
 #' @return Returns an object of class \code{data.frame} that contains the
-#' following information:
+#' following information for each variable in \code{x}:
 #' \tabular{lcl}{
 #' \code{I}\tab \tab observed value of the Moran coefficient\cr
 #' \code{EI}\tab\tab expected value of Moran's I\cr

@@ -17,7 +17,7 @@ getMoran(resid, x = NULL, W, alternative = "greater", boot = NULL)
 \item{boot}{optional integer specifying the number of iterations to compute the
 variance. If NULL (default), variance calculated under normality}
 
-\item{covars}{vector/ matrix of regressors (default=NULL)}
+\item{covars}{vector or matrix of regressors (default=NULL)}
 }
 \value{
 A \code{data.frame} object with the following elements:
@@ -47,7 +47,7 @@ Calculations are based on Cliff and Ord (1981) and Upton and Fingleton
 data(fakedata)
 y <- fakedataset$x1
 x <- fakedataset$x3
-resid <- y-x \%*\% solve(crossprod(x)) \%*\% crossprod(x,y)
+resid <- y - x \%*\% solve(crossprod(x)) \%*\% crossprod(x,y)
 
 Moran <- getMoran(resid=resid,covars=x,W=W,alternative='greater')
 Moran

@@ -1,5 +1,6 @@
+#' @name pfunc
+#' @noRd
 
-# calculate p-values
 pfunc <- function(z,alternative){
   if(alternative=="greater"){
     p <- pnorm(z, lower.tail=F)
@@ -10,7 +11,9 @@ pfunc <- function(z,alternative){
 }
 
 
-# calculate empirical p-values
+#' @name emp.pfunc
+#' @noRd
+
 emp.pfunc <- function(draws,z,alternative){
   z <- as.numeric(z)
   # see e.g., North/ Curtis/ Sham (2002) [Am J Hum Genet] for the '+1'
@@ -25,7 +28,9 @@ emp.pfunc <- function(draws,z,alternative){
 }
 
 
-# visual illustration of significance levels
+#' @name star
+#' @noRd
+
 star <- function(p){
   out <- NULL
   out[p<=.001] <- "***"
@@ -37,14 +42,19 @@ star <- function(p){
 }
 
 
-# determine ideal candidate set size (e.g., Chun et al. 2016)
+#' @name candsetsize
+#' @noRd
+
 candsetsize <- function(npos, zMI){
   denominator <- 1+exp(2.1480-(6.1808*(zMI+.6)^.1742)/npos^.1298 + 3.3534/(zMI+.6)^.1742)
   nc <- npos/denominator
   return(round(nc,0))
 }
 
-# calculate residuals
+
+#' @name residfun
+#' @noRd
+
 residfun <- function(y,fitvals,model){
   if(!(model %in% c("linear","probit","logit","poisson"))){
     stop("'model' must be either 'linear', 'probit', 'logit', or 'poisson'")
@@ -70,7 +80,9 @@ residfun <- function(y,fitvals,model){
 }
 
 
-# extract fitted values
+#' @name fittedval
+#' @noRd
+
 fittedval <- function(x,params,model){
   mu <- x%*%params
   if(model=="linear"){
