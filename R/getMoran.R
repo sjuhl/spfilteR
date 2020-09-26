@@ -77,6 +77,7 @@ getMoran <- function(resid,x=NULL,W,alternative="greater",boot=NULL){
   df <- n - qr(x)$rank
   EI <- n/crossprod(rep(1,n),W%*%rep(1,n)) * sum(diag((M%*%W)))/df
   if(!is.null(boot)){
+    boot <- round(boot)
     if(boot<100){
       warning(paste0("Number of bootstrap iterations (",boot,") too small. Set to 100"))
       boot <- 100
