@@ -1,28 +1,25 @@
 #' @name pfunc
 #' @noRd
 
-pfunc <- function(z,alternative){
-  if(alternative=="greater"){
-    p <- pnorm(z, lower.tail=F)
-  } else if(alternative=="lower"){
-    p <- pnorm(z, lower.tail=T)
-  } else p <- 2*pnorm(abs(z), lower.tail=F)
-  return(p)
-}
-
-
-#' @name emp.pfunc
-#' @noRd
-
-emp.pfunc <- function(draws,z,alternative){
+pfunc <- function(z,alternative,draws=NULL){
   z <- as.numeric(z)
-  # see e.g., North/ Curtis/ Sham (2002) [Am J Hum Genet] for the '+1'
-  if(alternative=="greater"){
-    p <- (sum(draws>=z)+1)/(length(draws)+1)
-  } else if(alternative=="lower"){
-    p <- (sum(draws<=z)+1)/(length(draws)+1)
+  # analytical variance estimate
+  if(is.null(draws)){
+    if(alternative=="greater"){
+      p <- pnorm(z, lower.tail=F)
+    } else if(alternative=="lower"){
+      p <- pnorm(z, lower.tail=T)
+    } else p <- 2*pnorm(abs(z), lower.tail=F)
   } else {
-    p <- (sum(abs(draws)>=abs(z))+1)/(length(draws)+1) # see e.g., Hartwig (2013) [J Clin Trials]
+    # simulation-based variance estimate
+    # see e.g., North/ Curtis/ Sham (2002) [Am J Hum Genet] for the '+1'
+    if(alternative=="greater"){
+      p <- (sum(draws>=z)+1)/(length(draws)+1)
+    } else if(alternative=="lower"){
+      p <- (sum(draws<=z)+1)/(length(draws)+1)
+    } else {
+      p <- (sum(abs(draws)>=abs(z))+1)/(length(draws)+1) # see e.g., Hartwig (2013) [J Clin Trials]
+    }
   }
   return(p)
 }

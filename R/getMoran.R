@@ -89,7 +89,7 @@ getMoran <- function(resid,x=NULL,W,alternative="greater",boot=NULL){
     }
     VarI <- var(boot.I)
     zI <- (I-EI)/sqrt(VarI)
-    pI <- emp.pfunc(draws=boot.I,z=I,alternative=alternative)
+    pI <- pfunc(z=I,alternative=alternative,draws=boot.I)
   } else {
     ratio1 <- sum(diag(M%*%W%*%M%*%W))/(df*(df+2))
     ratio2 <- sum(diag(M%*%W))^2/df^2
