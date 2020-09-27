@@ -84,15 +84,16 @@
 #' @examples
 #' data(fakedata)
 #' y <- fakedataset$x1
-#' X <- cbind(fakedataset$count,fakedataset$x2,fakedataset$x5)
+#' X <- cbind(fakedataset$x2,fakedataset$x4)
 #'
-#' res <- lmFilter(y=y,x=X,W=W,objfn='R2')
+#' res <- lmFilter(y=y,x=X,W=W,objfn='MI')
 #' print(res)
-#' summary(res,EV=F)
+#' summary(res,EV=T)
 #' plot(res)
 #'
 #' E <- res$selvecs
-#' (lm(y~X+E))
+#' (ols <- coef(lm(y~X+E)))
+#' coef(res)
 #'
 #' @references Tiefelsdorf, Michael and Daniel A. Griffith (2007):
 #' Semiparametric filtering of spatial autocorrelation: the eigenvector
@@ -121,6 +122,7 @@ lmFilter <- function(y,x=NULL,W,objfn="MI",MX=FALSE,sig=.05
                      ,alpha=.25,tol=.1,na.rm=TRUE){
 
   if(!is.null(x)) x <- as.matrix(x)
+  if(!is.null(colnames(x))) nams <- colnames(x)
 
   # missing values
   if(na.rm){
@@ -199,7 +201,8 @@ lmFilter <- function(y,x=NULL,W,objfn="MI",MX=FALSE,sig=.05
   # OLS Regression
   #####
   TSS <- sum((y - mean(y))^2)
-  fitvals <- x %*% solve(crossprod(x)) %*% crossprod(x,y)
+  coefs_init <- solve(crossprod(x)) %*% crossprod(x,y)
+  fitvals <- fittedval(x=x,params=coefs_init,model="linear")
   resid_init <- residfun(y=y,fitvals=fitvals,model="linear")$raw
   R2 <- 1-(sum(crossprod(resid_init))/TSS)
   adjR2 <- adjR2_init <- 1-(1-R2)*(n-1)/(n-nx)
@@ -306,7 +309,7 @@ lmFilter <- function(y,x=NULL,W,objfn="MI",MX=FALSE,sig=.05
   p.val <- 2*pt(abs(coefs/se),df=(n-ncol(xev)),lower.tail=F)
 
   # fit & spatial autocorrelation
-  fitvals <- xev %*% coefs
+  fitvals <- fittedval(x=xev,params=coefs,model="linear")
   resid <- residfun(y=y,fitvals=fitvals,model="linear")$raw
   R2 <- 1-(sum(crossprod(resid))/TSS)
   adjR2 <- 1-(1-R2)*(n-1)/(n-ncol(xev))
@@ -322,8 +325,12 @@ lmFilter <- function(y,x=NULL,W,objfn="MI",MX=FALSE,sig=.05
   if(nx==1){
     rownames(est) <- names(varcovar) <- "(Intercept)"
   } else {
-    rownames(est) <- c("(Intercept)",paste0("beta_",1:(nx-1)))
-    rownames(varcovar) <- colnames(varcovar) <- rownames(est)
+    if(!is.null(colnames(x))){
+      rownames(est) <- rownames(varcovar) <- colnames(varcovar) <- c("(Intercept)",nams)
+    } else {
+      rownames(est) <- c("(Intercept)",paste0("beta_",1:(nx-1)))
+      rownames(varcovar) <- colnames(varcovar) <- rownames(est)
+    }
   }
 
   # selected eigenvectors & eigenvalues
@@ -346,13 +353,6 @@ lmFilter <- function(y,x=NULL,W,objfn="MI",MX=FALSE,sig=.05
   } else selvecs <- EV <- sf <- sfMI <- NULL
 
   # Moran's I
-  #if(dep=="positive"){
-  #  MI_init$pI <- pnorm(MI_init$zI,lower.tail=F)
-  #  MI_filtered$pI <- pnorm(MI_filtered$zI,lower.tail=F)
-  #} else{
-  #  MI_init$pI <- pnorm(MI_init$zI,lower.tail=T)
-  #  MI_filtered$pI <- pnorm(MI_filtered$zI,lower.tail=T)
-  #}
   moran <- rbind(MI_init[,colnames(MI_init)!=""],MI_filtered[,colnames(MI_filtered)!=""])
   rownames(moran) <- c("Initial", "Filtered")
   colnames(moran) <- c("Observed","Expected","Variance","z","p-value")
