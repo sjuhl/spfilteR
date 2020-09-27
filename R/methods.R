@@ -1,3 +1,4 @@
+#' @rdname lmFilter
 
 summary.spfilter <- function(obj,EV=F){
   #####
@@ -48,11 +49,15 @@ summary.spfilter <- function(obj,EV=F){
 
   # optional: information on eigenvectors
   if(EV){
-    sigev <- star(p=obj$EV[,"p-value"])
-    EV <- data.frame(obj$EV,sigev)
-    colnames(EV) <- c(colnames(obj$EV),"")
-    cat("\nSummary of selected eigenvectors:\n")
-    print(EV)
+    if(obj$other$nev==0){
+      cat("\nNo eigenvectors selected\n")
+    } else {
+      sigev <- star(p=obj$EV[,"p-value"])
+      EV <- data.frame(obj$EV,sigev)
+      colnames(EV) <- c(colnames(obj$EV),"")
+      cat("\nSummary of selected eigenvectors:\n")
+      print(EV)
+    }
   }
 
   # Moran's I
@@ -87,7 +92,8 @@ fitted.spfilter <- function(obj){
   obj$selvecs
 }
 
-# plot function
+#' @rdname lmFilter
+
 plot.spfilter <- function(obj){
   plot(0,ylim=c(min(obj$evMI),max(obj$evMI)),xlim=c(1,length(obj$evMI))
        ,main="Moran Coefficients for\n all Eigenvectors"
