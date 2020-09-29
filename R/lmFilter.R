@@ -168,8 +168,9 @@ lmFilter <- function(y,x=NULL,W,objfn="MI",MX=FALSE,sig=.05
   objfunc <- function(y,xe,n,W,objfn){
     resid <- y-xe%*%solve(crossprod(xe)) %*% crossprod(xe,y)
     if(objfn=="R2"){
+      TSS <- sum((y - mean(y))^2)
       R2 <- 1-(sum(resid^2)/TSS)
-      test <- -( 1-(1-R2)*(n-1)/(n-(ncol(xe))) ) # (negative) adjusted R-squared
+      test <- -( 1-(1-R2)*(n-1)/(n-(ncol(xe))) ) # negative adjusted R-squared
     }
     if(objfn=="p"){
       est <- (solve(crossprod(xe)) %*% crossprod(xe,y))[ncol(xe),]
@@ -205,9 +206,10 @@ lmFilter <- function(y,x=NULL,W,objfn="MI",MX=FALSE,sig=.05
   fitvals <- fittedval(x=x,params=coefs_init,model="linear")
   resid_init <- residfun(y=y,fitvals=fitvals,model="linear")$raw
   R2 <- 1-(sum(crossprod(resid_init))/TSS)
-  adjR2 <- adjR2_init <- 1-(1-R2)*(n-1)/(n-nx)
+  adjR2_init <- 1-(1-R2)*(n-1)/(n-nx)
   MI_init <- getMoran(resid=resid_init,x=x,W=W)
   if(objfn=="MI") oldZMI <- abs(MI_init$zI)
+  if(objfn=="R2") adjR2 <- -adjR2_init
 
   #####
   # Eigenvector Selection:
