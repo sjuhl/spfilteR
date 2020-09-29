@@ -148,7 +148,7 @@ lmFilter <- function(y,x=NULL,W,objfn="MI",MX=FALSE,sig=.05
   if(anyNA(y) | anyNA(x) | anyNA(W)) stop("Missing values detected")
   if(alpha==0) alpha <- 1e-07
   if(alpha<1e-07 | alpha>1){
-    stop("Invalid argument: 'alpha' must satisfy the restriction: 0 < alpha <= 1.")
+    stop("Invalid argument: 'alpha' must be in the interval (0,1]")
   }
   if(qr(x)$rank!=ncol(x)) stop("Perfect multicollinearity in covariates detected")
   if(!any(class(W) %in% c("matrix","Matrix","data.frame"))){
