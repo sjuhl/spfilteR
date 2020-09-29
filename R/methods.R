@@ -16,7 +16,9 @@ summary.spfilter <- function(obj,EV=F){
   signif <- star(p=obj$estimates[,"p-value"])
   estimates <- data.frame(obj$estimates,signif)
   colnames(estimates) <- c(colnames(obj$estimates),"")
-  cat("Coefficients",paste0(ifelse(obj$other$model=="linear","(OLS)","(ML)"),":\n"))
+  cat("Coefficients",paste0(ifelse(obj$other$model=="linear"
+                                   & "condnum" %in% names(filter$other)
+                                   ,"(OLS)","(ML)"),":\n"))
   print(estimates)
   if(obj$other$model=="linear"){
     cat("\nAdjusted R-squared:\n")
@@ -32,8 +34,8 @@ summary.spfilter <- function(obj,EV=F){
     cat(paste0("\ -\ projection matrix with covariates\n"))
   } else cat(paste0("\ -\ projection matrix without covariates\n"))
   cat(paste(obj$other$nev,"out of",obj$other$ncandidates, "candidate eigenvectors selected\n"))
-  if(obj$other$model!="linear"){
-    cat(paste0("Condition Number (Multicollinearity):",obj$other$condnum,"\n"))
+  if(obj$other$model!="linear" & obj$other$nev>0){
+    cat(paste0("Condition Number (Multicollinearity): ",obj$other$condnum,"\n"))
   }
   cat(paste0("Objective Function: \"" ,obj$other$objfn,"\""))
   if(obj$other$objfn=="p"){
@@ -64,7 +66,12 @@ summary.spfilter <- function(obj,EV=F){
   m_signif <- star(p=obj$moran[,"p-value"])
   moran <- data.frame(obj$moran,m_signif)
   colnames(moran) <- c(colnames(obj$moran),"")
-  cat(paste0("\n","Moran's I (Residuals):\n"))
+  cat(paste0("\n","Moran's I (",ifelse(obj$other$model!="linear"
+                                ,paste0(toupper(substr(obj$other$residtype,1,1))
+                                        ,substr(obj$other$residtype,2,
+                                                nchar(obj$other$residtype))
+                                        ,""),"")
+             ," Residuals):\n"))
   print(moran)
 }
 
