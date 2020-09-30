@@ -53,6 +53,10 @@ levels of spatial autocorrelation (TRUE/ FALSE)}
 Chun et al. (2016) to determine the ideal size of the candidate set
 (TRUE/ FALSE)}
 
+\item{alpha}{a value in (0,1] indicating the range of candidate eigenvectors
+according to their associated level of spatial autocorrelation, see e.g.,
+Griffith (2003)}
+
 \item{tol}{if \code{objfn='MI'}, determines the amount of remaining residual
 autocorrelation at which the eigenvector selection terminates}
 
@@ -139,6 +143,10 @@ Semiparametric filtering of spatial autocorrelation: the eigenvector
 approach. Environment and Planning A: Economy and Space, 39 (5):
 pp. 1193 - 1221.
 
+Griffith, Daniel A. (2003): Spatial Autocorrelation and Spatial Filtering:
+Gaining Understanding Through Theory and Scientific Visualization.
+Berlin/ Heidelberg, Springer.
+
 Chun, Yongwan, Daniel A. Griffith, Monghyeon Lee, Parmanand
 Sinha (2016): Eigenvector selection with stepwise regression techniques
 to construct eigenvector spatial filters. Journal of Geographical
@@ -153,5 +161,5 @@ of Moran's I. Environment and Planning A: Economy and Space, 27 (6):
 pp. 985 - 999.
 }
 \seealso{
-\code{\link{getEVs}}, \code{\link{getMoran}}
+\code{\link{glmFilter}}, \code{\link{getEVs}}, \code{\link{getMoran}}
 }
