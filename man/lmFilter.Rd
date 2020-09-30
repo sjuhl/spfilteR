@@ -61,6 +61,10 @@ Griffith (2003)}
 autocorrelation at which the eigenvector selection terminates}
 
 \item{na.rm}{remove missing values in covariates (TRUE/ FALSE)}
+
+\item{obj}{an object of class \code{spfilter}}
+
+\item{EV}{display summary statistics for selected eigenvectors (TRUE/ FALSE)}
 }
 \value{
 An object of class \code{spfilter} containing the following
