@@ -25,4 +25,5 @@
 #' dim(W)
 
 'fakedataset'
+'W'
 
