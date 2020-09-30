@@ -9,11 +9,11 @@ MI.ev(W, evals)
 \arguments{
 \item{W}{spatial connectivity matrix}
 
-\item{evals}{eigenvalues of selected eigenvectors}
+\item{evals}{vector of eigenvalues}
 }
 \value{
 Returns a vector containing the Moran coefficients of each
-selected eigenvector.
+eigenvector.
 }
 \description{
 Calculates the Moran coefficient for each eigenvector
@@ -29,7 +29,8 @@ of Moran's I. Environment and Planning A: Economy and Space, 27 (6):
 pp. 985 - 999.
 }
 \seealso{
-\code{\link{lmFilter}}, \code{\link{getEVs}}, \code{\link{MI.sf}}
+\code{\link{lmFilter}}, \code{\link{glmFilter}}, \code{\link{getEVs}},
+\code{\link{MI.sf}}
 }
 \author{
 Sebastian Juhl

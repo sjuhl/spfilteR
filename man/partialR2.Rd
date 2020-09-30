@@ -9,7 +9,7 @@ partialR2(y, x, evecs)
 \arguments{
 \item{y}{vector of regressands}
 
-\item{x}{vector or matrix of regressors}
+\item{x}{vector/ matrix of regressors}
 
 \item{evecs}{(selected) eigenvectors}
 }

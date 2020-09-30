@@ -4,7 +4,7 @@
 \alias{MI.vec}
 \title{Moran Test for Spatial Autocorrelation in a Vector}
 \usage{
-MI.vec(x, W, alternative = "greater", symmetrize = T)
+MI.vec(x, W, alternative = "greater", symmetrize = TRUE)
 }
 \arguments{
 \item{x}{a vector or matrix}

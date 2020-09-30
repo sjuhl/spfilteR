@@ -1,6 +1,6 @@
 #' @rdname lmFilter
 
-summary.spfilter <- function(obj,EV=F){
+summary.spfilter <- function(obj,EV=FALSE){
   #####
   # Print Output
   #####

@@ -6,7 +6,7 @@
 #' selected eigenvectors in a (filtered) linear regression model.
 #'
 #' @param y vector of regressands
-#' @param x vector or matrix of regressors
+#' @param x vector/ matrix of regressors
 #' @param evecs (selected) eigenvectors
 #'
 #' @return Vector of partial R-squared values for each eigenvector.

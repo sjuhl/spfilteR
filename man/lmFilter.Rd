@@ -21,7 +21,7 @@ lmFilter(
   na.rm = TRUE
 )
 
-\method{summary}{spfilter}(obj, EV = F)
+\method{summary}{spfilter}(obj, EV = FALSE)
 
 \method{plot}{spfilter}(obj)
 }
@@ -125,11 +125,11 @@ dependence.
 \examples{
 data(fakedata)
 y <- fakedataset$x1
-X <- cbind(fakedataset$x2,fakedataset$x4)
+X <- cbind(fakedataset$x2,fakedataset$x3,fakedataset$x4)
 
-res <- lmFilter(y=y,x=X,W=W,objfn='MI')
+res <- lmFilter(y=y,x=X,W=W,objfn='MI',positive=FALSE)
 print(res)
-summary(res,EV=T)
+summary(res,EV=TRUE)
 plot(res)
 
 E <- res$selvecs

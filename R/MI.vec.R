@@ -45,7 +45,7 @@
 #'
 #' @export
 
-MI.vec <- function(x,W,alternative="greater",symmetrize=T){
+MI.vec <- function(x,W,alternative="greater",symmetrize=TRUE){
   # convert x to a matrix and save names (if provided)
   x <- as.matrix(x)
   if(!is.null(colnames(x))) nams <- colnames(x)

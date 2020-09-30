@@ -15,7 +15,8 @@
 #' variables in instrumental variable estimation of spatial series models.
 #' Environment and Planning A: Economy and Space, 45 (9): pp. 2227 - 2242.
 #'
-#' @seealso \code{\link{lmFilter}}, \code{\link{getEVs}}, \code{\link{MI.ev}}
+#' @seealso \code{\link{lmFilter}}, \code{\link{glmFilter}}, \code{\link{getEVs}},
+#' \code{\link{MI.ev}}
 #'
 #' @export
 

@@ -49,10 +49,10 @@ y <- fakedataset$x1
 x <- fakedataset$x2
 
 ols <- solve(crossprod(x)) \%*\% crossprod(x,y)
-fit <- fittedval(x=x,params=ols,model='linear')
-resid <- residfun(y=y,fitvals=fit,model='linear')[,'raw']
+fit <- fittedval(x=x,params=ols,model="linear")
+resid <- residfun(y=y,fitvals=fit,model="linear")[,"raw"]
 
-Moran <- getMoran(resid=resid,x=x,W=W,alternative='greater')
+Moran <- getMoran(resid=resid,x=x,W=W,alternative="greater")
 Moran
 
 }

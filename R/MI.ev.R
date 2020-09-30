@@ -6,10 +6,10 @@
 #' included in the spatial filter.
 #'
 #' @param W spatial connectivity matrix
-#' @param evals eigenvalues of selected eigenvectors
+#' @param evals vector of eigenvalues
 #'
 #' @return Returns a vector containing the Moran coefficients of each
-#' selected eigenvector.
+#' eigenvector.
 #'
 #' @author Sebastian Juhl
 #'
@@ -21,7 +21,8 @@
 #' of Moran's I. Environment and Planning A: Economy and Space, 27 (6):
 #' pp. 985 - 999.
 #'
-#' @seealso \code{\link{lmFilter}}, \code{\link{getEVs}}, \code{\link{MI.sf}}
+#' @seealso \code{\link{lmFilter}}, \code{\link{glmFilter}}, \code{\link{getEVs}},
+#' \code{\link{MI.sf}}
 #'
 #' @export
 
