@@ -147,19 +147,17 @@ supervised eigenvector search using the \code{glm} function.
 }
 \examples{
 data(fakedata)
-X <- cbind(fakedataset$x1,fakedataset$x2
-,fakedataset$x3,fakedataset$x4)
 
 # poisson model
 y_pois <- fakedataset$count
-poisson <- glmFilter(y=y_pois,x=X,W=W,objfn="MI",positive=F
+poisson <- glmFilter(y=y_pois,x=NULL,W=W,objfn="MI",positive=FALSE
 ,model="poisson",boot.MI=100)
 print(poisson)
 summary(poisson,EV=FALSE)
 
 # probit model
 y_prob <- fakedataset$indicator
-probit <- glmFilter(y=y_prob,x=X,W=W,objfn="MI",positive=F
+probit <- glmFilter(y=y_prob,x=NULL,W=W,objfn="MI",positive=F
 ,model="probit",boot.MI=100)
 print(probit)
 summary(probit,EV=FALSE)
