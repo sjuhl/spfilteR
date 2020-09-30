@@ -1,6 +1,7 @@
 #' @name glmFilter
 #'
-#' @title Eigenvector-Based Spatial Filtering in Generalized Linear Regression Models
+#' @title Unsupervised Spatial Filtering with Eigenvectors in Generalized
+#' Linear Regression Models
 #'
 #' @description This function implements the eigenvector-based semiparametric
 #' spatial filtering approach in a generalized linear regression framework using MLE.

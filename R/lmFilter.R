@@ -1,6 +1,6 @@
 #' @name lmFilter
 #'
-#' @title Eigenvector-Based Spatial Filtering in Linear Regression Models
+#' @title Unsupervised Spatial Filtering with Eigenvectors in Linear Regression Models
 #'
 #' @description This function implements the eigenvector-based semiparametric
 #' spatial filtering approach in a linear regression framework using OLS.
