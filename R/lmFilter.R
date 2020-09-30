@@ -255,12 +255,12 @@ lmFilter <- function(y,x=NULL,W,objfn="MI",MX=FALSE,sig=.05
     sel_id <- NULL # list of selected eigenvectors
     selset <- which(sel)
 
-    # start outer loop
+    # start forward search
     for(i in which(sel)){
       oldtest <- Inf
       sid <- NULL
 
-      # start inner loop
+      # select candidate eigenvector
       for(j in selset){
         xe <- cbind(x,evecs[,sel_id],evecs[,j])
         test <- objfunc(y=y,xe=xe,n=n,W=W,objfn=objfn)
@@ -268,7 +268,7 @@ lmFilter <- function(y,x=NULL,W,objfn="MI",MX=FALSE,sig=.05
           sid <- j
           oldtest <- test
         }
-      } # end inner loop
+      }
 
       # stopping rules
       if(objfn=="R2"){
@@ -293,9 +293,10 @@ lmFilter <- function(y,x=NULL,W,objfn="MI",MX=FALSE,sig=.05
       # remove selected eigenvectors from search set
       selset <- selset[!(selset %in% sel_id)]
 
-    } # end outer loop
+    } # end search
   }
 
+  # covariates & eigenvectors
   xev <- cbind(x,evecs[,sel_id])
 
   # number of selected EVs
