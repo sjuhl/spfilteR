@@ -106,19 +106,17 @@
 #'
 #' @examples
 #' data(fakedata)
-#' X <- cbind(fakedataset$x1,fakedataset$x2
-#' ,fakedataset$x3,fakedataset$x4)
 #'
 #' # poisson model
 #' y_pois <- fakedataset$count
-#' poisson <- glmFilter(y=y_pois,x=X,W=W,objfn="MI",positive=F
+#' poisson <- glmFilter(y=y_pois,x=NULL,W=W,objfn="MI",positive=FALSE
 #' ,model="poisson",boot.MI=100)
 #' print(poisson)
 #' summary(poisson,EV=FALSE)
 #'
 #' # probit model
 #' y_prob <- fakedataset$indicator
-#' probit <- glmFilter(y=y_prob,x=X,W=W,objfn="MI",positive=F
+#' probit <- glmFilter(y=y_prob,x=NULL,W=W,objfn="MI",positive=F
 #' ,model="probit",boot.MI=100)
 #' print(probit)
 #' summary(probit,EV=FALSE)
@@ -265,7 +263,10 @@ glmFilter <- function(y,x=NULL,W,objfn="MI",MX=F,model,optim.method="BFGS"
   resid_init <- residfun(y=y,fitvals=yhat_init,model=model)[,resid.type]
   MI_init <- getMoran(resid=resid_init,x=x,W=W,boot=boot.MI)
   if(objfn=="MI") oldZMI <- abs(MI_init$zI)
-  if(objfn %in% c("AIC","BIC")) IC <- ICs_init[,objfn]; mindiff <- abs(IC*min.reduction)
+  if(objfn %in% c("AIC","BIC")){
+    IC <- ICs_init[,objfn]
+    mindiff <- abs(IC*min.reduction)
+  } else IC <- mindiff <- NULL
 
   #####
   # Eigenvector Selection:
