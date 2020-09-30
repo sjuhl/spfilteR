@@ -6,13 +6,13 @@
 #' autocorrelation present in regression residuals by means of the Moran
 #' coefficient.
 #'
-#' @param resid vector of regressands
-#' @param covars vector or matrix of regressors (default=NULL)
+#' @param resid residual vector
+#' @param x vector/ matrix of regressors (default=NULL)
 #' @param W spatial connectivity matrix
 #' @param alternative specification of alternative hypothesis as 'greater' (default),
 #' 'lower', or 'two.sided'
 #' @param boot optional integer specifying the number of iterations to compute the
-#' variance. If NULL (default), variance calculated under normality
+#' variance. If NULL (default), variance calculated under assumed normality
 #'
 #' @return A \code{data.frame} object with the following elements:
 #' \tabular{lcl}{
@@ -23,7 +23,7 @@
 #' \code{pI}\tab\tab \emph{p}-value of the test statistic
 #' }
 #'
-#' @details The function assumes an intercept-only model if \code{covars=NULL}.
+#' @details The function assumes an intercept-only model if \code{x=NULL}.
 #' If \emph{\strong{W}} is not symmetric, \code{getMoran} automatically
 #' symmetrizes the matrix by: 0.5 * (\emph{\strong{W}} + \emph{\strong{W}}').
 #'
@@ -49,10 +49,13 @@
 #' @examples
 #' data(fakedata)
 #' y <- fakedataset$x1
-#' x <- fakedataset$x3
-#' resid <- y - x %*% solve(crossprod(x)) %*% crossprod(x,y)
+#' x <- fakedataset$x2
 #'
-#' Moran <- getMoran(resid=resid,covars=x,W=W,alternative='greater')
+#' ols <- solve(crossprod(x)) %*% crossprod(x,y)
+#' fit <- fittedval(x=x,params=ols,model="linear")
+#' resid <- residfun(y=y,fitvals=fit,model="linear")[,"raw"]
+#'
+#' Moran <- getMoran(resid=resid,x=x,W=W,alternative="greater")
 #' Moran
 #'
 #' @seealso \code{\link{lmFilter}}, \code{\link{MI.vec}}

@@ -7,7 +7,9 @@
 getMoran(resid, x = NULL, W, alternative = "greater", boot = NULL)
 }
 \arguments{
-\item{resid}{vector of regressands}
+\item{resid}{residual vector}
+
+\item{x}{vector/ matrix of regressors (default=NULL)}
 
 \item{W}{spatial connectivity matrix}
 
@@ -15,9 +17,7 @@ getMoran(resid, x = NULL, W, alternative = "greater", boot = NULL)
 'lower', or 'two.sided'}
 
 \item{boot}{optional integer specifying the number of iterations to compute the
-variance. If NULL (default), variance calculated under normality}
-
-\item{covars}{vector or matrix of regressors (default=NULL)}
+variance. If NULL (default), variance calculated under assumed normality}
 }
 \value{
 A \code{data.frame} object with the following elements:
@@ -35,7 +35,7 @@ autocorrelation present in regression residuals by means of the Moran
 coefficient.
 }
 \details{
-The function assumes an intercept-only model if \code{covars=NULL}.
+The function assumes an intercept-only model if \code{x=NULL}.
 If \emph{\strong{W}} is not symmetric, \code{getMoran} automatically
 symmetrizes the matrix by: 0.5 * (\emph{\strong{W}} + \emph{\strong{W}}').
 }
@@ -46,10 +46,13 @@ Calculations are based on Cliff and Ord (1981) and Upton and Fingleton
 \examples{
 data(fakedata)
 y <- fakedataset$x1
-x <- fakedataset$x3
-resid <- y - x \%*\% solve(crossprod(x)) \%*\% crossprod(x,y)
+x <- fakedataset$x2
 
-Moran <- getMoran(resid=resid,covars=x,W=W,alternative='greater')
+ols <- solve(crossprod(x)) \%*\% crossprod(x,y)
+fit <- fittedval(x=x,params=ols,model='linear')
+resid <- residfun(y=y,fitvals=fit,model='linear')[,'raw']
+
+Moran <- getMoran(resid=resid,x=x,W=W,alternative='greater')
 Moran
 
 }
