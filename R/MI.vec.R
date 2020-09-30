@@ -35,7 +35,7 @@
 #' Models & Applications. Pion, London.
 #'
 #' Upton, Graham J. G. and Bernard Fingleton (1985): Spatial Data Analysis
-#' by Example, Volume 1.New York, Wiley.
+#' by Example, Volume 1. New York, Wiley.
 #'
 #' Bivand, Roger S. and David W. S. Wong (2018): Comparing Implementations
 #' of Global and Local Indicators of Spatial Association. TEST 27:
