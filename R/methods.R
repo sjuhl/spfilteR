@@ -67,9 +67,9 @@ summary.spfilter <- function(obj,EV=F){
   moran <- data.frame(obj$moran,m_signif)
   colnames(moran) <- c(colnames(obj$moran),"")
   cat(paste0("\n","Moran's I (",ifelse(obj$other$model!="linear"
-                                ,paste0(toupper(substr(obj$other$residtype,1,1))
-                                        ,substr(obj$other$residtype,2,
-                                                nchar(obj$other$residtype))
+                                ,paste0(toupper(substr(obj$other$resid.type,1,1))
+                                        ,substr(obj$other$resid.type,2,
+                                                nchar(obj$other$resid.type))
                                         ,""),"")
              ," Residuals):\n"))
   print(moran)
