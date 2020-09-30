@@ -85,17 +85,10 @@ print.spfilter <- function(obj){
 coef.spfilter <- function(obj){
   obj$estimates[,"Estimate"]
 }
-#coef(model)
 
 # vcov function
 vcov.spfilter <- function(obj){
   obj$varcovar
-}
-#vcov(model)
-
-# fitted function
-fitted.spfilter <- function(obj){
-  obj$selvecs
 }
 
 #' @rdname lmFilter
