@@ -281,7 +281,7 @@ glmFilter <- function(y,x=NULL,W,objfn="MI",MX=F,model,optim.method="BFGS"
   if(objfn=="all"){
     sel_id <- which(sel)
   } else {
-    sel_id <- NULL # list of (temporarily) selected eigenvectors
+    sel_id <- NULL # list of selected eigenvectors
     selset <- which(sel)
 
     # start forward selection
