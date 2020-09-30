@@ -4,7 +4,7 @@
 \alias{lmFilter}
 \alias{summary.spfilter}
 \alias{plot.spfilter}
-\title{Eigenvector-Based Spatial Filtering in Linear Regression Models}
+\title{Unsupervised Spatial Filtering with Eigenvectors in Linear Regression Models}
 \usage{
 lmFilter(
   y,

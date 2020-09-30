@@ -2,7 +2,8 @@
 % Please edit documentation in R/glmFilter.R
 \name{glmFilter}
 \alias{glmFilter}
-\title{Eigenvector-Based Spatial Filtering in Generalized Linear Regression Models}
+\title{Unsupervised Spatial Filtering with Eigenvectors in Generalized
+Linear Regression Models}
 \usage{
 glmFilter(
   y,
