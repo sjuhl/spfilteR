@@ -93,3 +93,40 @@ fittedval <- function(x,params,model){
   }
   return(yhat)
 }
+
+
+#' @name conditionNumber
+#' @noRd
+
+# function to calculate the condition number - degree of EV multicollinearity
+# (see Griffith 2004b, p. 1797 and Griffith/ Amrhein 1997, p. 98)
+conditionNumber <- function(evecs,round=8){
+  if(!is.null(evecs)){
+    cormat <- cor(evecs)
+    corevals <- eigen(cormat)$values
+    res <- round(sqrt(corevals[1]/corevals[length(corevals)]),round)
+  } else res <- NULL
+  return(res)
+}
+
+
+#' @name getICs
+#' @noRd
+
+getICs <- function(negloglik, n, df){
+  AIC <- 2*negloglik + 2*df
+  BIC <- 2*negloglik + log(n)*df
+  out <- data.frame(AIC,BIC)
+  return(out)
+}
+
+
+#' @name pseudoR2
+#' @noRd
+
+# McFadden's (adjusted) pseudo-R2 (filtered vs unfiltered model)
+pseudoR2 <- function(negloglik_n,negloglik_f,nev){
+  R2 <- 1-(-negloglik_n/-negloglik_f)
+  adjR2 <- 1-((-negloglik_n-nev)/-negloglik_f)
+  return(R2)
+}
