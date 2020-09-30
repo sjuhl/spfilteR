@@ -5,7 +5,7 @@
 \alias{fakedataset}
 \title{Fake Dataset}
 \format{
-An object of class \code{data.frame} with 100 rows and 8 columns.
+An object of class \code{data.frame} with 100 rows and 7 columns.
 }
 \usage{
 data(fakedata)
