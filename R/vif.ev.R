@@ -7,6 +7,7 @@
 #'
 #' @param x vector/ matrix of regressors (default=NULL)
 #' @param evecs (selected) eigenvectors
+#' @param na.rm remove missing values in supplied covariates (TRUE/ FALSE)
 #'
 #' @return Returns a vector containing the VIF for each eigenvector.
 #'
@@ -17,17 +18,24 @@
 #' E <- getEVs(W=W,covars=NULL)$vectors
 #' (VIF <- vif.ev(x=fakedataset$x1,evecs=E[,1:10]))
 #'
+#' @importFrom stats complete.cases
+#'
 #' @author Sebastian Juhl
 #'
 #' @seealso \code{\link{lmFilter}}, \code{\link{getEVs}}
 #'
 #' @export
 
-vif.ev <- function(x=NULL,evecs){
+vif.ev <- function(x=NULL,evecs,na.rm=TRUE){
   evecs <- as.matrix(evecs)
   if(is.null(x)) x <- rep(1,nrow(evecs))
   x <- as.matrix(x)
   if (!all(x[,1]==1)) x <- cbind(1,x)
+  if(na.rm){
+    evecs <- as.matrix(evecs[complete.cases(x),])
+    x <- as.matrix(x[complete.cases(x),])
+  }
+  if(anyNA(x)) stop("Missing values detected")
   inflate <- NULL
   for(i in 1:ncol(evecs)){
     xi <- evecs[,i]

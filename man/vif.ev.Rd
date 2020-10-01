@@ -4,12 +4,14 @@
 \alias{vif.ev}
 \title{Variance Inflation Factor for Eigenvectors}
 \usage{
-vif.ev(x = NULL, evecs)
+vif.ev(x = NULL, evecs, na.rm = TRUE)
 }
 \arguments{
 \item{x}{vector/ matrix of regressors (default=NULL)}
 
 \item{evecs}{(selected) eigenvectors}
+
+\item{na.rm}{remove missing values in supplied covariates (TRUE/ FALSE)}
 }
 \value{
 Returns a vector containing the VIF for each eigenvector.
