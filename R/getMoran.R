@@ -46,6 +46,8 @@
 #' Upton, Graham J. G. and Bernard Fingleton (1985): Spatial Data Analysis
 #' by Example, Volume 1.New York, Wiley.
 #'
+#' @importFrom stats var
+#'
 #' @examples
 #' data(fakedata)
 #' y <- fakedataset$x1

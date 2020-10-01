@@ -114,12 +114,19 @@
 #' print(poisson)
 #' summary(poisson,EV=FALSE)
 #'
-#' # probit model
+#' # probit model - summarize EVs
 #' y_prob <- fakedataset$indicator
-#' probit <- glmFilter(y=y_prob,x=NULL,W=W,objfn="MI",positive=F
+#' probit <- glmFilter(y=y_prob,x=NULL,W=W,objfn="MI",positive=FALSE
 #' ,model="probit",boot.MI=100)
 #' print(probit)
-#' summary(probit,EV=FALSE)
+#' summary(probit,EV=TRUE)
+#'
+#' # logit model - AIC objective function
+#' y_logit <- fakedataset$indicator
+#' logit <- glmFilter(y=y_logit,x=NULL,W=W,objfn="AIC",positive=FALSE
+#' ,model="logit",min.reduction=.05)
+#' print(logit)
+#' summary(logit,EV=FALSE)
 #'
 #' @references Tiefelsdorf, Michael and Daniel A. Griffith (2007):
 #' Semiparametric filtering of spatial autocorrelation: the eigenvector
@@ -132,6 +139,8 @@
 #'
 #' Griffith, Daniel A. and Carl G. Amrhein (1997): Multivariate Statistical
 #' Analysis for Geographers. Englewood Cliffs, Prentice Hall.
+#'
+#' @importFrom stats pnorm dpois optim pt
 #'
 #' @seealso \code{\link{lmFilter}}, \code{\link{getEVs}}, \code{\link{getMoran}}
 #'

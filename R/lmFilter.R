@@ -94,7 +94,6 @@
 #' res <- lmFilter(y=y,x=X,W=W,objfn='MI',positive=FALSE)
 #' print(res)
 #' summary(res,EV=TRUE)
-#' plot(res)
 #'
 #' E <- res$selvecs
 #' (ols <- coef(lm(y~X+E)))
@@ -121,6 +120,8 @@
 #' Tiefelsdorf, Michael and Barry Boots (1995): The Exact Distribution
 #' of Moran's I. Environment and Planning A: Economy and Space, 27 (6):
 #' pp. 985 - 999.
+#'
+#' @importFrom stats pt
 #'
 #' @seealso \code{\link{glmFilter}}, \code{\link{getEVs}}, \code{\link{getMoran}}
 #'
@@ -354,8 +355,8 @@ lmFilter <- function(y,x=NULL,W,objfn="MI",MX=FALSE,sig=.05
     gammas <- coefs[(nx+1):(nx+count)]
     gse <- se[(nx+1):(nx+count)]
     gp <- 2*pt(abs(gammas/gse),df=(n-ncol(xev)),lower.tail=F)
-    pR2 <- partialR2(y=y,x=xev[,1:nx],evec=xev[,(nx+1):(nx+count)])
-    vif <- vif.ev(x=xev[,1:nx],evec=xev[,(nx+1):(nx+count)])
+    pR2 <- partialR2(y=y,x=xev[,1:nx],evecs=xev[,(nx+1):(nx+count)])
+    vif <- vif.ev(x=xev[,1:nx],evecs=xev[,(nx+1):(nx+count)])
     EV <- cbind(gammas,gse,gp,pR2,vif,evMI[sel_id])
     colnames(EV) <- c("Estimate","SE","p-value","partialR2","VIF","MI")
     rownames(EV) <- paste0("ev_", sel_id)

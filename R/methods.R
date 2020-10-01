@@ -1,4 +1,5 @@
 #' @rdname lmFilter
+#' @importFrom stats filter
 
 summary.spfilter <- function(obj,EV=FALSE){
   #####
@@ -92,6 +93,8 @@ vcov.spfilter <- function(obj){
 }
 
 #' @rdname lmFilter
+#' @importFrom graphics legend polygon abline points
+#' @importFrom grDevices rgb
 
 plot.spfilter <- function(obj){
   plot(0,ylim=c(min(obj$evMI),max(obj$evMI)),xlim=c(1,length(obj$evMI))

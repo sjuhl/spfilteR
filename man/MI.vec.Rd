@@ -40,6 +40,15 @@ It assumes the connectivity matrix \emph{\strong{W}} to be symmetric.
 For inherently non-symmetric matrices, it is recommended to specify
 \code{symmetrize=TRUE}.
 }
+\examples{
+data(fakedata)
+X <- cbind(fakedataset$x1,fakedataset$x2
+,fakedataset$x3,fakedataset$x4)
+
+MI <- MI.vec(x=X,W=W,alternative="greater",symmetrize=TRUE)
+MI
+
+}
 \references{
 Cliff, Andrew D. and John K. Ord (1981): Spatial Processes:
 Models & Applications. Pion, London.

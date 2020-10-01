@@ -1,4 +1,5 @@
 #' @name pfunc
+#' @importFrom stats pnorm
 #' @noRd
 
 pfunc <- function(z,alternative,draws=NULL){
@@ -78,6 +79,7 @@ residfun <- function(y,fitvals,model){
 
 
 #' @name fittedval
+#' #' @importFrom stats pnorm
 #' @noRd
 
 fittedval <- function(x,params,model){
@@ -96,6 +98,7 @@ fittedval <- function(x,params,model){
 
 
 #' @name conditionNumber
+#' @importFrom stats cor
 #' @noRd
 
 # function to calculate the condition number - degree of EV multicollinearity

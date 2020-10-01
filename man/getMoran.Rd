@@ -48,9 +48,7 @@ data(fakedata)
 y <- fakedataset$x1
 x <- fakedataset$x2
 
-ols <- solve(crossprod(x)) \%*\% crossprod(x,y)
-fit <- fittedval(x=x,params=ols,model="linear")
-resid <- residfun(y=y,fitvals=fit,model="linear")[,"raw"]
+resid <- y - x \%*\% solve(crossprod(x)) \%*\% crossprod(x,y)
 
 Moran <- getMoran(resid=resid,x=x,W=W,alternative="greater")
 Moran
@@ -72,7 +70,7 @@ Upton, Graham J. G. and Bernard Fingleton (1985): Spatial Data Analysis
 by Example, Volume 1.New York, Wiley.
 }
 \seealso{
-\code{\link{lmFilter}}, \code{\link{MI.vec}}
+\code{\link{lmFilter}}, \code{\link{glmFilter}}, \code{\link{MI.vec}}
 }
 \author{
 Sebastian Juhl

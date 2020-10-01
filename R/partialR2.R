@@ -20,6 +20,17 @@
 #'
 #' @seealso \code{\link{lmFilter}}, \code{\link{getEVs}}
 #'
+#' @examples
+#' data(fakedata)
+#' y <- fakedataset$x1
+#' x <- fakedataset$x2
+#'
+#' # get eigenvectors
+#' E <-getEVs(W=W,covars=NULL)$vectors
+#'
+#' (out <- partialR2(y=y,x=x,evecs=E[,1:5]))
+#'
+#'
 #' @export
 
 partialR2 <- function(y,x,evecs){

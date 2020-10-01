@@ -19,10 +19,9 @@ Calculate the variance inflation factor (VIF) for
 the eigenvectors in the spatial filter.
 }
 \examples{
-data("fakedata")
-evecs <- getEVs(W=W)$vectors
-evecs <- evecs[,1:10]
-vif.ev(x=fakedataset$x1,evecs=evecs)
+data(fakedata)
+E <- getEVs(W=W,covars=NULL)$vectors
+(VIF <- vif.ev(x=fakedataset$x1,evecs=E[,1:10]))
 
 }
 \seealso{

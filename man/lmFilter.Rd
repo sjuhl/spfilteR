@@ -134,7 +134,6 @@ X <- cbind(fakedataset$x2,fakedataset$x3,fakedataset$x4)
 res <- lmFilter(y=y,x=X,W=W,objfn='MI',positive=FALSE)
 print(res)
 summary(res,EV=TRUE)
-plot(res)
 
 E <- res$selvecs
 (ols <- coef(lm(y~X+E)))

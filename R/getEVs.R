@@ -45,8 +45,13 @@
 #' approach. Environment and Planning A: Economy and Space, 39 (5):
 #' pp. 1193 - 1221.
 #'
-#' @seealso \code{\link{lmFilter}}, \code{\link{MI.ev}}, \code{\link{MI.sf}},
-#' \code{\link{vif.ev}}, \code{\link{partialR2}}
+#' @seealso \code{\link{lmFilter}}, \code{\link{glmFilter}}, \code{\link{MI.ev}},
+#' \code{\link{MI.sf}}, \code{\link{vif.ev}}, \code{\link{partialR2}}
+#'
+#' @examples
+#' data(fakedata)
+#'
+#' E <-getEVs(W=W,covars=NULL)
 #'
 #' @export
 

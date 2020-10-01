@@ -47,6 +47,12 @@ covariates. If \code{covars=NULL}, only the intercept term is used
 to construct \emph{\strong{M}}. See e.g., Griffith and Tiefelsdorf (2007)
 for more details on the appropriate choice of \emph{\strong{M}}.
 }
+\examples{
+data(fakedata)
+
+E <-getEVs(W=W,covars=NULL)
+
+}
 \references{
 Tiefelsdorf, Michael and Daniel A. Griffith (2007):
 Semiparametric filtering of spatial autocorrelation: the eigenvector
@@ -54,8 +60,8 @@ approach. Environment and Planning A: Economy and Space, 39 (5):
 pp. 1193 - 1221.
 }
 \seealso{
-\code{\link{lmFilter}}, \code{\link{MI.ev}}, \code{\link{MI.sf}},
-\code{\link{vif.ev}}, \code{\link{partialR2}}
+\code{\link{lmFilter}}, \code{\link{glmFilter}}, \code{\link{MI.ev}},
+\code{\link{MI.sf}}, \code{\link{vif.ev}}, \code{\link{partialR2}}
 }
 \author{
 Sebastian Juhl

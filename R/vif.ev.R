@@ -11,10 +11,9 @@
 #' @return Returns a vector containing the VIF for each eigenvector.
 #'
 #' @examples
-#' data("fakedata")
-#' evecs <- getEVs(W=W)$vectors
-#' evecs <- evecs[,1:10]
-#' vif.ev(x=fakedataset$x1,evecs=evecs)
+#' data(fakedata)
+#' E <- getEVs(W=W,covars=NULL)$vectors
+#' (VIF <- vif.ev(x=fakedataset$x1,evecs=E[,1:10]))
 #'
 #' @author Sebastian Juhl
 #'
