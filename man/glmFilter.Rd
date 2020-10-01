@@ -70,7 +70,7 @@ Griffith (2003)}
 \item{tol}{if \code{objfn='MI'}, determines the amount of remaining residual
 autocorrelation at which the eigenvector selection terminates}
 
-\item{na.rm}{remove missing values in covariates (TRUE/ FALSE)}
+\item{na.rm}{remove missing values in variables (TRUE/ FALSE)}
 }
 \value{
 An object of class \code{spfilter} containing the following
