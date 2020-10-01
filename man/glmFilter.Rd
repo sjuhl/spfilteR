@@ -39,7 +39,8 @@ all eigenvectors in the candidate set ('all')}
 
 \item{MX}{covariates used to construct the projection matrix (TRUE/ FALSE)}
 
-\item{model}{a character string indicating the model to be estimated}
+\item{model}{a character string indicating the model to be estimated.
+Currently, 'probit', 'logit', and 'poisson' are valid inputs}
 
 \item{optim.method}{a character specifying the optimization method}
 

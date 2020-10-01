@@ -20,7 +20,8 @@
 #' significance level of candidate eigenvectors ('p'), or
 #' all eigenvectors in the candidate set ('all')
 #' @param MX covariates used to construct the projection matrix (TRUE/ FALSE)
-#' @param model a character string indicating the model to be estimated
+#' @param model a character string indicating the model to be estimated.
+#' Currently, 'probit', 'logit', and 'poisson' are valid inputs
 #' @param optim.method a character specifying the optimization method
 #' @param sig significance level to be used for eigenvector selection
 #' if \code{objfn='p'}
