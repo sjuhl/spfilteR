@@ -18,6 +18,9 @@ Returns a vector containing the VIF for each eigenvector.
 Calculate the variance inflation factor (VIF) for
 the eigenvectors in the spatial filter.
 }
+\note{
+This function assumes a linear model.
+}
 \examples{
 data(fakedata)
 E <- getEVs(W=W,covars=NULL)$vectors

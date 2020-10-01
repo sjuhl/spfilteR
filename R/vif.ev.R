@@ -10,6 +10,8 @@
 #'
 #' @return Returns a vector containing the VIF for each eigenvector.
 #'
+#' @note This function assumes a linear model.
+#'
 #' @examples
 #' data(fakedata)
 #' E <- getEVs(W=W,covars=NULL)$vectors
