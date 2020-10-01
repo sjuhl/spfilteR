@@ -1,6 +1,7 @@
-#' Fake Dataset
+#' @name fakedata
+#' @title Synthetic Dataset
 #'
-#' An artificially generated cross-sectional dataset together with
+#' @description An artificially generated cross-sectional dataset together with
 #' an accompanying binary connectivity matrix \emph{\strong{W}}. The
 #' \eqn{n=100} units are located on a regular grid and \emph{\strong{W}}
 #' is defined according to rook's adjacency definition of contiguity.
@@ -14,7 +15,7 @@
 #' @return The file contains two objects:
 #' \tabular{lcl}{
 #' \code{fakedataset}\tab \tab a synthetic dataset\cr
-#' \code{W}\tab\tab an artificial \eqn{100 x 100} connectivity matrix
+#' \code{W}\tab\tab an artificial \eqn{100 x 100} spatial connectivity matrix
 #' }
 #'
 #' @keywords dataset
@@ -25,5 +26,8 @@
 #' dim(W)
 
 'fakedataset'
+
+#' @rdname fakedata
+
 'W'
 
