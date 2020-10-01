@@ -33,7 +33,7 @@
 #' Griffith (2003)
 #' @param tol if \code{objfn='MI'}, determines the amount of remaining residual
 #' autocorrelation at which the eigenvector selection terminates
-#' @param na.rm remove missing values in covariates (TRUE/ FALSE)
+#' @param na.rm remove missing values in variables (TRUE/ FALSE)
 #' @param obj an object of class \code{spfilter}
 #' @param EV display summary statistics for selected eigenvectors (TRUE/ FALSE)
 #'
