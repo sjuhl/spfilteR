@@ -51,10 +51,7 @@
 #' y <- fakedataset$x1
 #' x <- fakedataset$x2
 #'
-#' #fit <- x %*% solve(crossprod(x)) %*% crossprod(x,y)
-#' ols <- solve(crossprod(x)) %*% crossprod(x,y)
-#' fit <- spfilteR:::fittedval(x=x,params=ols,model="linear)
-#' resid <- spfilteR:::residfun(y=y,fitvals=fit,model="linear")[,"raw"]
+#' resid <- y - x %*% solve(crossprod(x)) %*% crossprod(x,y)
 #'
 #' Moran <- getMoran(resid=resid,x=x,W=W,alternative="greater")
 #' Moran
