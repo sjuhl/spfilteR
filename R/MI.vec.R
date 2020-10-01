@@ -43,6 +43,14 @@
 #'
 #' @seealso \code{\link{getMoran}}
 #'
+#' @examples
+#' data(fakedata)
+#' X <- cbind(fakedataset$x1,fakedataset$x2
+#' ,fakedataset$x3,fakedataset$x4)
+#'
+#' MI <- MI.vec(x=X,W=W,alternative="greater",symmetrize=T)
+#' MI
+#'
 #' @export
 
 MI.vec <- function(x,W,alternative="greater",symmetrize=TRUE){
@@ -72,7 +80,7 @@ MI.vec <- function(x,W,alternative="greater",symmetrize=TRUE){
   if(symmetrize) W <- .5 * (W + t(W))
   nx <- ncol(x)
   n <- nrow(W)
-  df <- n-1 # only one variable considered
+  df <- n-1 # only one variable considered at a time
   S0 <- t(rep(1,n)) %*% W %*% rep(1,n)
   S1 <- sum((W*W)+(W*t(W)))
   S2 <- sum((rowSums(W)+colSums(W))^2)
