@@ -178,3 +178,15 @@ test_that("glmFilter() estimates logit models", {
   expect_is(out, "spfilter")
 })
 
+test_that("The argument 'min.reduction' works (for AIC & BIC) - fewer EVs are
+          selected for higher values", {
+  y <- fakedataset$count
+  lowerAIC <- glmFilter(y=y,W=W,objfn="AIC",model="poisson",min.reduction=0)
+  higherAIC <- glmFilter(y=y,W=W,objfn="AIC",model="poisson",min.reduction=.1)
+  outAIC <- lowerAIC$other$nev > higherAIC$other$nev
+  lowerBIC <- glmFilter(y=y,W=W,objfn="BIC",model="poisson",min.reduction=0)
+  higherBIC <- glmFilter(y=y,W=W,objfn="BIC",model="poisson",min.reduction=.1)
+  outBIC <- lowerBIC$other$nev > higherBIC$other$nev
+  expect_true(all(outAIC,outBIC))
+})
+
