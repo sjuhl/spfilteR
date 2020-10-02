@@ -15,7 +15,7 @@ MI.vec(x, W, alternative = "greater", symmetrize = TRUE)
 'lower', or 'two.sided'}
 
 \item{symmetrize}{symmetrizes the connectivity matrix \emph{\strong{W}}
-by: 0.5 * (\emph{\strong{W}} + \emph{\strong{W}}') (TRUE/ FALSE).}
+by: 1/2 * (\emph{\strong{W}} + \emph{\strong{W}}') (TRUE/ FALSE).}
 }
 \value{
 Returns an object of class \code{data.frame} that contains the

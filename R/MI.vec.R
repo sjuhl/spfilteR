@@ -11,7 +11,7 @@
 #' @param alternative specification of alternative hypothesis as 'greater' (default),
 #' 'lower', or 'two.sided'
 #' @param symmetrize symmetrizes the connectivity matrix \emph{\strong{W}}
-#' by: 0.5 * (\emph{\strong{W}} + \emph{\strong{W}}') (TRUE/ FALSE).
+#' by: 1/2 * (\emph{\strong{W}} + \emph{\strong{W}}') (TRUE/ FALSE).
 #'
 #' @return Returns an object of class \code{data.frame} that contains the
 #' following information for each variable in \code{x}:

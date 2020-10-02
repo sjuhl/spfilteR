@@ -28,7 +28,7 @@
 #' found in each eigenvector as indicated by \code{moran}.
 #'
 #' If \emph{\strong{W}} is not symmetric, \code{getEVs} symmetrizes the
-#' matrix by: 0.5 * (\emph{\strong{W}} + \emph{\strong{W}}').
+#' matrix by: 1/2 * (\emph{\strong{W}} + \emph{\strong{W}}').
 #'
 #' If \code{covars} are supplied, the function uses the covariates to construct
 #' projection matrix: \emph{\strong{M} = \strong{I} - \strong{X} (\strong{X}'

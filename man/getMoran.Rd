@@ -37,7 +37,7 @@ coefficient.
 \details{
 The function assumes an intercept-only model if \code{x=NULL}.
 If \emph{\strong{W}} is not symmetric, \code{getMoran} automatically
-symmetrizes the matrix by: 0.5 * (\emph{\strong{W}} + \emph{\strong{W}}').
+symmetrizes the matrix by: 1/2 * (\emph{\strong{W}} + \emph{\strong{W}}').
 }
 \note{
 Calculations are based on Cliff and Ord (1981) and Upton and Fingleton
