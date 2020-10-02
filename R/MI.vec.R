@@ -64,7 +64,7 @@ MI.vec <- function(x,W,alternative="greater",symmetrize=TRUE){
   # Input
   # Checks
   #####
-  if(0 %in% apply(x,2,sd)) warning("Constant term detected in x.")
+  if(0 %in% apply(x,2,sd)) warning("Constant term detected in x")
   if(!any(class(W) %in% c("matrix","Matrix","data.frame"))){
     stop("W must be of class 'matrix' or 'data.frame'")
   }
