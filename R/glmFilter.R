@@ -154,7 +154,7 @@ glmFilter <- function(y,x=NULL,W,objfn="MI",MX=F,model,optim.method="BFGS"
                       ,na.rm=T){
 
   if(!is.null(x)) x <- as.matrix(x)
-  if(!is.null(colnames(x))) nams <- colnames(x)
+  if(!is.null(colnames(x))) nams <- colnames(x) else nams <- NULL
 
   # missing values
   if(na.rm){
@@ -382,7 +382,7 @@ glmFilter <- function(y,x=NULL,W,objfn="MI",MX=F,model,optim.method="BFGS"
   if(nx==1){
     rownames(est) <- names(varcovar) <- "(Intercept)"
   } else {
-    if(!is.null(colnames(x))){
+    if(!is.null(nams)){
       rownames(est) <- rownames(varcovar) <- colnames(varcovar) <- c("(Intercept)",nams)
     } else {
       rownames(est) <- c("(Intercept)",paste0("beta_",1:(nx-1)))
