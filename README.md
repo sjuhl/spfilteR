@@ -1,6 +1,9 @@
 # spfilteR
 
+<!-- badges: start -->
 [![license](https://img.shields.io/badge/license-GPL--3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0.en.html)
+  [![Travis build status](https://travis-ci.com/sjuhl/spfilteR.svg?branch=master)](https://travis-ci.com/sjuhl/spfilteR)
+  <!-- badges: end -->
 
 ---
 
