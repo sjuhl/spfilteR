@@ -71,7 +71,7 @@
 #' \emph{\strong{M}}}
 #' \item{\code{dependence}}{filtered for positive or negative spatial dependence}
 #' \item{\code{objfn}}{selection criteria specified in the objective function of
-#' the stepwise regression procedure}
+#' the steppwise regression procedure}
 #' \item{\code{bonferroni}}{TRUE/ FALSE: Bonferroni-adjusted significance level
 #' (if \code{objfn='p'})}
 #' \item{\code{siglevel}}{if \code{objfn='p'}: actual (unadjusted/ adjusted)
