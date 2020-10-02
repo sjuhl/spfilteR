@@ -15,7 +15,7 @@
 #' @return The file contains two objects:
 #' \tabular{lcl}{
 #' \code{fakedataset}\tab \tab a synthetic dataset\cr
-#' \code{W}\tab\tab an artificial \eqn{100 x 100} spatial connectivity matrix
+#' \code{W}\tab\tab an artificial 100 x 100 spatial connectivity matrix
 #' }
 #'
 #' @keywords dataset
