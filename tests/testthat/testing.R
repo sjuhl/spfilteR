@@ -118,6 +118,19 @@ test_that("getMoran() warns if boot<100", {
   expect_true(test)
 })
 
+test_that("If boot < 100, getMoran() sets boot=100", {
+  y <- fakedataset$x1
+  x <- as.matrix(rep(1,length(y)))
+  resid <- y - x %*% solve(crossprod(x)) %*% crossprod(x,y)
+  boot1 <- 90
+  boot2 <- 100
+  set.seed(123)
+  moran1 <- suppressWarnings(getMoran(resid=resid,W=W,boot=boot1))
+  set.seed(123)
+  moran2 <- getMoran(resid=resid,W=W,boot=boot2)
+  expect_equal(moran1$VarI,moran2$VarI)
+})
+
 
 #####
 # partialR2()
