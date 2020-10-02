@@ -4,7 +4,7 @@ Title: Eigenvector-Based Semiparametric Filtering of Spatial Autocorrelation in 
 Version: 0.1.0
 Authors@R: person("Sebastian", "Juhl", email = "sebastian.juhl@gess.uni-mannheim.de",
   role = c("aut", "cre"))
-Description: Tools to eigendecompose (transformed) spatial connectivity matrices and perform supervised or unsupervised semiparametric spatial filtering in a regression framework. The package supports unsupervised spatial filtering in standard linear as well as some generalized linear regression models.
+Description: Tools to decompose (transformed) spatial connectivity matrices and perform supervised or unsupervised semiparametric spatial filtering in a regression framework. The package supports unsupervised spatial filtering in standard linear as well as some generalized linear regression models.
 License: GPL-3
 BugReports: https://github.com/sjuhl/spfilteR/issues
 Depends: R (>= 3.5.0)
