@@ -103,7 +103,7 @@ fittedval <- function(x,params,model){
 
 # function to calculate the condition number - degree of EV multicollinearity
 # (see Griffith 2004b, p. 1797 and Griffith/ Amrhein 1997, p. 98)
-conditionNumber <- function(evecs,round=8){
+conditionNumber <- function(evecs=NULL,round=8){
   if(!is.null(evecs)){
     cormat <- cor(evecs)
     corevals <- eigen(cormat)$values
