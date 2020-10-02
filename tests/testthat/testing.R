@@ -153,6 +153,24 @@ test_that("'objfn=all' selects all eigenvectors in the candidate set", {
   expect_equal(filter$other$nev,sum(inselset))
 })
 
+test_that("The argument 'objfn' works with 'p', 'MI', 'R2', and 'all' ", {
+  y <- fakedataset$x1
+  objfn <- c("MI","p","R2","all","else")
+  expected <- c(TRUE,TRUE,TRUE,TRUE,FALSE)
+  out <- NULL
+  for(i in 1:length(objfn)){
+    res <- try(lmFilter(y=y,W=W,objfn=objfn[i]),silent=TRUE)
+    out[i] <- class(res)!="try-error"
+  }
+  expect_equal(out,expected)
+})
+
+test_that("If 'objfn=p': selects fewer EVs if 'bonferroni=T'", {
+  bonferroni <- lmFilter(y=fakedataset$x1,W=W,objfn="p",bonferron=TRUE)
+  nobonferroni <- lmFilter(y=fakedataset$x1,W=W,objfn="p",bonferron=FALSE)
+  expect_true(bonferroni$other$nev < nobonferroni$other$nev)
+})
+
 
 #####
 # glmFilter()
@@ -188,5 +206,34 @@ test_that("The argument 'min.reduction' works (for AIC & BIC) - fewer EVs are
   higherBIC <- glmFilter(y=y,W=W,objfn="BIC",model="poisson",min.reduction=.1)
   outBIC <- lowerBIC$other$nev > higherBIC$other$nev
   expect_true(all(outAIC,outBIC))
+})
+
+
+#####
+# methods
+#####
+test_that("Check the summary function", {
+  filter <- lmFilter(y=fakedataset$x1,W=W,objfn="R2")
+  expect_output(summary(filter))
+})
+
+test_that("Check the print method", {
+  filter <- lmFilter(y=fakedataset$x1,W=W,objfn="R2")
+  expect_output(print(filter))
+})
+
+test_that("coef() gives the correct number of coefs", {
+  X <- cbind(fakedataset$x2,fakedataset$x3)
+  out <- lmFilter(y=fakedataset$x1,x=X,W=W,objfn="R2")
+  expect_equal(length(coef(out)),(ncol(X)+1))
+})
+
+test_that("correct dimensionality of vcov()", {
+  X <- cbind(fakedataset$x2,fakedataset$x3)
+  out <- lmFilter(y=fakedataset$x1,x=X,W=W,objfn="R2")
+  dim1 <- dim(vcov(out))[1]
+  dim2 <- dim(vcov(out))[2]
+  out <- dim1==dim2 & dim1==(ncol(X)+1)
+  expect_true(out)
 })
 
