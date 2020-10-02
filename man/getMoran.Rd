@@ -21,12 +21,12 @@ variance. If NULL (default), variance calculated under assumed normality}
 }
 \value{
 A \code{data.frame} object with the following elements:
-\tabular{lcl}{
-\code{I}\tab \tab observed value of the Moran coefficient\cr
-\code{EI}\tab\tab expected value of Moran's I\cr
-\code{VarI}\tab \tab variance of Moran's I\cr
-\code{zI}\tab\tab standardized Moran coefficient\cr
-\code{pI}\tab\tab \emph{p}-value of the test statistic
+\describe{
+\item{\code{I}}{observed value of the Moran coefficient}
+\item{\code{EI}}{expected value of Moran's I}
+\item{\code{VarI}}{variance of Moran's I}
+\item{\code{zI}}{standardized Moran coefficient}
+\item{\code{pI}}{\emph{p}-value of the test statistic}
 }
 }
 \description{

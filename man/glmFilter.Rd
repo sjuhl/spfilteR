@@ -76,18 +76,18 @@ autocorrelation at which the eigenvector selection terminates}
 \value{
 An object of class \code{spfilter} containing the following
 information:
-\tabular{lcl}{
-\code{Estimates}\tab \tab summary statistics of the parameter estimates\cr
-\code{varcovar}\tab\tab estimated variance-covariance matrix\cr
-\code{EV}\tab\tab a matrix with summary statistics of selected eigenvectors\cr
-\code{selvecs}\tab\tab matrix of selected eigenvectors\cr
-\code{evMI}\tab\tab Moran coefficient of all eigenvectors\cr
-\code{moran}\tab\tab residual autocorrelation for the initial and the
-filtered model\cr
-\code{fit}\tab\tab adjusted R-squared of the initial and the filtered model\cr
-\code{residuals}\tab\tab initial and filtered model residuals\cr
-\code{other}\tab\tab a list providing supplementary information:\cr
-\tab\tab \describe{
+\describe{
+\item{\code{Estimates}}{summary statistics of the parameter estimates}
+\item{\code{varcovar}}{estimated variance-covariance matrix}
+\item{\code{EV}}{a matrix with summary statistics of selected eigenvectors}
+\item{\code{selvecs}}{matrix of selected eigenvectors}
+\item{\code{evMI}}{Moran coefficient of all eigenvectors}
+\item{\code{moran}}{residual autocorrelation for the initial and the
+filtered model}
+\item{\code{fit}}{adjusted R-squared of the initial and the filtered model}
+\item{\code{residuals}}{initial and filtered model residuals}
+\item{\code{other}}{a list providing supplementary information:
+\describe{
 \item{\code{ncandidates}}{number of candidate eigenvectors considered}
 \item{\code{nev}}{number of selected eigenvectors}
 \item{\code{condnum}}{condition number to assess the degree of multicollinearity
@@ -101,13 +101,14 @@ among the eigenvectors induced by the link function, see e.g., Griffith/ Amrhein
 \emph{\strong{M}}}
 \item{\code{dependence}}{filtered for positive or negative spatial dependence}
 \item{\code{objfn}}{selection criteria specified in the objective function of
-the stepwise regression procedure}
+the steppwise regression procedure}
 \item{\code{bonferroni}}{TRUE/ FALSE: Bonferroni-adjusted significance level
 (if \code{objfn='p'})}
 \item{\code{siglevel}}{if \code{objfn='p'}: actual (unadjusted/ adjusted)
 significance level}
 \item{\code{resid.type}}{residual type used ('raw', 'deviance', or 'pearson')}
 \item{\code{pseudoR2}}{McFadden's pseudo R-squared (filtered vs. unfiltered model)}
+}
 }
 }
 }
@@ -122,7 +123,7 @@ can be included as well.
 }
 \details{
 If \emph{\strong{W}} is not symmetric, it gets symmetrized by
-0.5 * (\emph{\strong{W}} + \emph{\strong{W}}') the eigenfunction decomposition.
+1/2 * (\emph{\strong{W}} + \emph{\strong{W}}') the eigenfunction decomposition.
 
 If \code{MX=TRUE}, the function uses the covariates specified in the argument
 \code{x} to construct the following projection matrix:

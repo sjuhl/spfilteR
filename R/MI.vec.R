@@ -14,13 +14,13 @@
 #' by: 1/2 * (\emph{\strong{W}} + \emph{\strong{W}}') (TRUE/ FALSE).
 #'
 #' @return Returns an object of class \code{data.frame} that contains the
-#' following information for each variable in \code{x}:
-#' \tabular{lcl}{
-#' \code{I}\tab \tab observed value of the Moran coefficient\cr
-#' \code{EI}\tab\tab expected value of Moran's I\cr
-#' \code{VarI}\tab \tab variance of Moran's I (under normality)\cr
-#' \code{zI}\tab\tab standardized Moran coefficient\cr
-#' \code{pI}\tab\tab \emph{p}-value of the test statistic
+#' following information for each variable:
+#' \describe{
+#' \item{\code{I}}{observed value of the Moran coefficient}
+#' \item{\code{EI}}{expected value of Moran's I}
+#' \item{\code{VarI}}{variance of Moran's I (under normality)}
+#' \item{\code{zI}}{standardized Moran coefficient}
+#' \item{\code{pI}}{\emph{p}-value of the test statistic}
 #' }
 #'
 #' @note Estimation of the variance (under the normality assumption)
