@@ -1,6 +1,6 @@
 Package: spfilteR
 Type: Package
-Title: Eigenvector-Based Semiparametric Filtering of Spatial Autocorrelation in (Generalized)    Linear Models
+Title: Semiparametric Spatial Filtering with Eigenvectors in (Generalized) Linear Models
 Version: 0.1.0
 Authors@R: person("Sebastian", "Juhl", email = "sebastian.juhl@gess.uni-mannheim.de",
   role = c("aut", "cre"))
