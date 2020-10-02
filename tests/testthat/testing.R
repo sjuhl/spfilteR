@@ -144,6 +144,15 @@ test_that("lmFilter() returns an error message if 'alpha' is not contained
   expect_equal(out,expected)
 })
 
+test_that("'objfn=all' selects all eigenvectors in the candidate set", {
+  eigen <- getEVs(W=W)
+  alpha <- .25
+  inselset <- eigen$moran/eigen$moran[1]>=alpha
+  E <- eigen$vectors[,inselset]
+  filter <- lmFilter(y=fakedataset$x1,W=W,objfn="all",alpha=alpha)
+  expect_equal(filter$other$nev,sum(inselset))
+})
+
 
 #####
 # glmFilter()
