@@ -93,7 +93,7 @@ vcov.spfilter <- function(obj){
 }
 
 #' @rdname lmFilter
-#' @importFrom graphics legend polygon abline points
+#' @importFrom graphics plot legend polygon abline points
 #' @importFrom grDevices rgb
 
 plot.spfilter <- function(obj){
