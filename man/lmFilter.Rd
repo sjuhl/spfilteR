@@ -11,7 +11,7 @@ lmFilter(
   x = NULL,
   W,
   objfn = "MI",
-  MX = FALSE,
+  MX = NULL,
   sig = 0.05,
   bonferroni = TRUE,
   positive = TRUE,
@@ -38,7 +38,7 @@ adjusted R-squared ('R2'), minimization of residual autocorrelation ('MI'),
 significance level of candidate eigenvectors ('p'), or
 all eigenvectors in the candidate set ('all')}
 
-\item{MX}{covariates used to construct the projection matrix (TRUE/ FALSE)}
+\item{MX}{covariates used to construct the projection matrix (default=NULL)}
 
 \item{sig}{significance level to be used for eigenvector selection
 if \code{objfn='p'}}
@@ -87,8 +87,6 @@ filtered model}
 \item{\code{sf}}{vector representing the spatial filter}
 \item{\code{sfMI}}{Moran coefficient of the spatial filter}
 \item{\code{model}}{class of the regression model}
-\item{\code{MX}}{TRUE/ FALSE: include covariates in the projection matrix
-\emph{\strong{M}}}
 \item{\code{dependence}}{filtered for positive or negative spatial dependence}
 \item{\code{objfn}}{selection criteria specified in the objective function of
 the steppwise regression procedure}
@@ -113,16 +111,16 @@ can be included as well.
 If \emph{\strong{W}} is not symmetric, it gets symmetrized by
 1/2 * (\emph{\strong{W}} + \emph{\strong{W}}') the eigenfunction decomposition.
 
-If \code{MX=TRUE}, the function uses the covariates specified in the argument
-\code{x} to construct the following projection matrix:
+If covariates are supplied to \code{MX}, the function uses these regressors
+to construct the following projection matrix:
 
 \emph{\strong{M} = \strong{I} - \strong{X} (\strong{X}'\strong{X})^-1\strong{X}'}
 
 Eigenvectors from \emph{\strong{MWM}} using this specification of
 \emph{\strong{M}} are not only mutually uncorrelated but also orthogonal
-to the included regressors. Alternatively, if \code{MX=FALSE}, the projection
-matrix becomes \emph{\strong{M} = \strong{I} - \strong{11}'/\emph{n}}, where
-\emph{\strong{1}} is a vector of ones and \emph{n} represents the number of
+to the regressors specified in \code{MX}. Alternatively, if \code{MX=NULL}, the
+projection matrix becomes \emph{\strong{M} = \strong{I} - \strong{11}'/\emph{n}},
+where \emph{\strong{1}} is a vector of ones and \emph{n} represents the number of
 observations. Griffith and Tiefelsdorf (2007) show how the choice of the appropriate
 \emph{\strong{M}} depends on the underlying process that generates the spatial
 dependence.
