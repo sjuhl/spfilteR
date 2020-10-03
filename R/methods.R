@@ -31,9 +31,6 @@ summary.spfilter <- function(obj,EV=FALSE){
 
   # additional information on stepwise regression
   cat(paste("\nFiltered for", obj$other$dependence, "spatial autocorrelation"))
-  if(obj$other$MX){
-    cat(paste0("\ -\ projection matrix with covariates\n"))
-  } else cat(paste0("\ -\ projection matrix without covariates\n"))
   cat(paste(obj$other$nev,"out of",obj$other$ncandidates, "candidate eigenvectors selected\n"))
   if(obj$other$model!="linear" & obj$other$nev>0){
     cat(paste0("Condition Number (Multicollinearity): ",obj$other$condnum,"\n"))
