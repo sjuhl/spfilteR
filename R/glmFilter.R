@@ -248,7 +248,7 @@ glmFilter <- function(y,x=NULL,W,objfn="MI",MX=NULL,model,optim.method="BFGS"
   # Eigenvectors and
   # Eigenvalues
   #####
-  getEVs(W,covars=MX)
+  eigs <- getEVs(W,covars=MX)
   evecs <- eigs$vectors
   evals <- eigs$values
 
