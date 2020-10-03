@@ -74,7 +74,7 @@ getMoran <- function(resid,x=NULL,W,alternative="greater",boot=NULL){
   if(is.null(x)) x <- rep(1,n)
   x <- as.matrix(x)
   if (!all(x[,1]==1)) x <- cbind(1,x) # add intercept term
-  if(!isSymmetric(W)) W <- .5 * (W + t(W)) # symmetric connectivity matrix
+  W <- .5 * (W + t(W)) # symmetrize connectivity matrix
   I <- n/crossprod(rep(1,n),W%*%rep(1,n)) * crossprod(resid,W%*%resid) / crossprod(resid)
   M <- diag(n)-x%*%qr.solve(crossprod(x),t(x))
   df <- n - qr(x)$rank
