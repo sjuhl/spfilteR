@@ -6,6 +6,7 @@ Authors@R: person("Sebastian", "Juhl", email = "sebastian.juhl@gess.uni-mannheim
   role = c("aut", "cre"))
 Description: Tools to decompose (transformed) spatial connectivity matrices and perform supervised or unsupervised semiparametric spatial filtering in a regression framework. The package supports unsupervised spatial filtering in standard linear as well as some generalized linear regression models.
 License: GPL-3
+URL: https://github.com/sjuhl/spfilteR
 BugReports: https://github.com/sjuhl/spfilteR/issues
 Depends: R (>= 3.5.0)
 Imports: stats
