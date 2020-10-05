@@ -7,10 +7,10 @@ pfunc <- function(z,alternative,draws=NULL){
   # analytical variance estimate
   if(is.null(draws)){
     if(alternative=="greater"){
-      p <- pnorm(z, lower.tail=F)
+      p <- pnorm(z, lower.tail=FALSE)
     } else if(alternative=="lower"){
-      p <- pnorm(z, lower.tail=T)
-    } else p <- 2*pnorm(abs(z), lower.tail=F)
+      p <- pnorm(z, lower.tail=TRUE)
+    } else p <- 2*pnorm(abs(z), lower.tail=FALSE)
   } else {
     # simulation-based variance estimate
     # see e.g., North/ Curtis/ Sham (2002) [Am J Hum Genet] for the '+1'

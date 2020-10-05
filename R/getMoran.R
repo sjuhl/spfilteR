@@ -87,7 +87,7 @@ getMoran <- function(resid,x=NULL,W,alternative="greater",boot=NULL){
     }
     boot.I <- NULL
     for(i in 1:boot){
-      ind <- sample(1:n,replace=T)
+      ind <- sample(1:n,replace=TRUE)
       boot.I[i] <- n/crossprod(rep(1,n),W%*%rep(1,n)) * crossprod(resid[ind],W%*%resid[ind]) / crossprod(resid[ind])
     }
     VarI <- var(boot.I)

@@ -73,7 +73,7 @@ getEVs <- function(W,covars=NULL){
   MVM <- M %*% V %*% M
 
   # eigenvectors and eigenvalues
-  eigs <- eigen(MVM,symmetric=T)
+  eigs <- eigen(MVM,symmetric=TRUE)
 
   # Moran coefficient for eigenvectors
   moran <- MI.ev(W=W,evals=eigs$values)
