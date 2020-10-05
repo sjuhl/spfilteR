@@ -24,8 +24,8 @@
 #' }
 #'
 #' @details The function assumes an intercept-only model if \code{x=NULL}.
-#' If \emph{\strong{W}} is not symmetric, \code{getMoran} automatically
-#' symmetrizes the matrix by: 1/2 * (\emph{\strong{W}} + \emph{\strong{W}}').
+#' Furthermore, \code{getMoran} automatically symmetrizes the matrix
+#' \emph{\strong{W}} by: 1/2 * (\emph{\strong{W}} + \emph{\strong{W}}').
 #'
 #' @note Calculations are based on Cliff and Ord (1981) and Upton and Fingleton
 #' (1985). See also Tiefelsdorf (2000) and Griffith et al. (2019).
