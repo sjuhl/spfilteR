@@ -120,7 +120,7 @@
 #' of Moran's I. Environment and Planning A: Economy and Space, 27 (6):
 #' pp. 985 - 999.
 #'
-#' @importFrom stats pt
+#' @importFrom stats pt sd
 #'
 #' @seealso \code{\link{glmFilter}}, \code{\link{getEVs}}, \code{\link{getMoran}}
 #'
@@ -130,8 +130,9 @@ lmFilter <- function(y,x=NULL,W,objfn="MI",MX=NULL,sig=.05
                      ,bonferroni=TRUE,positive=TRUE,ideal.setsize=FALSE
                      ,alpha=.25,tol=.1,na.rm=TRUE){
 
+  if(!is.null(MX)) MX <- as.matrix(MX)
   if(!is.null(x)) x <- as.matrix(x)
-  if(!is.null(colnames(x))) nams <- colnames(x)
+  if(!is.null(colnames(x))) nams <- colnames(x) else nams <- NULL
 
   # missing values
   if(na.rm){
@@ -141,14 +142,16 @@ lmFilter <- function(y,x=NULL,W,objfn="MI",MX=NULL,sig=.05
     } else miss <- is.na(y)
     y <- y[!miss]
     W <- W[!miss,!miss]
+    if(!is.null(MX)) MX[!miss,]
   }
 
   # number of observations
   n <- length(y)
-  if(is.null(x)) x <- as.matrix(rep(1,n))
 
   # add intercept if not included in x
+  if(is.null(x)) x <- as.matrix(rep(1,n))
   if(!all(x[,1]==1)) x <- cbind(1,x)
+  if(!is.null(MX) && any(apply(MX,2,sd)==0)) MX <- as.matrix(MX[,apply(MX,2,sd)!=0])
   nx <- ncol(x)
 
   #####
@@ -334,7 +337,7 @@ lmFilter <- function(y,x=NULL,W,objfn="MI",MX=NULL,sig=.05
   if(nx==1){
     rownames(est) <- names(varcovar) <- "(Intercept)"
   } else {
-    if(!is.null(colnames(x))){
+    if(!is.null(nams)){
       rownames(est) <- rownames(varcovar) <- colnames(varcovar) <- c("(Intercept)",nams)
     } else {
       rownames(est) <- c("(Intercept)",paste0("beta_",1:(nx-1)))

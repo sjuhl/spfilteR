@@ -140,7 +140,7 @@
 #' Griffith, Daniel A. and Carl G. Amrhein (1997): Multivariate Statistical
 #' Analysis for Geographers. Englewood Cliffs, Prentice Hall.
 #'
-#' @importFrom stats pnorm dpois optim pt
+#' @importFrom stats pnorm dpois optim pt sd
 #'
 #' @seealso \code{\link{lmFilter}}, \code{\link{getEVs}}, \code{\link{getMoran}}
 #'
@@ -151,6 +151,7 @@ glmFilter <- function(y,x=NULL,W,objfn="MI",MX=NULL,model,optim.method="BFGS"
                       ,boot.MI=100,resid.type="pearson",alpha=.25,tol=.1
                       ,na.rm=T){
 
+  if(!is.null(MX)) MX <- as.matrix(MX)
   if(!is.null(x)) x <- as.matrix(x)
   if(!is.null(colnames(x))) nams <- colnames(x) else nams <- NULL
 
@@ -162,6 +163,7 @@ glmFilter <- function(y,x=NULL,W,objfn="MI",MX=NULL,model,optim.method="BFGS"
     } else miss <- is.na(y)
     y <- y[!miss]
     W <- W[!miss,!miss]
+    if(!is.null(MX)) MX[!miss,]
   }
 
   # number of observations
@@ -170,6 +172,7 @@ glmFilter <- function(y,x=NULL,W,objfn="MI",MX=NULL,model,optim.method="BFGS"
   # add intercept if not included in x
   if(is.null(x)) x <- as.matrix(rep(1,n))
   if(!all(x[,1]==1)) x <- cbind(1,x)
+  if(!is.null(MX) && any(apply(MX,2,sd)==0)) MX <- as.matrix(MX[,apply(MX,2,sd)!=0])
   nx <- ncol(x)
 
   #####
@@ -345,8 +348,7 @@ glmFilter <- function(y,x=NULL,W,objfn="MI",MX=NULL,model,optim.method="BFGS"
       }
 
       # remove selected eigenvectors from candidate set
-      #selset <- which(sel)[!(which(sel) %in% sel_id)] # re-evaluate excluded eigenvectors
-      selset <- selset[!(selset %in% sel_id)] # evaluate just forward selected eigenvectors
+      selset <- selset[!(selset %in% sel_id)]
     } # end selection
   }
 
