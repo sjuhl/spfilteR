@@ -223,7 +223,7 @@ test_that("lmFilter() returns an error message if 'alpha' is not contained
   alpha <- c(-1,.001,.5,1,1.0001)
   expected <- c(TRUE,FALSE,FALSE,FALSE,TRUE)
   out <- NULL
-  for(i in 1:length(alpha)){
+  for(i in seq_along(alpha)){
     res <- try(lmFilter(y=y,W=W,alpha=alpha[i]),silent=TRUE)
     out[i] <- class(res)=="try-error"
   }
@@ -244,7 +244,7 @@ test_that("The argument 'objfn' works with 'p', 'MI', 'R2', and 'all' ", {
   objfn <- c("MI","p","R2","all","else")
   expected <- c(TRUE,TRUE,TRUE,TRUE,FALSE)
   out <- NULL
-  for(i in 1:length(objfn)){
+  for(i in seq_along(objfn)){
     res <- try(lmFilter(y=y,W=W,objfn=objfn[i]),silent=TRUE)
     out[i] <- class(res)!="try-error"
   }
@@ -277,7 +277,7 @@ test_that("lmFilter() returns an error message if 'alpha' is not contained
             alpha <- c(-1,.001,.5,1,1.0001)
             expected <- c(TRUE,FALSE,FALSE,FALSE,TRUE)
             out <- NULL
-            for(i in 1:length(alpha)){
+            for(i in seq_along(alpha)){
               res <- try(lmFilter(y=y,W=W,objfn="all",alpha=alpha[i])
                          ,silent=TRUE)
               out[i] <- class(res)=="try-error"
@@ -402,7 +402,7 @@ test_that("glmFilter() returns an error message if 'alpha' is not contained
             alpha <- c(-1,.001,.5,1,1.0001)
             expected <- c(TRUE,FALSE,FALSE,FALSE,TRUE)
             out <- NULL
-            for(i in 1:length(alpha)){
+            for(i in seq_along(alpha)){
               res <- try(glmFilter(y=y,W=W,model="logit",objfn="p",alpha=alpha[i])
                          ,silent=TRUE)
               out[i] <- class(res)=="try-error"
@@ -469,7 +469,7 @@ test_that("The argument 'objfn' works with 'p', 'MI', 'AIC', 'BIC', and 'all' ",
   objfn <- c("MI","p","AIC","BIC","all","else")
   expected <- c(TRUE,TRUE,TRUE,TRUE,TRUE,FALSE)
   out <- NULL
-  for(i in 1:length(objfn)){
+  for(i in seq_along(objfn)){
     res <- try(glmFilter(y=y,W=W,model="poisson",objfn=objfn[i]),silent=TRUE)
     out[i] <- class(res)!="try-error"
   }

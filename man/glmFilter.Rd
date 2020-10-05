@@ -21,7 +21,7 @@ glmFilter(
   resid.type = "pearson",
   alpha = 0.25,
   tol = 0.1,
-  na.rm = T
+  na.rm = TRUE
 )
 }
 \arguments{

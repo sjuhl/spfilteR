@@ -37,7 +37,7 @@ vif.ev <- function(x=NULL,evecs,na.rm=TRUE){
   }
   if(anyNA(x)) stop("Missing values detected")
   inflate <- NULL
-  for(i in 1:ncol(evecs)){
+  for(i in seq_len(ncol(evecs))){
     xi <- evecs[,i]
     tots <- sum((xi - mean(xi))^2)
     ests <- solve(crossprod(x)) %*% crossprod(x,xi)

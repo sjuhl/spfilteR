@@ -149,7 +149,7 @@
 glmFilter <- function(y,x=NULL,W,objfn="MI",MX=NULL,model,optim.method="BFGS"
                       ,sig=.05,bonferroni=TRUE,positive=TRUE,min.reduction=.05
                       ,boot.MI=100,resid.type="pearson",alpha=.25,tol=.1
-                      ,na.rm=T){
+                      ,na.rm=TRUE){
 
   if(!is.null(MX)) MX <- as.matrix(MX)
   if(!is.null(x)) x <- as.matrix(x)
