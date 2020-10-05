@@ -281,13 +281,8 @@ glmFilter <- function(y,x=NULL,W,objfn="MI",MX=NULL,model,optim.method="BFGS"
   # Eigenvector Selection:
   # Candidate Set
   #####
-  if(positive | MI_init$zI>=0){
-    sel <- evMI/evMI[1] >= alpha
-    dep <- "positive"
-  } else {
-    sel <- evMI/evMI[n] >= alpha
-    dep <- "negative"
-  }
+  if(positive | MI_init$zI>=0){ sel <- evMI/evMI[1] >= alpha; dep <- "positive"}
+  else sel <- evMI/evMI[n] >= alpha; dep <- "negative"
 
   # number of feasible eigenvectors
   ncandidates <- sum(sel)
