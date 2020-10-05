@@ -227,11 +227,8 @@ lmFilter <- function(y,x=NULL,W,objfn="MI",MX=NULL,sig=.05
   if(positive | MI_init$zI >= 0){
     if(ideal.setsize){
       # avoids problems of NaN if positive=T but zMI < 0:
-      if(MI_init$zI < 0){
-        csize <- candsetsize(npos=length(evals[evals > 1e-07]),zMI=0)
-      } else {
-        csize <- candsetsize(npos=length(evals[evals > 1e-07]),zMI=MI_init$zI)
-      }
+      csize <- candsetsize(npos=length(evals[evals > 1e-07])
+                             ,zMI=ifelse(MI_init$zI<0,0,MI_init$zI))
       if(csize==0) sel <- rep(F,length(evals))
       else sel <- evals %in% evals[1:csize]
       dep <- "positive"
