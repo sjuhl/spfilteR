@@ -235,8 +235,8 @@ test_that("'objfn=all' selects all eigenvectors in the candidate set", {
   alpha <- .25
   inselset <- eigen$moran/eigen$moran[1]>=alpha
   E <- eigen$vectors[,inselset]
-  filter <- lmFilter(y=fakedataset$x1,W=W,objfn="all",alpha=alpha)
-  expect_equal(filter$other$nev,sum(inselset))
+  sf <- lmFilter(y=fakedataset$x1,W=W,objfn="all",alpha=alpha)
+  expect_equal(sf$other$nev,sum(inselset))
 })
 
 test_that("The argument 'objfn' works with 'p', 'MI', 'R2', and 'all' ", {
@@ -255,6 +255,63 @@ test_that("If 'objfn=p': selects fewer EVs if 'bonferroni=T'", {
   bonferroni <- lmFilter(y=fakedataset$x1,W=W,objfn="p",bonferron=TRUE)
   nobonferroni <- lmFilter(y=fakedataset$x1,W=W,objfn="p",bonferron=FALSE)
   expect_true(bonferroni$other$nev < nobonferroni$other$nev)
+})
+
+test_that("W must be of class 'matrix', 'Matrix', or 'data.frame'", {
+  W2 <- as.vector(W)
+  expect_error(lmFilter(y=fakedataset$x1,W=W2,objfn="all",na.rm=F)
+               ,"W must be of class 'matrix' or 'data.frame'")
+})
+
+test_that("lmFilter() works with named input", {
+  y <- fakedataset$x1
+  x <- as.matrix(fakedataset$x2)
+  colnames(x) <- "name"
+  out <- lmFilter(y=y,x=x,W=W,objfn="p",bonferroni=FALSE,sig=.05)
+  expect_equal(rownames(out$estimates)[2], colnames(x))
+})
+
+test_that("lmFilter() returns an error message if 'alpha' is not contained
+          in (0,1]", {
+            y <- fakedataset$x1
+            alpha <- c(-1,.001,.5,1,1.0001)
+            expected <- c(TRUE,FALSE,FALSE,FALSE,TRUE)
+            out <- NULL
+            for(i in 1:length(alpha)){
+              res <- try(lmFilter(y=y,W=W,objfn="all",alpha=alpha[i])
+                         ,silent=TRUE)
+              out[i] <- class(res)=="try-error"
+            }
+            expect_equal(out,expected)
+          })
+
+test_that("If 'alpha=0', lmFilter() sets 'alpha' to 1e-07", {
+  y <- fakedataset$x1
+  res <- try(lmFilter(y=y,W=W,objfn="all",alpha=0),silent=TRUE)
+  out <- class(res)!="try-error"
+  expect_true(out)
+})
+
+test_that("W must be of class 'matrix', 'Matrix', or 'data.frame'", {
+  W2 <- as.vector(W)
+  expect_error(lmFilter(y=fakedataset$x1,W=W2,objfn="all",na.rm=F)
+               ,"W must be of class 'matrix' or 'data.frame'")
+})
+
+test_that("lmFilter() accepts covariates in 'MX'", {
+  y <- fakedataset$x1
+  X <- cbind(1,fakedataset$x3)
+  MX <- X
+  res <- try(lmFilter(y=y,x=X,W=W,MX=X,objfn="all",positive=F),silent=TRUE)
+  out <- class(res)!="try-error"
+  expect_true(out)
+})
+
+test_that("lmFilter() also works with negative autocorrelation", {
+  y <- fakedataset$negative
+  res <- try(lmFilter(y=y,W=W,objfn="all",positive=F),silent=TRUE)
+  out <- class(res)!="try-error"
+  expect_true(out)
 })
 
 
@@ -364,18 +421,101 @@ test_that("if 'objfn=AIC' or 'objfn=BIC', 'min.reduction' needs to be in [0,1)",
   expect_equal(out,expect)
 })
 
+test_that("W must be of class 'matrix', 'Matrix', or 'data.frame'", {
+  W2 <- as.vector(W)
+  expect_error(glmFilter(y=fakedataset$count,W=W2,model="poisson",objfn="all",na.rm=F)
+               ,"W must be of class 'matrix' or 'data.frame'")
+})
+
+test_that("'model' must be one of 'poisson', 'probit', or 'logit'", {
+  model <- c("probit","logit","poisson","else")
+  expect <- c(TRUE,TRUE,TRUE,FALSE)
+  out <- NULL
+  for(i in 1:4){
+    if(model[i] %in% c("probit","logit")) y <- fakedataset$indicator
+    else y <- fakedataset$count
+    res <- try(glmFilter(y=y,W=W,model=model[i],objfn="BIC")
+               ,silent=TRUE)
+    out[i] <- class(res)!="try-error"
+  }
+  expect_equal(out,expect)
+})
+
+test_that("The argument 'objfn' works with 'p', 'MI', 'AIC', 'BIC', and 'all' ", {
+  y <- fakedataset$count
+  objfn <- c("MI","p","AIC","BIC","all","else")
+  expected <- c(TRUE,TRUE,TRUE,TRUE,TRUE,FALSE)
+  out <- NULL
+  for(i in 1:length(objfn)){
+    res <- try(glmFilter(y=y,W=W,model="poisson",objfn=objfn[i]),silent=TRUE)
+    out[i] <- class(res)!="try-error"
+  }
+  expect_equal(out,expected)
+})
+
+test_that("The argument 'resid.type' must be 'raw','pearson', or 'deviance'", {
+  y <- fakedataset$count
+  resid.type <- c("raw","pearson","deviance","else")
+  expected <- c(TRUE,TRUE,TRUE,FALSE)
+  out <- NULL
+  for(i in 1:4){
+    res <- try(glmFilter(y=y,W=W,model="poisson",objfn="BIC",resid.type=resid.type[i])
+               ,silent=TRUE)
+    out[i] <- class(res)!="try-error"
+  }
+  expect_equal(out,expected)
+})
+
+test_that("eigenvectors are orthogonal to covariates specified in MX", {
+  y <- fakedataset$indicator
+  X <- cbind(fakedataset$x2)
+  MX <- fakedataset$x2
+  res <- glmFilter(y=y,x=X,W=W,MX=X,model="probit",objfn="MI")
+  res$other$nev
+  correlation <- cor(cbind(X,res$selvecs),method="pearson")
+  offdiag <- correlation - diag(1,nrow(correlation))
+  max <- max(offdiag)
+  expect_true(max<1e-07)
+})
+
 
 #####
 # methods
 #####
-test_that("Check the summary function", {
-  filter <- lmFilter(y=fakedataset$x1,W=W,objfn="R2")
-  expect_output(summary(filter))
+test_that("check the summary function", {
+  sf <- lmFilter(y=fakedataset$x1,W=W,objfn="R2")
+  expect_output(summary(sf))
 })
 
-test_that("Check the print method", {
-  filter <- lmFilter(y=fakedataset$x1,W=W,objfn="R2")
-  expect_output(print(filter))
+test_that("summary function for glmFilter()", {
+  sf <- glmFilter(y=fakedataset$count,W=W,model="poisson",objfn="MI")
+  expect_output(summary(sf))
+})
+
+test_that("summary function shows significance level without adjustment", {
+  sf <- lmFilter(y=fakedataset$x4,W=W,objfn="p",bonferroni=FALSE)
+  expect_output(summary(sf))
+})
+
+test_that("summary function shows significance level with adjustment", {
+  sf <- lmFilter(y=fakedataset$x4,W=W,objfn="p",bonferroni=TRUE)
+  expect_output(summary(sf,EV=TRUE))
+})
+
+test_that("summary function summarizes eigenvectors", {
+  sf <- lmFilter(y=fakedataset$x3,W=W,objfn="all")
+  expect_output(summary(sf,EV=TRUE))
+})
+
+test_that("plot method", {
+  sf <- lmFilter(y=fakedataset$x1,W=W,objfn="all")
+  out <- plot(sf)
+  expect_is(out, "NULL")
+})
+
+test_that("check the print method", {
+  sf <- lmFilter(y=fakedataset$x1,W=W,objfn="R2")
+  expect_output(print(sf))
 })
 
 test_that("coef() gives the correct number of coefs", {
