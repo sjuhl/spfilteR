@@ -510,7 +510,9 @@ test_that("check the summary function", {
 })
 
 test_that("summary function for glmFilter()", {
-  sf <- glmFilter(y=fakedataset$count,W=W,model="poisson",objfn="MI")
+  y <- fakedataset$count
+  X <- cbind(1,fakedataset$x1)
+  sf <- glmFilter(y=fakedataset$count,x=X,W=W,model="poisson",objfn="MI")
   expect_output(summary(sf))
 })
 
