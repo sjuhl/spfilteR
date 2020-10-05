@@ -4,7 +4,7 @@
 #'
 #' @description This function implements the eigenvector-based semiparametric
 #' spatial filtering approach in a linear regression framework using OLS.
-#' Eigenvectors are selected by an unsupervised steppwise regression
+#' Eigenvectors are selected by an unsupervised stepwise regression
 #' technique. Supported selection criteria are the minimization of residual
 #' autocorrelation, maximization of model fit, and the statistical significance
 #' of eigenvectors. Alternatively, all eigenvectors in the candidate set
@@ -61,7 +61,7 @@
 #' \item{\code{model}}{class of the regression model}
 #' \item{\code{dependence}}{filtered for positive or negative spatial dependence}
 #' \item{\code{objfn}}{selection criteria specified in the objective function of
-#' the steppwise regression procedure}
+#' the stepwise regression procedure}
 #' \item{\code{bonferroni}}{TRUE/ FALSE: Bonferroni-adjusted significance level
 #' (if \code{objfn='p'})}
 #' \item{\code{siglevel}}{if \code{objfn='p'}: actual (unadjusted/ adjusted)
@@ -172,7 +172,7 @@ lmFilter <- function(y,x=NULL,W,objfn="MI",MX=NULL,sig=.05
   if(!(objfn %in% c("R2","p","MI","all"))){
     stop("Invalid argument: objfn must be one of 'R2', 'p', 'MI', or'all'")
   }
-  if(positive==F & ideal.setsize==T){
+  if(positive==FALSE & ideal.setsize==TRUE){
     stop("Estimating the ideal set size is only valid for positive spatial autocorrelation")
   }
 
@@ -189,7 +189,7 @@ lmFilter <- function(y,x=NULL,W,objfn="MI",MX=NULL,sig=.05
     if(objfn=="p"){
       est <- (solve(crossprod(xe)) %*% crossprod(xe,y))[ncol(xe),]
       se <- sqrt( (solve(t(xe)%*%xe)[ncol(xe),ncol(xe)]*sum(resid^2))/(nrow(W)-ncol(xe)) )
-      test <- 2*pt(abs(est/se),df=(n-ncol(xe)),lower.tail=F) # p-value
+      test <- 2*pt(abs(est/se),df=(n-ncol(xe)),lower.tail=FALSE) # p-value
     }
     if(objfn=="MI"){
       test <- abs(getMoran(resid=resid,x=xe,W=W,boot=boot.MI)$zI) # (absolute) standardized Moran's I
@@ -228,10 +228,10 @@ lmFilter <- function(y,x=NULL,W,objfn="MI",MX=NULL,sig=.05
   #####
   if(positive | MI_init$zI >= 0){
     if(ideal.setsize){
-      # avoids problems of NaN if positive=T but zMI < 0:
+      # avoids problems of NaN if positive=TRUE but zMI < 0:
       csize <- candsetsize(npos=length(evals[evals > 1e-07])
                              ,zMI=ifelse(MI_init$zI<0,0,MI_init$zI))
-      sel <- ifelse(csize==0,rep(F,length(evals)),evals %in% evals[1:csize])
+      sel <- ifelse(csize==0,rep(FALSE,length(evals)),evals %in% evals[1:csize])
       dep <- "positive"
     } else{
       sel <- evMI/evMI[1] >= alpha
@@ -316,7 +316,7 @@ lmFilter <- function(y,x=NULL,W,objfn="MI",MX=NULL,sig=.05
   coefs <- solve(crossprod(xev)) %*% crossprod(xev,y)
   vcov <- (solve(crossprod(xev)) * sum((y-xev %*% coefs)^2))/(n-ncol(xev))
   se <- sqrt(diag(vcov))
-  p.val <- 2*pt(abs(coefs/se),df=(n-ncol(xev)),lower.tail=F)
+  p.val <- 2*pt(abs(coefs/se),df=(n-ncol(xev)),lower.tail=FALSE)
 
   # fit & spatial autocorrelation
   fitvals <- fittedval(x=xev,params=coefs,model="linear")
@@ -351,7 +351,7 @@ lmFilter <- function(y,x=NULL,W,objfn="MI",MX=NULL,sig=.05
     # EV matrix
     gammas <- coefs[(nx+1):(nx+count)]
     gse <- se[(nx+1):(nx+count)]
-    gp <- 2*pt(abs(gammas/gse),df=(n-ncol(xev)),lower.tail=F)
+    gp <- 2*pt(abs(gammas/gse),df=(n-ncol(xev)),lower.tail=FALSE)
     pR2 <- partialR2(y=y,x=xev[,1:nx],evecs=xev[,(nx+1):(nx+count)])
     vif <- vif.ev(x=xev[,1:nx],evecs=xev[,(nx+1):(nx+count)])
     EV <- cbind(gammas,gse,gp,pR2,vif,evMI[sel_id])

@@ -93,7 +93,7 @@ filtered model}
 \item{\code{model}}{class of the regression model}
 \item{\code{dependence}}{filtered for positive or negative spatial dependence}
 \item{\code{objfn}}{selection criteria specified in the objective function of
-the steppwise regression procedure}
+the stepwise regression procedure}
 \item{\code{bonferroni}}{TRUE/ FALSE: Bonferroni-adjusted significance level
 (if \code{objfn='p'})}
 \item{\code{siglevel}}{if \code{objfn='p'}: actual (unadjusted/ adjusted)
@@ -105,7 +105,7 @@ significance level}
 \description{
 This function implements the eigenvector-based semiparametric
 spatial filtering approach in a linear regression framework using OLS.
-Eigenvectors are selected by an unsupervised steppwise regression
+Eigenvectors are selected by an unsupervised stepwise regression
 technique. Supported selection criteria are the minimization of residual
 autocorrelation, maximization of model fit, and the statistical significance
 of eigenvectors. Alternatively, all eigenvectors in the candidate set

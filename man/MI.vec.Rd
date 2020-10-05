@@ -31,7 +31,7 @@ following information for each variable:
 \description{
 Tests for the presence of spatial autocorrelation
 in a variable as indicated by the Moran coefficient. The variance
-is calculated under the normality assumtion.
+is calculated under the normality assumption.
 }
 \note{
 Estimation of the variance (under the normality assumption)

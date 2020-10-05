@@ -5,7 +5,7 @@
 #'
 #' @description This function implements the eigenvector-based semiparametric
 #' spatial filtering approach in a generalized linear regression framework using MLE.
-#' Eigenvectors are selected by an unsupervised steppwise regression
+#' Eigenvectors are selected by an unsupervised stepwise regression
 #' technique. Supported selection criteria are the minimization of residual
 #' autocorrelation, maximization of model fit, and the statistical significance
 #' of eigenvectors. Alternatively, all eigenvectors in the candidate set
@@ -69,7 +69,7 @@
 #' \item{\code{model}}{class of the regression model}
 #' \item{\code{dependence}}{filtered for positive or negative spatial dependence}
 #' \item{\code{objfn}}{selection criteria specified in the objective function of
-#' the steppwise regression procedure}
+#' the stepwise regression procedure}
 #' \item{\code{bonferroni}}{TRUE/ FALSE: Bonferroni-adjusted significance level
 #' (if \code{objfn='p'})}
 #' \item{\code{siglevel}}{if \code{objfn='p'}: actual (unadjusted/ adjusted)
@@ -99,7 +99,7 @@
 #'
 #' @note If the condition number (\code{condnum}) suggests high levels of multicollinearity,
 #' problematic eigenvectors can be manually removed from \code{selvecs} and
-#' the model can be reestimated using the \code{glm} function. Moreover, if other models that
+#' the model can be re-estimated using the \code{glm} function. Moreover, if other models that
 #' are currently not implemented here need to be estimated (e.g., quasi-binomials),
 #' users can extract eigenvectors using the function \code{getEVs} and perform a
 #' supervised eigenvector search using the \code{glm} function.
@@ -227,11 +227,11 @@ glmFilter <- function(y,x=NULL,W,objfn="MI",MX=NULL,model,optim.method="BFGS"
   objfunc <- function(y,xe,n,W,objfn,model,optim.method,boot.MI,resid.type){
     inits <- rep(0,ncol(xe))
     o <- optim(par=inits,fn=loglik,x=xe,y=y,model=model
-               ,method=optim.method,hessian=T)
+               ,method=optim.method,hessian=TRUE)
     if(objfn=="p"){
       est <- o$par[ncol(xe)]
       se <- sqrt(diag(solve(o$hessian)))[ncol(xe)]
-      test <- 2*pt(abs(est/se),df=(n-ncol(xe)),lower.tail=F) # p-value
+      test <- 2*pt(abs(est/se),df=(n-ncol(xe)),lower.tail=FALSE) # p-value
     }
     if(objfn=="AIC"){
       test <- getICs(negloglik=o$value,n=n,df=ncol(xe))$AIC
@@ -263,7 +263,7 @@ glmFilter <- function(y,x=NULL,W,objfn="MI",MX=NULL,model,optim.method="BFGS"
   #####
   inits <- rep(0,nx)
   opt <- optim(par=inits,fn=loglik,x=x,y=y,model=model
-               ,method=optim.method,hessian=T)
+               ,method=optim.method,hessian=TRUE)
   coefs_init <- opt$par
   se_init <- sqrt(diag(solve(opt$hessian)))
   ll_init <- opt$value
@@ -359,10 +359,10 @@ glmFilter <- function(y,x=NULL,W,objfn="MI",MX=NULL,model,optim.method="BFGS"
   xev <- cbind(x,evecs[,sel_id])
   inits <- rep(0,ncol(xev))
   opt <- optim(par=inits,fn=loglik,x=xev,y=y,model=model
-               ,method=optim.method,hessian=T)
+               ,method=optim.method,hessian=TRUE)
   coefs_out <- opt$par
   se_out <- sqrt(diag(solve(opt$hessian)))
-  p.val <- 2*pt(abs(coefs_out/se_out),df=(n-ncol(xev)),lower.tail=F)
+  p.val <- 2*pt(abs(coefs_out/se_out),df=(n-ncol(xev)),lower.tail=FALSE)
   ll_out <- opt$value
   ICs_out <- getICs(negloglik=ll_out, n=n, df=length(coefs_out))
   yhat_out <- fittedval(x=xev,params=coefs_out,model=model)
@@ -396,7 +396,7 @@ glmFilter <- function(y,x=NULL,W,objfn="MI",MX=NULL,model,optim.method="BFGS"
     # EV matrix
     gammas <- coefs_out[(nx+1):(nx+count)]
     gse <- se_out[(nx+1):(nx+count)]
-    gp <- 2*pt(abs(gammas/gse),df=(n-length(coefs_out)),lower.tail=F)
+    gp <- 2*pt(abs(gammas/gse),df=(n-length(coefs_out)),lower.tail=FALSE)
     EV <- cbind(gammas,gse,gp,evMI[sel_id])
     colnames(EV) <- c("Estimate","SE","p-value","MI")
     rownames(EV) <- paste0("ev_", sel_id)

@@ -4,7 +4,7 @@
 #'
 #' @description Tests for the presence of spatial autocorrelation
 #' in a variable as indicated by the Moran coefficient. The variance
-#' is calculated under the normality assumtion.
+#' is calculated under the normality assumption.
 #'
 #' @param x a vector or matrix
 #' @param W spatial connectivity matrix

@@ -99,7 +99,7 @@ among the eigenvectors induced by the link function, see e.g., Griffith/ Amrhein
 \item{\code{model}}{class of the regression model}
 \item{\code{dependence}}{filtered for positive or negative spatial dependence}
 \item{\code{objfn}}{selection criteria specified in the objective function of
-the steppwise regression procedure}
+the stepwise regression procedure}
 \item{\code{bonferroni}}{TRUE/ FALSE: Bonferroni-adjusted significance level
 (if \code{objfn='p'})}
 \item{\code{siglevel}}{if \code{objfn='p'}: actual (unadjusted/ adjusted)
@@ -113,7 +113,7 @@ significance level}
 \description{
 This function implements the eigenvector-based semiparametric
 spatial filtering approach in a generalized linear regression framework using MLE.
-Eigenvectors are selected by an unsupervised steppwise regression
+Eigenvectors are selected by an unsupervised stepwise regression
 technique. Supported selection criteria are the minimization of residual
 autocorrelation, maximization of model fit, and the statistical significance
 of eigenvectors. Alternatively, all eigenvectors in the candidate set
@@ -140,7 +140,7 @@ dependence.
 \note{
 If the condition number (\code{condnum}) suggests high levels of multicollinearity,
 problematic eigenvectors can be manually removed from \code{selvecs} and
-the model can be reestimated using the \code{glm} function. Moreover, if other models that
+the model can be re-estimated using the \code{glm} function. Moreover, if other models that
 are currently not implemented here need to be estimated (e.g., quasi-binomials),
 users can extract eigenvectors using the function \code{getEVs} and perform a
 supervised eigenvector search using the \code{glm} function.
