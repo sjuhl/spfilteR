@@ -327,10 +327,14 @@ test_that("check ideal candidate set size", {
   expect_is(sf, "spfilter")
 })
 
-test_that("check 'tol'", {
-  tol <- .5
-  sf <- lmFilter(y=fakedataset$x2,objfn="MI",W=W,tol=tol)
-  expect_is(sf, "spfilter")
+test_that("check 'tol' in lmFilter()", {
+  tol <- c(.1,.01)
+  nev <- NULL
+  for(i in 1:2){
+    sf <- lmFilter(y=fakedataset$x4,objfn="MI",alpha=.05,W=W,tol=tol[i])
+    nev[i] <- sf$other$nev
+  }
+  expect_true(nev[1]<nev[2])
 })
 
 
