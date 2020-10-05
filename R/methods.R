@@ -30,7 +30,7 @@ summary.spfilter <- function(obj,EV=FALSE){
   }
 
   # additional information on stepwise regression
-  cat(paste("\nFiltered for", obj$other$dependence, "spatial autocorrelation"))
+  cat(paste("\nFiltered for", obj$other$dependence, "spatial autocorrelation\n"))
   cat(paste(obj$other$nev,"out of",obj$other$ncandidates, "candidate eigenvectors selected\n"))
   if(obj$other$model!="linear" & obj$other$nev>0){
     cat(paste0("Condition Number (Multicollinearity): ",obj$other$condnum,"\n"))
@@ -65,8 +65,8 @@ summary.spfilter <- function(obj,EV=FALSE){
   moran <- data.frame(obj$moran,m_signif)
   colnames(moran) <- c(colnames(obj$moran),"")
   cat(paste0("\n","Moran's I (",ifelse(obj$other$model!="linear"
-                                ,paste0(toupper(substr(obj$other$resid.type,1,1))
-                                        ,substr(obj$other$resid.type,2)
+                                ,paste0(toupper(substring(obj$other$resid.type,1,1))
+                                        ,substring(obj$other$resid.type,2)
                                         ,""),"")
              ," Residuals):\n"))
   print(moran)
