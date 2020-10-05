@@ -33,6 +33,8 @@
 #' Griffith (2003)
 #' @param tol if \code{objfn='MI'}, determines the amount of remaining residual
 #' autocorrelation at which the eigenvector selection terminates
+#' @param boot.MI number of iterations used to estimate the variance of Moran's I.
+#' If \code{boot=NULL} (default), analytical results will be used
 #' @param na.rm remove missing values in variables (TRUE/ FALSE)
 #' @param obj an object of class \code{spfilter}
 #' @param EV display summary statistics for selected eigenvectors (TRUE/ FALSE)
@@ -128,7 +130,7 @@
 
 lmFilter <- function(y,x=NULL,W,objfn="MI",MX=NULL,sig=.05
                      ,bonferroni=TRUE,positive=TRUE,ideal.setsize=FALSE
-                     ,alpha=.25,tol=.1,na.rm=TRUE){
+                     ,alpha=.25,tol=.1,boot.MI=NULL,na.rm=TRUE){
 
   if(!is.null(MX)) MX <- as.matrix(MX)
   if(!is.null(x)) x <- as.matrix(x)
@@ -177,7 +179,7 @@ lmFilter <- function(y,x=NULL,W,objfn="MI",MX=NULL,sig=.05
   #####
   # Objective Function
   #####
-  objfunc <- function(y,xe,n,W,objfn){
+  objfunc <- function(y,xe,n,W,objfn,boot.MI){
     resid <- y-xe%*%solve(crossprod(xe)) %*% crossprod(xe,y)
     if(objfn=="R2"){
       TSS <- sum((y - mean(y))^2)
@@ -190,7 +192,7 @@ lmFilter <- function(y,x=NULL,W,objfn="MI",MX=NULL,sig=.05
       test <- 2*pt(abs(est/se),df=(n-ncol(xe)),lower.tail=F) # p-value
     }
     if(objfn=="MI"){
-      test <- abs(getMoran(resid=resid,x=xe,W=W)$zI) # (absolute) standardized Moran's I
+      test <- abs(getMoran(resid=resid,x=xe,W=W,boot=boot.MI)$zI) # (absolute) standardized Moran's I
     }
     return(test)
   }
@@ -216,7 +218,7 @@ lmFilter <- function(y,x=NULL,W,objfn="MI",MX=NULL,sig=.05
   resid_init <- residfun(y=y,fitvals=fitvals,model="linear")$raw
   R2 <- 1-(sum(crossprod(resid_init))/TSS)
   adjR2_init <- 1-(1-R2)*(n-1)/(n-nx)
-  MI_init <- getMoran(resid=resid_init,x=x,W=W)
+  MI_init <- getMoran(resid=resid_init,x=x,W=W,boot=boot.MI)
   if(objfn=="MI") oldZMI <- abs(MI_init$zI)
   if(objfn=="R2") adjR2 <- -adjR2_init
 
@@ -268,7 +270,7 @@ lmFilter <- function(y,x=NULL,W,objfn="MI",MX=NULL,sig=.05
       # select candidate eigenvector
       for(j in selset){
         xe <- cbind(x,evecs[,sel_id],evecs[,j])
-        test <- objfunc(y=y,xe=xe,n=n,W=W,objfn=objfn)
+        test <- objfunc(y=y,xe=xe,n=n,W=W,objfn=objfn,boot.MI=boot.MI)
         if(test<oldtest){
           sid <- j
           oldtest <- test
@@ -321,7 +323,7 @@ lmFilter <- function(y,x=NULL,W,objfn="MI",MX=NULL,sig=.05
   resid <- residfun(y=y,fitvals=fitvals,model="linear")$raw
   R2 <- 1-(sum(crossprod(resid))/TSS)
   adjR2 <- 1-(1-R2)*(n-1)/(n-ncol(xev))
-  MI_filtered <- getMoran(resid=resid,x=xev,W=W)
+  MI_filtered <- getMoran(resid=resid,x=xev,W=W,boot=boot.MI)
 
   #####
   # Output

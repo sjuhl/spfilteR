@@ -18,6 +18,7 @@ lmFilter(
   ideal.setsize = FALSE,
   alpha = 0.25,
   tol = 0.1,
+  boot.MI = NULL,
   na.rm = TRUE
 )
 
@@ -59,6 +60,9 @@ Griffith (2003)}
 
 \item{tol}{if \code{objfn='MI'}, determines the amount of remaining residual
 autocorrelation at which the eigenvector selection terminates}
+
+\item{boot.MI}{number of iterations used to estimate the variance of Moran's I.
+If \code{boot=NULL} (default), analytical results will be used}
 
 \item{na.rm}{remove missing values in variables (TRUE/ FALSE)}
 
