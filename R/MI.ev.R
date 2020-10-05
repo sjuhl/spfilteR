@@ -27,7 +27,8 @@
 #' @export
 
 MI.ev <- function(W,evals){
-  n <- nrow(W)
-  evMI <- sapply(evals,function(evals) n/crossprod(rep(1,n),W%*%rep(1,n)) * evals)
+  n <- nrow(W)#evMI <- sapply(evals,function(evals) n/crossprod(rep(1,n),W%*%rep(1,n)) * evals)
+  evMI <- vapply(evals,function(evals) n/crossprod(rep(1,n),W%*%rep(1,n)) * evals
+                 ,FUN.VALUE=numeric(1))
   return(evMI)
 }
