@@ -314,6 +314,23 @@ test_that("lmFilter() also works with negative autocorrelation", {
   expect_true(out)
 })
 
+test_that("lmFilter() breaks if missings are present but na.rm=FALSE", {
+  y <- fakedataset$x2
+  y[6] <- NA
+  expect_error(lmFilter(y=y,W=W,na.rm=FALSE)
+               ,"Missing values detected")
+})
+
+test_that("check ideal candidate set size", {
+  expect_output(lmFilter(y=fakedataset$x4,W=W,positive=TRUE
+                         ,ideal.setsize=TRUE))
+})
+
+test_that("check 'tol'", {
+  tol <- .5
+  expect_output(lmFilter(y=fakedataset$x2,objfn="MI",W=W,tol=tol))
+})
+
 
 #####
 # glmFilter()
@@ -468,8 +485,8 @@ test_that("The argument 'resid.type' must be 'raw','pearson', or 'deviance'", {
 
 test_that("eigenvectors are orthogonal to covariates specified in MX", {
   y <- fakedataset$indicator
-  X <- cbind(fakedataset$x2)
-  MX <- fakedataset$x2
+  X <- cbind(1,fakedataset$x2)
+  MX <- X
   res <- glmFilter(y=y,x=X,W=W,MX=X,model="probit",objfn="MI")
   res$other$nev
   correlation <- cor(cbind(X,res$selvecs),method="pearson")
