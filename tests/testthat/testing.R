@@ -322,13 +322,15 @@ test_that("lmFilter() breaks if missings are present but na.rm=FALSE", {
 })
 
 test_that("check ideal candidate set size", {
-  expect_output(lmFilter(y=fakedataset$x4,W=W,positive=TRUE
-                         ,ideal.setsize=TRUE))
+  sf <- lmFilter(y=fakedataset$x4,W=W,positive=TRUE
+                 ,ideal.setsize=TRUE)
+  expect_is(sf, "spfilter")
 })
 
 test_that("check 'tol'", {
   tol <- .5
-  expect_output(lmFilter(y=fakedataset$x2,objfn="MI",W=W,tol=tol))
+  sf <- lmFilter(y=fakedataset$x2,objfn="MI",W=W,tol=tol)
+  expect_is(sf, "spfilter")
 })
 
 
@@ -488,8 +490,7 @@ test_that("eigenvectors are orthogonal to covariates specified in MX", {
   X <- cbind(1,fakedataset$x2)
   MX <- X
   res <- glmFilter(y=y,x=X,W=W,MX=X,model="probit",objfn="MI")
-  res$other$nev
-  correlation <- cor(cbind(X,res$selvecs),method="pearson")
+  correlation <- cor(cbind(X[,2],res$selvecs),method="pearson")
   offdiag <- correlation - diag(1,nrow(correlation))
   max <- max(offdiag)
   expect_true(max<1e-07)
