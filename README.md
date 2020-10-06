@@ -1,9 +1,10 @@
 # spfilteR
 
 <!-- badges: start -->
+[![packageversion](https://img.shields.io/badge/Package%20version-`r version`-orange.svg?style=flat-square)](commits/master)
 [![codecov](https://codecov.io/gh/sjuhl/spfilteR/branch/master/graph/badge.svg)](https://codecov.io/gh/sjuhl/spfilteR)
-  [![Travis build status](https://travis-ci.com/sjuhl/spfilteR.svg?branch=master)](https://travis-ci.com/sjuhl/spfilteR)
-  [![license](https://img.shields.io/badge/license-GPL--3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0.en.html)
+[![Travis build status](https://travis-ci.com/sjuhl/spfilteR.svg?branch=master)](https://travis-ci.com/sjuhl/spfilteR)
+[![license](https://img.shields.io/badge/license-GPL--3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0.en.html)
 <!-- badges: end -->
 ---
 
