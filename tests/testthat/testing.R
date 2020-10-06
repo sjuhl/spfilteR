@@ -357,8 +357,7 @@ test_that("glmFilter() estimates probit models", {
 
 test_that("glmFilter() estimates logit models", {
   y <- fakedataset$indicator
-  X <- cbind(fakedataset$x1,fakedataset$x2,fakedataset$x3,fakedataset$x4)
-  out <- glmFilter(y=y,x=X,W=W,objfn="MI",model="logit")
+  out <- glmFilter(y=y,W=W,objfn="MI",model="logit")
   expect_is(out, "spfilter")
 })
 
