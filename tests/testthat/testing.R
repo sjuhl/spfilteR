@@ -337,6 +337,24 @@ test_that("check 'tol' in lmFilter()", {
   expect_true(nev[1]<nev[2])
 })
 
+test_that("check 'pMI' with positive autocorrelation in lmFilter()", {
+  sf <- lmFilter(y=fakedataset$x1,W=W,objfn="pMI",positive=TRUE
+                 ,bonferroni=FALSE)
+  expect_is(sf, "spfilter")
+})
+
+test_that("lmFilter sets 'bonferroni=FALSE' for 'pMI'", {
+  sf <- lmFilter(y=fakedataset$x1,W=W,objfn="pMI",positive=TRUE
+                 ,bonferroni=TRUE)
+  expect_false(sf$other$bonferroni)
+})
+
+test_that("check 'pMI' with negative autocorrelation in lmFilter()", {
+  sf <- lmFilter(y=fakedataset$negative,W=W,objfn="pMI",positive=FALSE)
+  expect_is(sf, "spfilter")
+})
+
+
 
 #####
 # glmFilter()
@@ -502,6 +520,24 @@ test_that("check that glmFilter() works with negative autocorrelation", {
   y <- fakedataset$negcount
   res <- glmFilter(y=y,W=W,model="poisson",objfn="MI",positive=FALSE)
   expect_equal(res$other$dependence,"negative")
+})
+
+test_that("check 'pMI' with positive autocorrelation in glmFilter()", {
+  sf <- glmFilter(y=fakedataset$count,W=W,objfn="pMI",model="poisson"
+                  ,positive=TRUE,bonferroni=FALSE)
+  expect_is(sf, "spfilter")
+})
+
+test_that("lmFilter sets 'bonferroni=FALSE' for 'pMI'", {
+  sf <- glmFilter(y=fakedataset$count,W=W,objfn="pMI",model="poisson"
+                  ,positive=TRUE,bonferroni=TRUE)
+  expect_false(sf$other$bonferroni)
+})
+
+test_that("check 'pMI' with negative autocorrelation in lmFilter()", {
+  sf <- glmFilter(y=fakedataset$negcount,W=W,objfn="pMI",model="poisson"
+                 ,positive=FALSE)
+  expect_equal(sf$other$dependence, "negative")
 })
 
 
