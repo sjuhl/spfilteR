@@ -65,7 +65,7 @@ getEVs <- function(W,covars=NULL){
   if(is.null(covars)) covars <- rep(1,n)
   covars <- as.matrix(covars)
   #if(!all(covars[,1]==1)) covars <- cbind(1,covars)
-  if(!any(apply(X3,2,function(x) all(unique(x)==1)))) covars <- cbind(1,covars)
+  if(!any(apply(covars,2,function(x) all(unique(x)==1)))) covars <- cbind(1,covars)
 
   M <- diag(n)-covars%*%qr.solve(crossprod(covars),t(covars))
   # if no covars, M equals diag(n)-rep(1,n)%*%t(rep(1,n))/n
