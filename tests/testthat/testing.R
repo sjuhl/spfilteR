@@ -492,12 +492,17 @@ test_that("The argument 'resid.type' must be 'raw','pearson', or 'deviance'", {
 test_that("eigenvectors are orthogonal to covariates specified in MX", {
   y <- fakedataset$indicator
   X <- cbind(1,fakedataset$x2)
-  MX <- X
   res <- glmFilter(y=y,x=X,W=W,MX=X,model="probit",objfn="MI")
   correlation <- cor(cbind(X[,2],res$selvecs),method="pearson")
   offdiag <- correlation - diag(1,nrow(correlation))
   max <- max(offdiag)
   expect_true(max<1e-07)
+})
+
+test_that("check that glmFilter() works with negative autocorrelation", {
+  y <- fakedataset$negcount
+  res <- glmFilter(y=y,W=W,model="poisson",objfn="MI",positive=FALSE)
+  expect_equal(res$other$dependence,"negative")
 })
 
 
