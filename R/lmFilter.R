@@ -6,9 +6,9 @@
 #' spatial filtering approach in a linear regression framework using OLS.
 #' Eigenvectors are selected by an unsupervised stepwise regression
 #' technique. Supported selection criteria are the minimization of residual
-#' autocorrelation, maximization of model fit, and the statistical significance
-#' of eigenvectors. Alternatively, all eigenvectors in the candidate set
-#' can be included as well.
+#' autocorrelation, maximization of model fit, significance of residual autocorrelation,
+#' and the statistical significance of eigenvectors. Alternatively, all eigenvectors in
+#' the candidate set can be included as well.
 #'
 #' @param y vector of regressands
 #' @param x vector/ matrix of regressors (default=NULL)
@@ -16,13 +16,14 @@
 #' @param objfn specifies the objective function to be used for eigenvector
 #' selection. Possible criteria are: the maximization of the
 #' adjusted R-squared ('R2'), minimization of residual autocorrelation ('MI'),
-#' significance level of candidate eigenvectors ('p'), or
-#' all eigenvectors in the candidate set ('all')
+#' significance level of candidate eigenvectors ('p'), significance of residual spatial
+#' autocorrelation ('pMI') or all eigenvectors in the candidate set ('all')
 #' @param MX covariates used to construct the projection matrix (default=NULL)
 #' @param sig significance level to be used for eigenvector selection
-#' if \code{objfn='p'}
+#' if \code{objfn='p'} or \code{objfn='pMI'}
 #' @param bonferroni Bonferroni adjustment for the significance level
-#' (TRUE/ FALSE)
+#' (TRUE/ FALSE) if \code{objfn='p'}. Set to FALSE if \code{objfn='pMI'},
+#' see Details
 #' @param positive restrict search to eigenvectors associated with positive
 #' levels of spatial autocorrelation (TRUE/ FALSE)
 #' @param ideal.setsize if \code{positive=TRUE}, uses the formula proposed in
@@ -64,8 +65,8 @@
 #' the stepwise regression procedure}
 #' \item{\code{bonferroni}}{TRUE/ FALSE: Bonferroni-adjusted significance level
 #' (if \code{objfn='p'})}
-#' \item{\code{siglevel}}{if \code{objfn='p'}: actual (unadjusted/ adjusted)
-#' significance level}
+#' \item{\code{siglevel}}{if \code{objfn='p'} or \code{objfn='pMI'}: actual
+#' (unadjusted/ adjusted) significance level}
 #' }
 #' }
 #' }
@@ -86,6 +87,11 @@
 #' observations. Griffith and Tiefelsdorf (2007) show how the choice of the appropriate
 #' \emph{\strong{M}} depends on the underlying process that generates the spatial
 #' dependence.
+#'
+#' The Bonferroni correction is only possible if eigenvector selection is based on
+#' the significance level of the eigenvectors (\code{objfn='p'}). It is set to
+#' FALSE if eigenvectors are added to the model until the residuals exhibit no
+#' significant level of spatial autocorrelation (\code{objfn='p'}).
 #'
 #' @examples
 #' data(fakedata)
@@ -169,17 +175,20 @@ lmFilter <- function(y,x=NULL,W,objfn="MI",MX=NULL,sig=.05
     stop("W must be of class 'matrix' or 'data.frame'")
   }
   if(any(class(W)!="matrix")) W <- as.matrix(W)
-  if(!(objfn %in% c("R2","p","MI","all"))){
-    stop("Invalid argument: objfn must be one of 'R2', 'p', 'MI', or'all'")
+  if(!(objfn %in% c("R2","p","MI","pMI","all"))){
+    stop("Invalid argument: objfn must be one of 'R2', 'p', 'MI', 'pMI', or'all'")
   }
   if(positive==FALSE & ideal.setsize==TRUE){
     stop("Estimating the ideal set size is only valid for positive spatial autocorrelation")
   }
 
+  # no bonferroni adjustment for 'pMI'
+  if(objfn=="pMI" & bonferroni) bonferroni <- FALSE
+
   #####
   # Objective Function
   #####
-  objfunc <- function(y,xe,n,W,objfn,boot.MI){
+  objfunc <- function(y,xe,n,W,objfn,boot.MI,alternative){
     resid <- y-xe%*%solve(crossprod(xe)) %*% crossprod(xe,y)
     if(objfn=="R2"){
       TSS <- sum((y - mean(y))^2)
@@ -193,6 +202,9 @@ lmFilter <- function(y,x=NULL,W,objfn="MI",MX=NULL,sig=.05
     }
     if(objfn=="MI"){
       test <- abs(getMoran(resid=resid,x=xe,W=W,boot=boot.MI)$zI) # (absolute) standardized Moran's I
+    }
+    if(objfn=="pMI"){
+      test <- getMoran(resid=resid,x=xe,W=W,boot=boot.MI,alternative=alternative)$pI
     }
     return(test)
   }
@@ -218,19 +230,19 @@ lmFilter <- function(y,x=NULL,W,objfn="MI",MX=NULL,sig=.05
   resid_init <- residfun(y=y,fitvals=fitvals,model="linear")$raw
   R2 <- 1-(sum(crossprod(resid_init))/TSS)
   adjR2_init <- 1-(1-R2)*(n-1)/(n-nx)
-  MI_init <- getMoran(resid=resid_init,x=x,W=W,boot=boot.MI)
-  if(objfn=="MI") oldZMI <- abs(MI_init$zI)
+  zMI_init <- getMoran(resid=resid_init,x=x,W=W,boot=boot.MI)$zI
+  if(objfn=="MI") oldZMI <- abs(zMI_init)
   if(objfn=="R2") adjR2 <- -adjR2_init
 
   #####
   # Eigenvector Selection:
   # Candidate Set
   #####
-  if(positive | MI_init$zI >= 0){
+  if(positive | zMI_init >= 0){
     if(ideal.setsize){
       # avoids problems of NaN if positive=TRUE but zMI < 0:
       csize <- candsetsize(npos=length(evals[evals > 1e-07])
-                             ,zMI=ifelse(MI_init$zI<0,0,MI_init$zI))
+                             ,zMI=ifelse(zMI_init<0,0,zMI_init))
       sel <- ifelse(csize==0,rep(FALSE,length(evals)),evals %in% evals[1:csize])
       dep <- "positive"
     } else{
@@ -246,7 +258,7 @@ lmFilter <- function(y,x=NULL,W,objfn="MI",MX=NULL,sig=.05
   ncandidates <- sum(sel)
 
   # Bonferroni adjustment (Griffith/ Chun 2014: 1490)
-  if(objfn=="p"){
+  if(objfn=="p" | objfn=="pMI"){
     if(bonferroni & ncandidates>0) sig <- sig/ncandidates
   } else {
     sig <- bonferroni <- NULL
@@ -264,37 +276,43 @@ lmFilter <- function(y,x=NULL,W,objfn="MI",MX=NULL,sig=.05
 
     # start forward search
     for(i in which(sel)){
-      oldtest <- Inf
+      ref <- Inf
       sid <- NULL
 
       # select candidate eigenvector
       for(j in selset){
         xe <- cbind(x,evecs[,sel_id],evecs[,j])
-        test <- objfunc(y=y,xe=xe,n=n,W=W,objfn=objfn,boot.MI=boot.MI)
-        if(test<oldtest){
+        test <- objfunc(y=y,xe=xe,n=n,W=W,objfn=objfn,boot.MI=boot.MI
+                        ,alternative=ifelse(dep=="positive","greater","lower"))
+        if(test<ref){
           sid <- j
-          oldtest <- test
+          ref <- test
         }
       }
 
       # stopping rules
       if(objfn=="R2"){
-        if(oldtest < adjR2){
-          adjR2 <- oldtest
+        if(ref < adjR2){
+          adjR2 <- ref
           sel_id <- c(sel_id,sid)
         } else break
       }
       if(objfn=="p"){
-        if(oldtest < sig){
+        if(ref < sig){
           sel_id <- c(sel_id,sid)
         } else break
       }
       if(objfn=="MI"){
-        if(oldtest < oldZMI){
-          oldZMI <- oldtest
+        if(ref < oldZMI){
+          oldZMI <- ref
           sel_id <- c(sel_id,sid)
         } else break
         if(oldZMI < tol) break
+      }
+      if(objfn=="pMI"){
+        if(ref < sig){
+          sel_id <- c(sel_id,sid)
+        } else break
       }
 
       # remove selected eigenvectors from search set
@@ -323,7 +341,10 @@ lmFilter <- function(y,x=NULL,W,objfn="MI",MX=NULL,sig=.05
   resid <- residfun(y=y,fitvals=fitvals,model="linear")$raw
   R2 <- 1-(sum(crossprod(resid))/TSS)
   adjR2 <- 1-(1-R2)*(n-1)/(n-ncol(xev))
-  MI_filtered <- getMoran(resid=resid,x=xev,W=W,boot=boot.MI)
+  MI_filtered <- getMoran(resid=resid,x=xev,W=W,boot=boot.MI
+                          ,alternative=ifelse(dep=="positive","greater","lower"))
+  MI_init <- getMoran(resid=resid,x=x,W=W,boot=boot.MI
+                      ,alternative=ifelse(dep=="positive","greater","lower"))
 
   #####
   # Output

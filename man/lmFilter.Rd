@@ -36,16 +36,17 @@ lmFilter(
 \item{objfn}{specifies the objective function to be used for eigenvector
 selection. Possible criteria are: the maximization of the
 adjusted R-squared ('R2'), minimization of residual autocorrelation ('MI'),
-significance level of candidate eigenvectors ('p'), or
-all eigenvectors in the candidate set ('all')}
+significance level of candidate eigenvectors ('p'), significance of residual spatial
+autocorrelation ('pMI') or all eigenvectors in the candidate set ('all')}
 
 \item{MX}{covariates used to construct the projection matrix (default=NULL)}
 
 \item{sig}{significance level to be used for eigenvector selection
-if \code{objfn='p'}}
+if \code{objfn='p'} or \code{objfn='pMI'}}
 
 \item{bonferroni}{Bonferroni adjustment for the significance level
-(TRUE/ FALSE)}
+(TRUE/ FALSE) if \code{objfn='p'}. Set to FALSE if \code{objfn='pMI'},
+see Details}
 
 \item{positive}{restrict search to eigenvectors associated with positive
 levels of spatial autocorrelation (TRUE/ FALSE)}
@@ -96,8 +97,8 @@ filtered model}
 the stepwise regression procedure}
 \item{\code{bonferroni}}{TRUE/ FALSE: Bonferroni-adjusted significance level
 (if \code{objfn='p'})}
-\item{\code{siglevel}}{if \code{objfn='p'}: actual (unadjusted/ adjusted)
-significance level}
+\item{\code{siglevel}}{if \code{objfn='p'} or \code{objfn='pMI'}: actual
+(unadjusted/ adjusted) significance level}
 }
 }
 }
@@ -107,9 +108,9 @@ This function implements the eigenvector-based semiparametric
 spatial filtering approach in a linear regression framework using OLS.
 Eigenvectors are selected by an unsupervised stepwise regression
 technique. Supported selection criteria are the minimization of residual
-autocorrelation, maximization of model fit, and the statistical significance
-of eigenvectors. Alternatively, all eigenvectors in the candidate set
-can be included as well.
+autocorrelation, maximization of model fit, significance of residual autocorrelation,
+and the statistical significance of eigenvectors. Alternatively, all eigenvectors in
+the candidate set can be included as well.
 }
 \details{
 If \emph{\strong{W}} is not symmetric, it gets symmetrized by
@@ -128,6 +129,11 @@ where \emph{\strong{1}} is a vector of ones and \emph{n} represents the number o
 observations. Griffith and Tiefelsdorf (2007) show how the choice of the appropriate
 \emph{\strong{M}} depends on the underlying process that generates the spatial
 dependence.
+
+The Bonferroni correction is only possible if eigenvector selection is based on
+the significance level of the eigenvectors (\code{objfn='p'}). It is set to
+FALSE if eigenvectors are added to the model until the residuals exhibit no
+significant level of spatial autocorrelation (\code{objfn='p'}).
 }
 \examples{
 data(fakedata)

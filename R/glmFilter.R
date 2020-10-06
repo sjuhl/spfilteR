@@ -7,9 +7,9 @@
 #' spatial filtering approach in a generalized linear regression framework using MLE.
 #' Eigenvectors are selected by an unsupervised stepwise regression
 #' technique. Supported selection criteria are the minimization of residual
-#' autocorrelation, maximization of model fit, and the statistical significance
-#' of eigenvectors. Alternatively, all eigenvectors in the candidate set
-#' can be included as well.
+#' autocorrelation, maximization of model fit, significance of residual autocorrelation,
+#' and the statistical significance of eigenvectors. Alternatively, all eigenvectors in
+#' the candidate set can be included as well.
 #'
 #' @param y vector of regressands
 #' @param x vector/ matrix of regressors (default=NULL)
@@ -17,16 +17,17 @@
 #' @param objfn specifies the objective function to be used for eigenvector
 #' selection. Possible criteria are: the maximization of the
 #' adjusted R-squared ('AIC' or 'BIC'), minimization of residual autocorrelation ('MI'),
-#' significance level of candidate eigenvectors ('p'), or
-#' all eigenvectors in the candidate set ('all')
+#' significance level of candidate eigenvectors ('p'), significance of residual spatial
+#' autocorrelation ('pMI'), or all eigenvectors in the candidate set ('all')
 #' @param MX covariates used to construct the projection matrix (default=NULL)
 #' @param model a character string indicating the model to be estimated.
 #' Currently, 'probit', 'logit', and 'poisson' are valid inputs
 #' @param optim.method a character specifying the optimization method
 #' @param sig significance level to be used for eigenvector selection
-#' if \code{objfn='p'}
+#' if \code{objfn='p'} or \code{objfn='pMI'}
 #' @param bonferroni Bonferroni adjustment for the significance level
-#' (TRUE/ FALSE)
+#' (TRUE/ FALSE) if \code{objfn='p'}. Set to FALSE if \code{objfn='pMI'},
+#' see Details
 #' @param positive restrict search to eigenvectors associated with positive
 #' levels of spatial autocorrelation (TRUE/ FALSE)
 #' @param min.reduction if \code{objfn} is either 'AIC' or 'BIC'. A value in the
@@ -72,9 +73,9 @@
 #' the stepwise regression procedure}
 #' \item{\code{bonferroni}}{TRUE/ FALSE: Bonferroni-adjusted significance level
 #' (if \code{objfn='p'})}
-#' \item{\code{siglevel}}{if \code{objfn='p'}: actual (unadjusted/ adjusted)
-#' significance level}
-#' \item{\code{resid.type}}{residual type used ('raw', 'deviance', or 'pearson')}
+#' \item{\code{siglevel}}{if \code{objfn='p'} or \code{objfn='pMI'}: actual
+#' (unadjusted/ adjusted) significance level}
+#' \item{\code{resid.type}}{residual type ('raw', 'deviance', or 'pearson')}
 #' \item{\code{pseudoR2}}{McFadden's pseudo R-squared (filtered vs. unfiltered model)}
 #' }
 #' }
@@ -96,6 +97,11 @@
 #' observations. Griffith and Tiefelsdorf (2007) show how the choice of the appropriate
 #' \emph{\strong{M}} depends on the underlying process that generates the spatial
 #' dependence.
+#'
+#' The Bonferroni correction is only possible if eigenvector selection is based on
+#' the significance level of the eigenvectors (\code{objfn='p'}). It is set to
+#' FALSE if eigenvectors are added to the model until the residuals exhibit no
+#' significant level of spatial autocorrelation (\code{objfn='p'}).
 #'
 #' @note If the condition number (\code{condnum}) suggests high levels of multicollinearity,
 #' problematic eigenvectors can be manually removed from \code{selvecs} and
@@ -194,12 +200,15 @@ glmFilter <- function(y,x=NULL,W,objfn="MI",MX=NULL,model,optim.method="BFGS"
   if(!(model %in% c("probit","logit","poisson"))){
     stop("'model' must be either 'probit', 'logit', or 'poisson'")
   }
-  if(!(objfn %in% c("p","MI","AIC","BIC","all"))){
-    stop("Invalid argument: objfn must be one of 'p', 'MI', 'AIC', 'BIC', or 'all'")
+  if(!(objfn %in% c("p","MI","pMI","AIC","BIC","all"))){
+    stop("Invalid argument: objfn must be one of 'p', 'MI','pMI, 'AIC', 'BIC', or 'all'")
   }
   if(!(resid.type %in% c("raw","pearson","deviance"))){
     stop("Invalid argument: resid.type must be one of 'raw', 'pearson', or 'deviance'")
   }
+
+  # no bonferroni adjustment for 'pMI'
+  if(objfn=="pMI" & bonferroni) bonferroni <- FALSE
 
   #####
   # Log-Likelihood Functions
@@ -224,7 +233,8 @@ glmFilter <- function(y,x=NULL,W,objfn="MI",MX=NULL,model,optim.method="BFGS"
   }
 
   # objective function to evaluate
-  objfunc <- function(y,xe,n,W,objfn,model,optim.method,boot.MI,resid.type){
+  objfunc <- function(y,xe,n,W,objfn,model,optim.method,boot.MI
+                      ,resid.type,alternative){
     inits <- rep(0,ncol(xe))
     o <- optim(par=inits,fn=loglik,x=xe,y=y,model=model
                ,method=optim.method,hessian=TRUE)
@@ -243,6 +253,11 @@ glmFilter <- function(y,x=NULL,W,objfn="MI",MX=NULL,model,optim.method="BFGS"
       fitvals <- fittedval(x=xe,params=o$par,model=model)
       resid <- residfun(y=y,fitvals=fitvals,model=model)[,resid.type]
       test <- abs(getMoran(resid=resid,x=xe,W=W,boot=boot.MI)$zI)
+    }
+    if(objfn=="pMI"){
+      fitvals <- fittedval(x=xe,params=o$par,model=model)
+      resid <- residfun(y=y,fitvals=fitvals,model=model)[,resid.type]
+      test <- getMoran(resid=resid,x=xe,W=W,boot=boot.MI,alternative=alternative)$pI
     }
     return(test)
   }
@@ -270,8 +285,8 @@ glmFilter <- function(y,x=NULL,W,objfn="MI",MX=NULL,model,optim.method="BFGS"
   ICs_init <- getICs(negloglik=ll_init, n=n, df=length(coefs_init))
   yhat_init <- fittedval(x=x,params=coefs_init,model=model)
   resid_init <- residfun(y=y,fitvals=yhat_init,model=model)[,resid.type]
-  MI_init <- getMoran(resid=resid_init,x=x,W=W,boot=boot.MI)
-  if(objfn=="MI") oldZMI <- abs(MI_init$zI)
+  zMI_init <- getMoran(resid=resid_init,x=x,W=W,boot=boot.MI)$zI
+  if(objfn=="MI") oldZMI <- abs(zMI_init)
   if(objfn %in% c("AIC","BIC")){
     IC <- ICs_init[,objfn]
     mindiff <- abs(IC*min.reduction)
@@ -281,7 +296,7 @@ glmFilter <- function(y,x=NULL,W,objfn="MI",MX=NULL,model,optim.method="BFGS"
   # Eigenvector Selection:
   # Candidate Set
   #####
-  if(positive | MI_init$zI>=0){
+  if(positive | zMI_init>=0){
     sel <- evMI/evMI[1] >= alpha
     dep <- "positive"
   } else {
@@ -293,7 +308,7 @@ glmFilter <- function(y,x=NULL,W,objfn="MI",MX=NULL,model,optim.method="BFGS"
   ncandidates <- sum(sel)
 
   # Bonferroni adjustment
-  if(objfn=="p"){
+  if(objfn=="p" | objfn=="pMI"){
     if(bonferroni & ncandidates>0) sig <- sig/ncandidates
   } else {
     sig <- bonferroni <- NULL
@@ -319,7 +334,8 @@ glmFilter <- function(y,x=NULL,W,objfn="MI",MX=NULL,model,optim.method="BFGS"
         xe <- cbind(x,evecs[,sel_id],evecs[,j])
         test <- objfunc(y=y,xe=xe,n=n,W=W,objfn=objfn,model=model
                         ,optim.method=optim.method,boot.MI=boot.MI
-                        ,resid.type=resid.type)
+                        ,resid.type=resid.type
+                        ,alternative=ifelse(dep=="positive","greater","lower"))
         if(test<ref){
           sid <- j
           ref <- test
@@ -346,6 +362,11 @@ glmFilter <- function(y,x=NULL,W,objfn="MI",MX=NULL,model,optim.method="BFGS"
         } else break
         if(oldZMI < tol) break
       }
+      if(objfn=="pMI"){
+        if(ref < sig){
+          sel_id <- c(sel_id,sid)
+        } else break
+      }
 
       # remove selected eigenvectors from candidate set
       selset <- selset[!(selset %in% sel_id)]
@@ -367,7 +388,10 @@ glmFilter <- function(y,x=NULL,W,objfn="MI",MX=NULL,model,optim.method="BFGS"
   ICs_out <- getICs(negloglik=ll_out, n=n, df=length(coefs_out))
   yhat_out <- fittedval(x=xev,params=coefs_out,model=model)
   resid_out <- residfun(y=y,fitvals=yhat_out,model=model)[,resid.type]
-  MI_out <- getMoran(resid=resid_out,x=xev,W=W,boot=boot.MI)
+  MI_out <- getMoran(resid=resid_out,x=xev,W=W,boot=boot.MI
+                     ,alternative=ifelse(dep=="positive","greater","lower"))
+  MI_init <- getMoran(resid=resid_init,x=x,W=W,boot=boot.MI
+                      ,alternative=ifelse(dep=="positive","greater","lower"))
 
   #####
   # Output
