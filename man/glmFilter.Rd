@@ -31,13 +31,14 @@ glmFilter(
 
 \item{W}{spatial connectivity matrix}
 
-\item{objfn}{specifies the objective function to be used for eigenvector
+\item{objfn}{the objective function to be used for eigenvector
 selection. Possible criteria are: the maximization of the
 adjusted R-squared ('AIC' or 'BIC'), minimization of residual autocorrelation ('MI'),
 significance level of candidate eigenvectors ('p'), significance of residual spatial
 autocorrelation ('pMI'), or all eigenvectors in the candidate set ('all')}
 
-\item{MX}{covariates used to construct the projection matrix (default=NULL)}
+\item{MX}{covariates used to construct the projection matrix (default=NULL) - see
+Details}
 
 \item{model}{a character string indicating the model to be estimated.
 Currently, 'probit', 'logit', and 'poisson' are valid inputs}
@@ -48,15 +49,15 @@ Currently, 'probit', 'logit', and 'poisson' are valid inputs}
 if \code{objfn='p'} or \code{objfn='pMI'}}
 
 \item{bonferroni}{Bonferroni adjustment for the significance level
-(TRUE/ FALSE) if \code{objfn='p'}. Set to FALSE if \code{objfn='pMI'},
+(TRUE/ FALSE) if \code{objfn='p'}. Set to FALSE if \code{objfn='pMI'} -
 see Details}
 
 \item{positive}{restrict search to eigenvectors associated with positive
 levels of spatial autocorrelation (TRUE/ FALSE)}
 
 \item{min.reduction}{if \code{objfn} is either 'AIC' or 'BIC'. A value in the
-interval [0,1) that determines the minimum reduction in AIC/ BIC a candidate
-eigenvector need to achieve in order to be selected}
+interval [0,1) that determines the minimum reduction in AIC/ BIC (relative to the
+current AIC/ BIC) a candidate eigenvector need to achieve in order to be selected}
 
 \item{boot.MI}{number of iterations used to estimate the variance of Moran's I
 (default=100). Alternatively, if \code{boot=NULL}, analytical results will
@@ -72,7 +73,7 @@ Griffith (2003)}
 \item{tol}{if \code{objfn='MI'}, determines the amount of remaining residual
 autocorrelation at which the eigenvector selection terminates}
 
-\item{na.rm}{remove missing values in variables (TRUE/ FALSE)}
+\item{na.rm}{remove observations with missing values (TRUE/ FALSE)}
 }
 \value{
 An object of class \code{spfilter} containing the following
@@ -81,7 +82,7 @@ information:
 \item{\code{Estimates}}{summary statistics of the parameter estimates}
 \item{\code{varcovar}}{estimated variance-covariance matrix}
 \item{\code{EV}}{a matrix with summary statistics of selected eigenvectors}
-\item{\code{selvecs}}{matrix of selected eigenvectors}
+\item{\code{selvecs}}{vector/ matrix of selected eigenvectors}
 \item{\code{evMI}}{Moran coefficient of all eigenvectors}
 \item{\code{moran}}{residual autocorrelation for the initial and the
 filtered model}
@@ -97,7 +98,7 @@ among the eigenvectors induced by the link function, see e.g., Griffith/ Amrhein
 \item{\code{sel_id}}{ID of selected eigenvectors}
 \item{\code{sf}}{vector representing the spatial filter}
 \item{\code{sfMI}}{Moran coefficient of the spatial filter}
-\item{\code{model}}{class of the regression model}
+\item{\code{model}}{type of the regression model}
 \item{\code{dependence}}{filtered for positive or negative spatial dependence}
 \item{\code{objfn}}{selection criteria specified in the objective function of
 the stepwise regression procedure}
@@ -141,7 +142,7 @@ dependence.
 The Bonferroni correction is only possible if eigenvector selection is based on
 the significance level of the eigenvectors (\code{objfn='p'}). It is set to
 FALSE if eigenvectors are added to the model until the residuals exhibit no
-significant level of spatial autocorrelation (\code{objfn='p'}).
+significant level of spatial autocorrelation (\code{objfn='pMI'}).
 }
 \note{
 If the condition number (\code{condnum}) suggests high levels of multicollinearity,

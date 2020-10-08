@@ -11,8 +11,8 @@
 #' @param W spatial connectivity matrix
 #' @param alternative specification of alternative hypothesis as 'greater' (default),
 #' 'lower', or 'two.sided'
-#' @param boot optional integer specifying the number of iterations to compute the
-#' variance. If NULL (default), variance calculated under assumed normality
+#' @param boot optional integer specifying the number of simulation iterations to
+#' compute the variance. If NULL (default), variance calculated under assumed normality
 #'
 #' @return A \code{data.frame} object with the following elements:
 #' \describe{
@@ -55,8 +55,7 @@
 #'
 #' resid <- y - x %*% solve(crossprod(x)) %*% crossprod(x,y)
 #'
-#' Moran <- getMoran(resid=resid,x=x,W=W,alternative="greater")
-#' Moran
+#' (Moran <- getMoran(resid=resid,x=x,W=W,alternative="greater"))
 #'
 #' @seealso \code{\link{lmFilter}}, \code{\link{glmFilter}}, \code{\link{MI.vec}}
 #'

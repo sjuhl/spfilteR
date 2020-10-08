@@ -18,7 +18,7 @@ Vector of partial R-squared values for each eigenvector.
 }
 \description{
 This function computes the partial R-squared of all
-selected eigenvectors in a (filtered) linear regression model.
+selected eigenvectors in a spatially filtered linear regression model.
 }
 \note{
 The function assumes a linear regression model. Since the

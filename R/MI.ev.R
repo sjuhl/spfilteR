@@ -2,8 +2,7 @@
 #'
 #' @title Moran Coefficients of Eigenvectors
 #'
-#' @description Calculates the Moran coefficient for each eigenvector
-#' included in the spatial filter.
+#' @description Calculates the Moran coefficient for each eigenvector.
 #'
 #' @param W spatial connectivity matrix
 #' @param evals vector of eigenvalues

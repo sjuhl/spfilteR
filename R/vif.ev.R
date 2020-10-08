@@ -1,8 +1,8 @@
 #' @name vif.ev
 #'
-#' @title Variance Inflation Factor for Eigenvectors
+#' @title Variance Inflation Factor of Eigenvectors
 #'
-#' @description Calculate the variance inflation factor (VIF) for
+#' @description Calculate the variance inflation factor (VIF) of
 #' the eigenvectors in the spatial filter.
 #'
 #' @param x vector/ matrix of regressors (default=NULL)
@@ -11,7 +11,8 @@
 #'
 #' @return Returns a vector containing the VIF for each eigenvector.
 #'
-#' @note This function assumes a linear model.
+#' @note This function assumes a linear model which assures the
+#' uncorrelatedness of the eigenvectors.
 #'
 #' @examples
 #' data(fakedata)

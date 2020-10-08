@@ -16,8 +16,7 @@ Returns a vector containing the Moran coefficients of each
 eigenvector.
 }
 \description{
-Calculates the Moran coefficient for each eigenvector
-included in the spatial filter.
+Calculates the Moran coefficient for each eigenvector.
 }
 \references{
 Le Gallo, Julie and Antonio Páez (2013): Using synthetic

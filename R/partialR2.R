@@ -3,7 +3,7 @@
 #' @title Coefficient of Partial Determination
 #'
 #' @description This function computes the partial R-squared of all
-#' selected eigenvectors in a (filtered) linear regression model.
+#' selected eigenvectors in a spatially filtered linear regression model.
 #'
 #' @param y vector of regressands
 #' @param x vector/ matrix of regressors

@@ -10,13 +10,13 @@
 #'
 #' @param W spatial connectivity matrix
 #' @param covars vector/ matrix of regressors included in the construction
-#' of the projection matrix \emph{\strong{M}} - see Details below
+#' of the projection matrix \emph{\strong{M}} - see Details
 #'
 #' @return A list containing the following objects:
 #' \describe{
-#' \item{\code{vectors}}{a matrix of \emph{n} eigenvectors}
-#' \item{\code{values}}{a vector of the corresponding eigenvalues}
-#' \item{\code{moran}}{a vector of the Moran coefficients associated with
+#' \item{\code{vectors}}{matrix of all eigenvectors}
+#' \item{\code{values}}{vector of the corresponding eigenvalues}
+#' \item{\code{moran}}{vector of the Moran coefficients associated with
 #' the eigenvectors}
 #' }
 #'
@@ -24,11 +24,11 @@
 #' can be used to perform supervised eigenvector selection and to
 #' manually create a spatial filter. To this end, a candidate set
 #' might be determined by 1) the sign of the spatial autocorrelation
-#' in the outcome variable and 2) the strength of spatial association
+#' in the model residuals and 2) the strength of spatial association
 #' found in each eigenvector as indicated by \code{moran}.
 #'
-#' If \emph{\strong{W}} is not symmetric, \code{getEVs} symmetrizes the
-#' matrix by: 1/2 * (\emph{\strong{W}} + \emph{\strong{W}}').
+#' Prior to the spectral decomposition, \code{getEVs} symmetrizes the
+#' spatial connectivity matrix by: 1/2 * (\emph{\strong{W}} + \emph{\strong{W}}').
 #'
 #' If \code{covars} are supplied, the function uses the covariates to construct
 #' projection matrix: \emph{\strong{M} = \strong{I} - \strong{X} (\strong{X}'

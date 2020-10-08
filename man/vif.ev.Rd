@@ -2,7 +2,7 @@
 % Please edit documentation in R/vif.ev.R
 \name{vif.ev}
 \alias{vif.ev}
-\title{Variance Inflation Factor for Eigenvectors}
+\title{Variance Inflation Factor of Eigenvectors}
 \usage{
 vif.ev(x = NULL, evecs, na.rm = TRUE)
 }
@@ -17,11 +17,12 @@ vif.ev(x = NULL, evecs, na.rm = TRUE)
 Returns a vector containing the VIF for each eigenvector.
 }
 \description{
-Calculate the variance inflation factor (VIF) for
+Calculate the variance inflation factor (VIF) of
 the eigenvectors in the spatial filter.
 }
 \note{
-This function assumes a linear model.
+This function assumes a linear model which assures the
+uncorrelatedness of the eigenvectors.
 }
 \examples{
 data(fakedata)

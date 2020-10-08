@@ -16,8 +16,8 @@ getMoran(resid, x = NULL, W, alternative = "greater", boot = NULL)
 \item{alternative}{specification of alternative hypothesis as 'greater' (default),
 'lower', or 'two.sided'}
 
-\item{boot}{optional integer specifying the number of iterations to compute the
-variance. If NULL (default), variance calculated under assumed normality}
+\item{boot}{optional integer specifying the number of simulation iterations to
+compute the variance. If NULL (default), variance calculated under assumed normality}
 }
 \value{
 A \code{data.frame} object with the following elements:
@@ -50,8 +50,7 @@ x <- fakedataset$x2
 
 resid <- y - x \%*\% solve(crossprod(x)) \%*\% crossprod(x,y)
 
-Moran <- getMoran(resid=resid,x=x,W=W,alternative="greater")
-Moran
+(Moran <- getMoran(resid=resid,x=x,W=W,alternative="greater"))
 
 }
 \references{

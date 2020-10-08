@@ -13,16 +13,17 @@
 #' @param y vector of regressands
 #' @param x vector/ matrix of regressors (default=NULL)
 #' @param W spatial connectivity matrix
-#' @param objfn specifies the objective function to be used for eigenvector
+#' @param objfn the objective function to be used for eigenvector
 #' selection. Possible criteria are: the maximization of the
 #' adjusted R-squared ('R2'), minimization of residual autocorrelation ('MI'),
 #' significance level of candidate eigenvectors ('p'), significance of residual spatial
 #' autocorrelation ('pMI') or all eigenvectors in the candidate set ('all')
-#' @param MX covariates used to construct the projection matrix (default=NULL)
+#' @param MX covariates used to construct the projection matrix (default=NULL) - see
+#' Details
 #' @param sig significance level to be used for eigenvector selection
 #' if \code{objfn='p'} or \code{objfn='pMI'}
 #' @param bonferroni Bonferroni adjustment for the significance level
-#' (TRUE/ FALSE) if \code{objfn='p'}. Set to FALSE if \code{objfn='pMI'},
+#' (TRUE/ FALSE) if \code{objfn='p'}. Set to FALSE if \code{objfn='pMI'} -
 #' see Details
 #' @param positive restrict search to eigenvectors associated with positive
 #' levels of spatial autocorrelation (TRUE/ FALSE)
@@ -36,7 +37,7 @@
 #' autocorrelation at which the eigenvector selection terminates
 #' @param boot.MI number of iterations used to estimate the variance of Moran's I.
 #' If \code{boot=NULL} (default), analytical results will be used
-#' @param na.rm remove missing values in variables (TRUE/ FALSE)
+#' @param na.rm remove observations with missing values (TRUE/ FALSE)
 #' @param obj an object of class \code{spfilter}
 #' @param EV display summary statistics for selected eigenvectors (TRUE/ FALSE)
 #'
@@ -46,7 +47,7 @@
 #' \item{\code{Estimates}}{summary statistics of the parameter estimates}
 #' \item{\code{varcovar}}{estimated variance-covariance matrix}
 #' \item{\code{EV}}{a matrix with summary statistics of selected eigenvectors}
-#' \item{\code{selvecs}}{matrix of selected eigenvectors}
+#' \item{\code{selvecs}}{vector/ matrix of selected eigenvectors}
 #' \item{\code{evMI}}{Moran coefficient of all eigenvectors}
 #' \item{\code{moran}}{residual autocorrelation for the initial and the
 #' filtered model}
@@ -59,7 +60,7 @@
 #' \item{\code{sel_id}}{ID of selected eigenvectors}
 #' \item{\code{sf}}{vector representing the spatial filter}
 #' \item{\code{sfMI}}{Moran coefficient of the spatial filter}
-#' \item{\code{model}}{class of the regression model}
+#' \item{\code{model}}{type of the regression model}
 #' \item{\code{dependence}}{filtered for positive or negative spatial dependence}
 #' \item{\code{objfn}}{selection criteria specified in the objective function of
 #' the stepwise regression procedure}
@@ -91,7 +92,7 @@
 #' The Bonferroni correction is only possible if eigenvector selection is based on
 #' the significance level of the eigenvectors (\code{objfn='p'}). It is set to
 #' FALSE if eigenvectors are added to the model until the residuals exhibit no
-#' significant level of spatial autocorrelation (\code{objfn='p'}).
+#' significant level of spatial autocorrelation (\code{objfn='pMI'}).
 #'
 #' @examples
 #' data(fakedata)

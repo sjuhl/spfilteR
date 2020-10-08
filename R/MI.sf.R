@@ -2,10 +2,11 @@
 #'
 #' @title Moran Coefficient of the Spatial Filter
 #'
-#' @description Computes the Moran coefficient for the spatial filter.
+#' @description Computes the Moran coefficient of the spatial filter.
 #'
-#' @param gamma regression coefficient associated with the eigenvectors
-#' @param evMI Moran coefficient of selected eigenvectors
+#' @param gamma vector of regression coefficients associated with
+#' the eigenvectors
+#' @param evMI Moran coefficient of eigenvectors
 #'
 #' @return Moran coefficient of the spatial filter.
 #'

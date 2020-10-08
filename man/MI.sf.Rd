@@ -7,15 +7,16 @@
 MI.sf(gamma, evMI)
 }
 \arguments{
-\item{gamma}{regression coefficient associated with the eigenvectors}
+\item{gamma}{vector of regression coefficients associated with
+the eigenvectors}
 
-\item{evMI}{Moran coefficient of selected eigenvectors}
+\item{evMI}{Moran coefficient of eigenvectors}
 }
 \value{
 Moran coefficient of the spatial filter.
 }
 \description{
-Computes the Moran coefficient for the spatial filter.
+Computes the Moran coefficient of the spatial filter.
 }
 \references{
 Le Gallo, Julie and Antonio Páez (2013): Using synthetic

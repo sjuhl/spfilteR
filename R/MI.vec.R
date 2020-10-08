@@ -1,9 +1,9 @@
 #' @name MI.vec
 #'
-#' @title Moran Test for Spatial Autocorrelation in a Vector
+#' @title Moran Test for Spatial Autocorrelation
 #'
 #' @description Tests for the presence of spatial autocorrelation
-#' in a variable as indicated by the Moran coefficient. The variance
+#' in variables as indicated by the Moran coefficient. The variance
 #' is calculated under the normality assumption.
 #'
 #' @param x a vector or matrix
@@ -22,6 +22,9 @@
 #' \item{\code{zI}}{standardized Moran coefficient}
 #' \item{\code{pI}}{\emph{p}-value of the test statistic}
 #' }
+#'
+#' @details If \code{x} is a matrix, this function computes the Moran
+#' test for spatial autocorrelation for each column.
 #'
 #' @note Estimation of the variance (under the normality assumption)
 #' follows Cliff and Ord (1981), see also Upton and Fingleton (1985).
