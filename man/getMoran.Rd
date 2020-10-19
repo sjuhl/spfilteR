@@ -40,8 +40,8 @@ Furthermore, \code{getMoran} automatically symmetrizes the matrix
 \emph{\strong{W}} by: 1/2 * (\emph{\strong{W}} + \emph{\strong{W}}').
 }
 \note{
-Calculations are based on Cliff and Ord (1981) and Upton and Fingleton
-(1985). See also Tiefelsdorf (2000) and Griffith et al. (2019).
+Calculations are based on the procedure proposed by Cliff and Ord
+(1981). See also Cliff and Ord (1972).
 }
 \examples{
 data(fakedata)
@@ -49,24 +49,23 @@ y <- fakedataset$x1
 x <- fakedataset$x2
 
 resid <- y - x \%*\% solve(crossprod(x)) \%*\% crossprod(x,y)
-
 (Moran <- getMoran(resid=resid,x=x,W=W,alternative="greater"))
+
+# intercept-only model
+x <- rep(1,length(y))
+resid2 <- y - x \%*\% solve(crossprod(x)) \%*\% crossprod(x,y)
+intercept <- getMoran(resid=resid2,W=W,alternative="greater")
+# same result with MI.vec for the intercept-only model
+vec <- MI.vec(x=resid2,W=W,alternative="greater")
+rbind(intercept,vec)
 
 }
 \references{
-Tiefelsdorf, Michael (2000): Modelling Spatial Processes.
-The Identification and Analysis of Spatial Relationships in Regression
-Residuals by Means of Moran's I. Springer, Berlin.
-
-Griffith, Daniel A., Yongwan Chun, Bin Li (2019): Spatial Regression
-Analysis Using Eigenvector Spatial Filtering. Elsevier Academic Press,
-London.
-
 Cliff, Andrew D. and John K. Ord (1981): Spatial Processes:
 Models & Applications. Pion, London.
 
-Upton, Graham J. G. and Bernard Fingleton (1985): Spatial Data Analysis
-by Example, Volume 1.New York, Wiley.
+Cliff, Andrew D. and John K. Ord (1972): Testing for Spatial Autocorrelation
+Among Regression Residuals. Geographical Analysis, 4 (3): pp. 267 - 284
 }
 \seealso{
 \code{\link{lmFilter}}, \code{\link{glmFilter}}, \code{\link{MI.vec}}

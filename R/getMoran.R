@@ -27,24 +27,16 @@
 #' Furthermore, \code{getMoran} automatically symmetrizes the matrix
 #' \emph{\strong{W}} by: 1/2 * (\emph{\strong{W}} + \emph{\strong{W}}').
 #'
-#' @note Calculations are based on Cliff and Ord (1981) and Upton and Fingleton
-#' (1985). See also Tiefelsdorf (2000) and Griffith et al. (2019).
+#' @note Calculations are based on the procedure proposed by Cliff and Ord
+#' (1981). See also Cliff and Ord (1972).
 #'
 #' @author Sebastian Juhl
 #'
-#' @references Tiefelsdorf, Michael (2000): Modelling Spatial Processes.
-#' The Identification and Analysis of Spatial Relationships in Regression
-#' Residuals by Means of Moran's I. Springer, Berlin.
-#'
-#' Griffith, Daniel A., Yongwan Chun, Bin Li (2019): Spatial Regression
-#' Analysis Using Eigenvector Spatial Filtering. Elsevier Academic Press,
-#' London.
-#'
-#' Cliff, Andrew D. and John K. Ord (1981): Spatial Processes:
+#' @references Cliff, Andrew D. and John K. Ord (1981): Spatial Processes:
 #' Models & Applications. Pion, London.
 #'
-#' Upton, Graham J. G. and Bernard Fingleton (1985): Spatial Data Analysis
-#' by Example, Volume 1.New York, Wiley.
+#' Cliff, Andrew D. and John K. Ord (1972): Testing for Spatial Autocorrelation
+#' Among Regression Residuals. Geographical Analysis, 4 (3): pp. 267 - 284
 #'
 #' @importFrom stats var
 #'
@@ -54,8 +46,15 @@
 #' x <- fakedataset$x2
 #'
 #' resid <- y - x %*% solve(crossprod(x)) %*% crossprod(x,y)
-#'
 #' (Moran <- getMoran(resid=resid,x=x,W=W,alternative="greater"))
+#'
+#' # intercept-only model
+#' x <- rep(1,length(y))
+#' resid2 <- y - x %*% solve(crossprod(x)) %*% crossprod(x,y)
+#' intercept <- getMoran(resid=resid2,W=W,alternative="greater")
+#' # same result with MI.vec for the intercept-only model
+#' vec <- MI.vec(x=resid2,W=W,alternative="greater")
+#' rbind(intercept,vec)
 #'
 #' @seealso \code{\link{lmFilter}}, \code{\link{glmFilter}}, \code{\link{MI.vec}}
 #'
@@ -72,12 +71,24 @@ getMoran <- function(resid,x=NULL,W,alternative="greater",boot=NULL){
   n <- nrow(W)
   if(is.null(x)) x <- rep(1,n)
   x <- as.matrix(x)
-  if (!all(x[,1]==1)) x <- cbind(1,x) # add intercept term
-  W <- .5 * (W + t(W)) # symmetrize connectivity matrix
-  I <- n/crossprod(rep(1,n),W%*%rep(1,n)) * crossprod(resid,W%*%resid) / crossprod(resid)
-  M <- diag(n)-x%*%qr.solve(crossprod(x),t(x))
+  if (!all(x[,1]==1)) x <- cbind(1,x)
   df <- n - qr(x)$rank
-  EI <- n/crossprod(rep(1,n),W%*%rep(1,n)) * sum(diag((M%*%W)))/df
+  # step 1
+  W <- .5 * (W + t(W))
+  S0 <- crossprod(rep(1,n),W%*%rep(1,n))
+  S1 <- .5 * sum((W+t(W))^2)
+  # step 2
+  Z <- crossprod(W,x)
+  # step 3
+  C1 <- crossprod(x,Z)
+  C2 <- crossprod(Z)
+  # step 4 & 5
+  G <- qr.solve(crossprod(x))
+  traceA <- sum(diag(crossprod(G,C1)))
+  traceB <- sum(diag(crossprod(4*G,C2)))
+  traceA2 <- sum(diag(crossprod(G%*%C1)))
+  I <- n/S0 * crossprod(resid,W%*%resid) / crossprod(resid)
+  EI <- -(n*traceA)/(df*S0)
   if(!is.null(boot)){
     boot <- round(boot)
     if(boot<100){
@@ -87,15 +98,13 @@ getMoran <- function(resid,x=NULL,W,alternative="greater",boot=NULL){
     boot.I <- NULL
     for(i in 1:boot){
       ind <- sample(1:n,replace=TRUE)
-      boot.I[i] <- n/crossprod(rep(1,n),W%*%rep(1,n)) * crossprod(resid[ind],W%*%resid[ind]) / crossprod(resid[ind])
+      boot.I[i] <- n/S0 * crossprod(resid[ind],W%*%resid[ind]) / crossprod(resid[ind])
     }
     VarI <- var(boot.I)
     zI <- (I-EI)/sqrt(VarI)
     pI <- pfunc(z=I,alternative=alternative,draws=boot.I)
   } else {
-    ratio1 <- sum(diag(M%*%W%*%M%*%W))/(df*(df+2))
-    ratio2 <- sum(diag(M%*%W))^2/df^2
-    VarI <- 2*(n/crossprod(rep(1,n),W%*%rep(1,n)))^2 * (ratio1-ratio2)
+    VarI <- (n^2/(S0^2*df*(df+2))) * (S1+2*traceA2-traceB-((2*traceA^2)/df))
     if(VarI<=0){
       zI <- 0
     } else zI <- (I-EI)/sqrt(VarI)
