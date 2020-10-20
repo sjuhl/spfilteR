@@ -146,7 +146,7 @@ significant level of spatial autocorrelation (\code{objfn='pMI'}).
 }
 \note{
 If the condition number (\code{condnum}) suggests high levels of multicollinearity,
-problematic eigenvectors can be manually removed from \code{selvecs} and
+eigenvectors can be sequentially removed from \code{selvecs} and
 the model can be re-estimated using the \code{glm} function. Moreover, if other models that
 are currently not implemented here need to be estimated (e.g., quasi-binomials),
 users can extract eigenvectors using the function \code{getEVs} and perform a
