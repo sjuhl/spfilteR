@@ -151,7 +151,7 @@
 #'
 #' @importFrom stats pnorm dpois optim pt sd
 #'
-#' @seealso \code{\link{lmFilter}}, \code{\link{getEVs}}, \code{\link{getMoran}}
+#' @seealso \code{\link{lmFilter}}, \code{\link{getEVs}}, \code{\link{MI.resid}}
 #'
 #' @export
 
@@ -255,12 +255,12 @@ glmFilter <- function(y,x=NULL,W,objfn="MI",MX=NULL,model,optim.method="BFGS"
     if(objfn=="MI"){
       fitvals <- fittedval(x=xe,params=o$par,model=model)
       resid <- residfun(y=y,fitvals=fitvals,model=model)[,resid.type]
-      test <- abs(getMoran(resid=resid,x=xe,W=W,boot=boot.MI)$zI)
+      test <- abs(MI.resid(resid=resid,x=xe,W=W,boot=boot.MI)$zI)
     }
     if(objfn=="pMI"){
       fitvals <- fittedval(x=xe,params=o$par,model=model)
       resid <- residfun(y=y,fitvals=fitvals,model=model)[,resid.type]
-      test <- getMoran(resid=resid,x=xe,W=W,boot=boot.MI,alternative=alternative)$pI
+      test <- MI.resid(resid=resid,x=xe,W=W,boot=boot.MI,alternative=alternative)$pI
     }
     return(test)
   }
@@ -288,7 +288,7 @@ glmFilter <- function(y,x=NULL,W,objfn="MI",MX=NULL,model,optim.method="BFGS"
   ICs_init <- getICs(negloglik=ll_init, n=n, df=length(coefs_init))
   yhat_init <- fittedval(x=x,params=coefs_init,model=model)
   resid_init <- residfun(y=y,fitvals=yhat_init,model=model)[,resid.type]
-  zMI_init <- getMoran(resid=resid_init,x=x,W=W,boot=boot.MI)$zI
+  zMI_init <- MI.resid(resid=resid_init,x=x,W=W,boot=boot.MI)$zI
   if(objfn=="MI") oldZMI <- abs(zMI_init)
   if(objfn %in% c("AIC","BIC")){
     IC <- ICs_init[,objfn]
@@ -391,9 +391,9 @@ glmFilter <- function(y,x=NULL,W,objfn="MI",MX=NULL,model,optim.method="BFGS"
   ICs_out <- getICs(negloglik=ll_out, n=n, df=length(coefs_out))
   yhat_out <- fittedval(x=xev,params=coefs_out,model=model)
   resid_out <- residfun(y=y,fitvals=yhat_out,model=model)[,resid.type]
-  MI_out <- getMoran(resid=resid_out,x=xev,W=W,boot=boot.MI
+  MI_out <- MI.resid(resid=resid_out,x=xev,W=W,boot=boot.MI
                      ,alternative=ifelse(dep=="positive","greater","lower"))
-  MI_init <- getMoran(resid=resid_init,x=x,W=W,boot=boot.MI
+  MI_init <- MI.resid(resid=resid_init,x=x,W=W,boot=boot.MI
                       ,alternative=ifelse(dep=="positive","greater","lower"))
 
   #####

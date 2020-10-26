@@ -174,5 +174,5 @@ of Moran's I. Environment and Planning A: Economy and Space, 27 (6):
 pp. 985 - 999.
 }
 \seealso{
-\code{\link{glmFilter}}, \code{\link{getEVs}}, \code{\link{getMoran}}
+\code{\link{glmFilter}}, \code{\link{getEVs}}, \code{\link{MI.resid}}
 }

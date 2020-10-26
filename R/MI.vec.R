@@ -44,7 +44,7 @@
 #' of Global and Local Indicators of Spatial Association. TEST 27:
 #' pp. 716 - 748.
 #'
-#' @seealso \code{\link{getMoran}}
+#' @seealso \code{\link{MI.resid}}
 #'
 #' @importFrom stats sd
 #'

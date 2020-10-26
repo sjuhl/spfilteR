@@ -76,9 +76,9 @@ test_that("W must be of class 'matrix', 'Matrix', or 'data.frame'", {
 
 
 #####
-# getMoran()
+# MI.resid()
 #####
-test_that("The argument 'alternative' in getMoran() needs to be either
+test_that("The argument 'alternative' in MI.resid() needs to be either
           'greater', 'lower', or 'two.sided'", {
   y <- fakedataset$x1
   x <- fakedataset$x2
@@ -86,18 +86,18 @@ test_that("The argument 'alternative' in getMoran() needs to be either
   alternative <- c("greater","lower","two.sided","nothing")
   out <- NULL
   for(i in 1:4){
-    res <- try(getMoran(resid=resid,x=x,W=W,alternative=alternative[i])
+    res <- try(MI.resid(resid=resid,x=x,W=W,alternative=alternative[i])
                ,silent=TRUE)
     out[i] <- class(res)!="try-error"
   }
   expect_equal(out, c(TRUE,TRUE,TRUE,FALSE))
 })
 
-test_that("getMoran() works without supplying x (intercept-only model)", {
+test_that("MI.resid() works without supplying x (intercept-only model)", {
   y <- fakedataset$x1
   x <- as.matrix(rep(1,length(y)))
   resid <- y - x %*% solve(crossprod(x)) %*% crossprod(x,y)
-  out <- getMoran(resid=resid,W=W)
+  out <- MI.resid(resid=resid,W=W)
   expect_is(out, "data.frame")
 })
 
@@ -106,28 +106,28 @@ test_that("W must be of class 'matrix', 'Matrix', or 'data.frame'", {
   x <- as.matrix(rep(1,length(y)))
   resid <- y - x %*% solve(crossprod(x)) %*% crossprod(x,y)
   W2 <- as.vector(W)
-  expect_error(getMoran(resid=resid,W=W2), "W must be of class 'matrix' or 'data.frame'")
+  expect_error(MI.resid(resid=resid,W=W2), "W must be of class 'matrix' or 'data.frame'")
 })
 
-test_that("getMoran() warns if boot<100", {
+test_that("MI.resid() warns if boot<100", {
   y <- fakedataset$x1
   x <- as.matrix(rep(1,length(y)))
   resid <- y - x %*% solve(crossprod(x)) %*% crossprod(x,y)
   boot <- 95
-  test <- tryCatch(getMoran(resid=resid,W=W,boot=boot),warning=function(t) TRUE)
+  test <- tryCatch(MI.resid(resid=resid,W=W,boot=boot),warning=function(t) TRUE)
   expect_true(test)
 })
 
-test_that("If boot < 100, getMoran() sets boot=100", {
+test_that("If boot < 100, MI.resid() sets boot=100", {
   y <- fakedataset$x1
   x <- as.matrix(rep(1,length(y)))
   resid <- y - x %*% solve(crossprod(x)) %*% crossprod(x,y)
   boot1 <- 90
   boot2 <- 100
   set.seed(123)
-  moran1 <- suppressWarnings(getMoran(resid=resid,W=W,boot=boot1))
+  moran1 <- suppressWarnings(MI.resid(resid=resid,W=W,boot=boot1))
   set.seed(123)
-  moran2 <- getMoran(resid=resid,W=W,boot=boot2)
+  moran2 <- MI.resid(resid=resid,W=W,boot=boot2)
   expect_equal(moran1$VarI,moran2$VarI)
 })
 

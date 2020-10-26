@@ -65,7 +65,7 @@ of Global and Local Indicators of Spatial Association. TEST 27:
 pp. 716 - 748.
 }
 \seealso{
-\code{\link{getMoran}}
+\code{\link{MI.resid}}
 }
 \author{
 Sebastian Juhl

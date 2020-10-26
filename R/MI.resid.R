@@ -1,4 +1,4 @@
-#' @name getMoran
+#' @name MI.resid
 #'
 #' @title Moran Test for Residual Spatial Autocorrelation
 #'
@@ -24,7 +24,7 @@
 #' }
 #'
 #' @details The function assumes an intercept-only model if \code{x=NULL}.
-#' Furthermore, \code{getMoran} automatically symmetrizes the matrix
+#' Furthermore, \code{MI.resid} automatically symmetrizes the matrix
 #' \emph{\strong{W}} by: 1/2 * (\emph{\strong{W}} + \emph{\strong{W}}').
 #'
 #' @note Calculations are based on the procedure proposed by Cliff and Ord
@@ -46,12 +46,12 @@
 #' x <- fakedataset$x2
 #'
 #' resid <- y - x %*% solve(crossprod(x)) %*% crossprod(x,y)
-#' (Moran <- getMoran(resid=resid,x=x,W=W,alternative="greater"))
+#' (Moran <- MI.resid(resid=resid,x=x,W=W,alternative="greater"))
 #'
 #' # intercept-only model
 #' x <- rep(1,length(y))
 #' resid2 <- y - x %*% solve(crossprod(x)) %*% crossprod(x,y)
-#' intercept <- getMoran(resid=resid2,W=W,alternative="greater")
+#' intercept <- MI.resid(resid=resid2,W=W,alternative="greater")
 #' # same result with MI.vec for the intercept-only model
 #' vec <- MI.vec(x=resid2,W=W,alternative="greater")
 #' rbind(intercept,vec)
@@ -60,7 +60,7 @@
 #'
 #' @export
 
-getMoran <- function(resid,x=NULL,W,alternative="greater",boot=NULL){
+MI.resid <- function(resid,x=NULL,W,alternative="greater",boot=NULL){
   if(!(alternative %in% c("greater","lower", "two.sided"))){
     stop("Invalid input: 'alternative' must be either 'greater', 'lower', or 'two.sided'")
   }

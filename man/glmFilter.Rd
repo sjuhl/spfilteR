@@ -193,5 +193,5 @@ Griffith, Daniel A. and Carl G. Amrhein (1997): Multivariate Statistical
 Analysis for Geographers. Englewood Cliffs, Prentice Hall.
 }
 \seealso{
-\code{\link{lmFilter}}, \code{\link{getEVs}}, \code{\link{getMoran}}
+\code{\link{lmFilter}}, \code{\link{getEVs}}, \code{\link{MI.resid}}
 }

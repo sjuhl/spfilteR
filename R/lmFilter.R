@@ -131,7 +131,7 @@
 #'
 #' @importFrom stats pt sd
 #'
-#' @seealso \code{\link{glmFilter}}, \code{\link{getEVs}}, \code{\link{getMoran}}
+#' @seealso \code{\link{glmFilter}}, \code{\link{getEVs}}, \code{\link{MI.resid}}
 #'
 #' @export
 
@@ -202,10 +202,10 @@ lmFilter <- function(y,x=NULL,W,objfn="MI",MX=NULL,sig=.05
       test <- 2*pt(abs(est/se),df=(n-ncol(xe)),lower.tail=FALSE) # p-value
     }
     if(objfn=="MI"){
-      test <- abs(getMoran(resid=resid,x=xe,W=W,boot=boot.MI)$zI) # (absolute) standardized Moran's I
+      test <- abs(MI.resid(resid=resid,x=xe,W=W,boot=boot.MI)$zI) # (absolute) standardized Moran's I
     }
     if(objfn=="pMI"){
-      test <- getMoran(resid=resid,x=xe,W=W,boot=boot.MI,alternative=alternative)$pI
+      test <- MI.resid(resid=resid,x=xe,W=W,boot=boot.MI,alternative=alternative)$pI
     }
     return(test)
   }
@@ -231,7 +231,7 @@ lmFilter <- function(y,x=NULL,W,objfn="MI",MX=NULL,sig=.05
   resid_init <- residfun(y=y,fitvals=fitvals,model="linear")$raw
   R2 <- 1-(sum(crossprod(resid_init))/TSS)
   adjR2_init <- 1-(1-R2)*(n-1)/(n-nx)
-  zMI_init <- getMoran(resid=resid_init,x=x,W=W,boot=boot.MI)$zI
+  zMI_init <- MI.resid(resid=resid_init,x=x,W=W,boot=boot.MI)$zI
   if(objfn=="MI") oldZMI <- abs(zMI_init)
   if(objfn=="R2") adjR2 <- -adjR2_init
 
@@ -342,9 +342,9 @@ lmFilter <- function(y,x=NULL,W,objfn="MI",MX=NULL,sig=.05
   resid <- residfun(y=y,fitvals=fitvals,model="linear")$raw
   R2 <- 1-(sum(crossprod(resid))/TSS)
   adjR2 <- 1-(1-R2)*(n-1)/(n-ncol(xev))
-  MI_filtered <- getMoran(resid=resid,x=xev,W=W,boot=boot.MI
+  MI_filtered <- MI.resid(resid=resid,x=xev,W=W,boot=boot.MI
                           ,alternative=ifelse(dep=="positive","greater","lower"))
-  MI_init <- getMoran(resid=resid,x=x,W=W,boot=boot.MI
+  MI_init <- MI.resid(resid=resid,x=x,W=W,boot=boot.MI
                       ,alternative=ifelse(dep=="positive","greater","lower"))
 
   #####
