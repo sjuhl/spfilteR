@@ -31,6 +31,9 @@
 #' see Details
 #' @param positive restrict search to eigenvectors associated with positive
 #' levels of spatial autocorrelation (TRUE/ FALSE)
+#' @param ideal.setsize if \code{positive=TRUE}, uses the formula proposed in
+#' Chun et al. (2016) to determine the ideal size of the candidate set
+#' (TRUE/ FALSE)
 #' @param min.reduction if \code{objfn} is either 'AIC' or 'BIC'. A value in the
 #' interval [0,1) that determines the minimum reduction in AIC/ BIC (relative to the
 #' current AIC/ BIC) a candidate eigenvector need to achieve in order to be selected
@@ -166,7 +169,8 @@
 #' @export
 
 glmFilter <- function(y,x=NULL,W,objfn="AIC",MX=NULL,model,optim.method="BFGS"
-                      ,sig=.05,bonferroni=TRUE,positive=TRUE,min.reduction=.05
+                      ,sig=.05,bonferroni=TRUE,positive=TRUE,ideal.setsize=FALSE
+                      ,min.reduction=.05
                       ,boot.MI=100,resid.type="pearson",alpha=.25,tol=.1
                       ,na.rm=TRUE){
 
@@ -218,6 +222,9 @@ glmFilter <- function(y,x=NULL,W,objfn="AIC",MX=NULL,model,optim.method="BFGS"
   }
   if(!(resid.type %in% c("raw","pearson","deviance"))){
     stop("Invalid argument: resid.type must be one of 'raw', 'pearson', or 'deviance'")
+  }
+  if(positive==FALSE & ideal.setsize==TRUE){
+    stop("Estimating the ideal set size is only valid for positive spatial autocorrelation")
   }
 
   # no bonferroni adjustment for 'pMI'
@@ -310,8 +317,16 @@ glmFilter <- function(y,x=NULL,W,objfn="AIC",MX=NULL,model,optim.method="BFGS"
   # Candidate Set
   #####
   if(positive | zMI_init>=0){
-    sel <- evMI/evMI[1] >= alpha
-    dep <- "positive"
+    if(ideal.setsize){
+      # avoids problems of NaN if positive=TRUE but zMI < 0:
+      csize <- candsetsize(npos=length(evals[evals > 1e-07])
+                           ,zMI=ifelse(zMI_init<0,0,zMI_init))
+      sel <- evals %in% evals[1:csize]
+      dep <- "positive"
+    } else{
+      sel <- evMI/evMI[1] >= alpha
+      dep <- "positive"
+    }
   } else {
     sel <- evMI/evMI[n] >= alpha
     dep <- "negative"

@@ -16,6 +16,7 @@ glmFilter(
   sig = 0.05,
   bonferroni = TRUE,
   positive = TRUE,
+  ideal.setsize = FALSE,
   min.reduction = 0.05,
   boot.MI = 100,
   resid.type = "pearson",
@@ -54,6 +55,10 @@ see Details}
 
 \item{positive}{restrict search to eigenvectors associated with positive
 levels of spatial autocorrelation (TRUE/ FALSE)}
+
+\item{ideal.setsize}{if \code{positive=TRUE}, uses the formula proposed in
+Chun et al. (2016) to determine the ideal size of the candidate set
+(TRUE/ FALSE)}
 
 \item{min.reduction}{if \code{objfn} is either 'AIC' or 'BIC'. A value in the
 interval [0,1) that determines the minimum reduction in AIC/ BIC (relative to the
