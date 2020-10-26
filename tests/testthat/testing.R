@@ -379,6 +379,19 @@ test_that("glmFilter() estimates logit models", {
   expect_is(out, "spfilter")
 })
 
+test_that("check ideal candidate set size", {
+  y <- fakedataset$indicator
+  sf <- glmFilter(y=y,W=W,objfn="p",model="logit",positive=TRUE
+                  ,ideal.setsize=TRUE)
+  expect_is(sf, "spfilter")
+})
+
+test_that("The argument 'ideal.setsize' is only valid if positive=TRUE", {
+  y <- fakedataset$indicator
+  expect_error(glmFilter(y=y,W=W,objfn="p",model="logit",positive=FALSE,ideal.setsize=TRUE)
+               ,"Estimating the ideal set size is only valid for positive spatial autocorrelation")
+})
+
 test_that("The argument 'min.reduction' works (for AIC & BIC) - fewer EVs are
           selected for higher values", {
   y <- fakedataset$count
