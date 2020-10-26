@@ -15,8 +15,8 @@
 #' @param x vector/ matrix of regressors (default=NULL)
 #' @param W spatial connectivity matrix
 #' @param objfn the objective function to be used for eigenvector
-#' selection. Possible criteria are: the maximization of the
-#' adjusted R-squared ('AIC' or 'BIC'), minimization of residual autocorrelation ('MI'),
+#' selection. Possible criteria are: the maximization of model fit
+#' ('AIC' or 'BIC'), minimization of residual autocorrelation ('MI'),
 #' significance level of candidate eigenvectors ('p'), significance of residual spatial
 #' autocorrelation ('pMI'), or all eigenvectors in the candidate set ('all')
 #' @param MX covariates used to construct the projection matrix (default=NULL) - see
@@ -113,6 +113,12 @@
 #' \code{getEVs} and perform a supervised eigenvector search using the \code{glm}
 #' function.
 #'
+#' In contrast to eigenvector-based spatial filtering in linear regression models,
+#' Chun (2014) notes that only a limited number of studies address the problem
+#' of measuring spatial autocorrelation in generalized linear model residuals.
+#' Consequently, eigenvector selection may be based on an objective function that
+#' maximizes model fit rather than minimizes residual spatial autocorrelation.
+#'
 #' @examples
 #' data(fakedata)
 #'
@@ -125,7 +131,7 @@
 #'
 #' # probit model - summarize EVs
 #' y_prob <- fakedataset$indicator
-#' probit <- glmFilter(y=y_prob,x=NULL,W=W,objfn="MI",positive=FALSE
+#' probit <- glmFilter(y=y_prob,x=NULL,W=W,objfn="p",positive=FALSE
 #' ,model="probit",boot.MI=100)
 #' print(probit)
 #' summary(probit,EV=TRUE)
@@ -137,7 +143,11 @@
 #' print(logit)
 #' summary(logit,EV=FALSE)
 #'
-#' @references Tiefelsdorf, Michael and Daniel A. Griffith (2007):
+#' @references Chun, Yongwan (2014): Analyzing Space-Time Crime Incidents Using
+#' Eigenvector Spatial Filtering: An Application to Vehicle Burglary.
+#' Geographical Analysis 46 (2): pp. 165 - 184.
+#'
+#' Tiefelsdorf, Michael and Daniel A. Griffith (2007):
 #' Semiparametric filtering of spatial autocorrelation: the eigenvector
 #' approach. Environment and Planning A: Economy and Space, 39 (5):
 #' pp. 1193 - 1221.
@@ -155,7 +165,7 @@
 #'
 #' @export
 
-glmFilter <- function(y,x=NULL,W,objfn="MI",MX=NULL,model,optim.method="BFGS"
+glmFilter <- function(y,x=NULL,W,objfn="AIC",MX=NULL,model,optim.method="BFGS"
                       ,sig=.05,bonferroni=TRUE,positive=TRUE,min.reduction=.05
                       ,boot.MI=100,resid.type="pearson",alpha=.25,tol=.1
                       ,na.rm=TRUE){
