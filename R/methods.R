@@ -18,7 +18,7 @@ summary.spfilter <- function(obj,EV=FALSE){
   estimates <- data.frame(obj$estimates,signif)
   colnames(estimates) <- c(colnames(obj$estimates),"")
   cat("Coefficients",paste0(ifelse(obj$other$model=="linear"
-                                   & "condnum" %in% names(obj$other)
+                                   & !("condnum" %in% names(obj$other))
                                    ,"(OLS)","(ML)"),":\n"))
   print(estimates)
   if(obj$other$model=="linear"){
