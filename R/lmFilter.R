@@ -348,7 +348,7 @@ lmFilter <- function(y,x=NULL,W,objfn="MI",MX=NULL,sig=.05
   adjR2 <- 1-(1-R2)*(n-1)/(n-ncol(xev))
   MI_filtered <- MI.resid(resid=resid,x=xev,W=W,boot=boot.MI
                           ,alternative=ifelse(dep=="positive","greater","lower"))
-  MI_init <- MI.resid(resid=resid,x=x,W=W,boot=boot.MI
+  MI_init <- MI.resid(resid=resid_init,x=x,W=W,boot=boot.MI
                       ,alternative=ifelse(dep=="positive","greater","lower"))
 
   #####
