@@ -244,7 +244,11 @@ lmFilter <- function(y,x=NULL,W,objfn="MI",MX=NULL,sig=.05
       # avoids problems of NaN if positive=TRUE but zMI < 0:
       csize <- candsetsize(npos=length(evals[evals > 1e-07])
                              ,zMI=ifelse(zMI_init<0,0,zMI_init))
-      sel <- ifelse(csize==0,rep(FALSE,length(evals)),evals %in% evals[1:csize])
+      if(csize==0){
+        sel <- rep(FALSE,length(evals))
+      } else{
+        sel <- evals %in% evals[1:csize]
+      }
       dep <- "positive"
     } else{
       sel <- evMI/evMI[1] >= alpha
