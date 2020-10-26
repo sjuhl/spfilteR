@@ -105,9 +105,7 @@ MI.resid <- function(resid,x=NULL,W,alternative="greater",boot=NULL){
     pI <- pfunc(z=I,alternative=alternative,draws=boot.I)
   } else {
     VarI <- (n^2/(S0^2*df*(df+2))) * (S1+2*traceA2-traceB-((2*traceA^2)/df))
-    if(VarI<=0){
-      zI <- 0
-    } else zI <- (I-EI)/sqrt(VarI)
+    zI <- (I-EI)/sqrt(VarI)
     pI <- pfunc(z=zI,alternative=alternative)
   }
 
