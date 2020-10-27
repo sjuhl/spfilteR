@@ -265,6 +265,11 @@ lmFilter <- function(y,x=NULL,W,objfn="MI",MX=NULL,sig=.05
     sig <- bonferroni <- NULL
   }
 
+  if(objfn=="pMI") pI_init <- MI.resid(resid=resid_init,x=x,W=W,boot=boot.MI
+                                       ,alternative=ifelse(dep=="positive"
+                                                           ,"greater","lower")
+                                       )$pI
+
   #####
   # Search Algorithm:
   # Stepwise Regression
@@ -272,11 +277,12 @@ lmFilter <- function(y,x=NULL,W,objfn="MI",MX=NULL,sig=.05
   if(objfn=="all"){
     sel_id <- which(sel)
   } else {
-    sel_id <- NULL # list of selected eigenvectors
+    sel_id <- NULL
     selset <- which(sel)
 
     # start forward search
     for(i in which(sel)){
+      if(objfn=="pMI") if(pI_init > sig) break
       ref <- Inf
       sid <- NULL
 
@@ -318,7 +324,6 @@ lmFilter <- function(y,x=NULL,W,objfn="MI",MX=NULL,sig=.05
 
       # remove selected eigenvectors from search set
       selset <- selset[!(selset %in% sel_id)]
-
     } # end search
   }
 

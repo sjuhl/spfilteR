@@ -342,6 +342,11 @@ glmFilter <- function(y,x=NULL,W,objfn="AIC",MX=NULL,model,optim.method="BFGS"
     sig <- bonferroni <- NULL
   }
 
+  if(objfn=="pMI") pI_init <- MI.resid(resid=resid_init,x=x,W=W,boot=boot.MI
+                                       ,alternative=ifelse(dep=="positive"
+                                                           ,"greater","lower")
+                                       )$pI
+
   #####
   # Search Algorithm:
   # Stepwise Regression
@@ -349,11 +354,12 @@ glmFilter <- function(y,x=NULL,W,objfn="AIC",MX=NULL,model,optim.method="BFGS"
   if(objfn=="all"){
     sel_id <- which(sel)
   } else {
-    sel_id <- NULL # list of selected eigenvectors
+    sel_id <- NULL
     selset <- which(sel)
 
     # start forward selection
     for(i in which(sel)){
+      if(objfn=="pMI") if(pI_init > sig) break
       ref <- Inf
       sid <- NULL
 
