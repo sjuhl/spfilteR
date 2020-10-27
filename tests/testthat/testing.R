@@ -239,10 +239,10 @@ test_that("'objfn=all' selects all eigenvectors in the candidate set", {
   expect_equal(sf$other$nev,sum(inselset))
 })
 
-test_that("The argument 'objfn' works with 'p', 'MI', 'R2', and 'all' ", {
+test_that("The argument 'objfn' works with 'p', 'MI', 'R2', 'pMI', and 'all' ", {
   y <- fakedataset$x1
-  objfn <- c("MI","p","R2","all","else")
-  expected <- c(TRUE,TRUE,TRUE,TRUE,FALSE)
+  objfn <- c("MI","p","R2","all","else","pMI")
+  expected <- c(TRUE,TRUE,TRUE,TRUE,FALSE,TRUE)
   out <- NULL
   for(i in seq_along(objfn)){
     res <- try(lmFilter(y=y,W=W,objfn=objfn[i]),silent=TRUE)
@@ -352,6 +352,12 @@ test_that("lmFilter sets 'bonferroni=FALSE' for 'pMI'", {
 test_that("check 'pMI' with negative autocorrelation in lmFilter()", {
   sf <- lmFilter(y=fakedataset$negative,W=W,objfn="pMI",positive=FALSE)
   expect_is(sf, "spfilter")
+})
+
+test_that("selects no EVs if objfn=='pMI' and initial residuals are insignificant", {
+  sf <- lmFilter(y=fakedataset$x4,W=W,objfn="pMI",positive=TRUE
+                 ,bonferroni=TRUE)
+  expect_equal(sf$other$nev,0)
 })
 
 
@@ -494,10 +500,10 @@ test_that("'model' must be one of 'poisson', 'probit', or 'logit'", {
   expect_equal(out,expect)
 })
 
-test_that("The argument 'objfn' works with 'p', 'MI', 'AIC', 'BIC', and 'all' ", {
+test_that("The argument 'objfn' works with 'p', 'MI', 'pMI', 'AIC', 'BIC', and 'all'", {
   y <- fakedataset$count
-  objfn <- c("MI","p","AIC","BIC","all","else")
-  expected <- c(TRUE,TRUE,TRUE,TRUE,TRUE,FALSE)
+  objfn <- c("MI","p","AIC","BIC","all","else","pMI")
+  expected <- c(TRUE,TRUE,TRUE,TRUE,TRUE,FALSE,TRUE)
   out <- NULL
   for(i in seq_along(objfn)){
     res <- try(glmFilter(y=y,W=W,model="poisson",objfn=objfn[i]),silent=TRUE)
@@ -551,6 +557,14 @@ test_that("check 'pMI' with negative autocorrelation in lmFilter()", {
   sf <- glmFilter(y=fakedataset$negcount,W=W,objfn="pMI",model="poisson"
                  ,positive=FALSE)
   expect_equal(sf$other$dependence, "negative")
+})
+
+test_that("selects EVs if objfn=='pMI' and initial residuals are significant", {
+  y <- fakedataset$indicator
+  X <- cbind(1,fakedataset$x4)
+  sf <- glmFilter(y=y,x=X,W=W,objfn="pMI",model="poisson",sig=.15,positive=TRUE
+                 ,bonferroni=FALSE,boot.MI=NULL,resid.type="deviance")
+  expect_true(sf$other$nev>0)
 })
 
 
