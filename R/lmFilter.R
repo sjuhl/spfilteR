@@ -205,7 +205,7 @@ lmFilter <- function(y,x=NULL,W,objfn="MI",MX=NULL,sig=.05
       test <- abs(MI.resid(resid=resid,x=xe,W=W,boot=boot.MI)$zI) # (absolute) standardized Moran's I
     }
     if(objfn=="pMI"){
-      test <- MI.resid(resid=resid,x=xe,W=W,boot=boot.MI,alternative=alternative)$pI
+      test <- -(MI.resid(resid=resid,x=xe,W=W,boot=boot.MI,alternative=alternative)$pI)
     }
     return(test)
   }
@@ -265,10 +265,10 @@ lmFilter <- function(y,x=NULL,W,objfn="MI",MX=NULL,sig=.05
     sig <- bonferroni <- NULL
   }
 
-  if(objfn=="pMI") pI_init <- MI.resid(resid=resid_init,x=x,W=W,boot=boot.MI
-                                       ,alternative=ifelse(dep=="positive"
-                                                           ,"greater","lower")
-                                       )$pI
+  if(objfn=="pMI") oldpMI <- -(MI.resid(resid=resid_init,x=x,W=W,boot=boot.MI
+                                        ,alternative=ifelse(dep=="positive"
+                                                            ,"greater","lower")
+                                        )$pI)
 
   #####
   # Search Algorithm:
@@ -282,7 +282,7 @@ lmFilter <- function(y,x=NULL,W,objfn="MI",MX=NULL,sig=.05
 
     # start forward search
     for(i in which(sel)){
-      if(objfn=="pMI") if(pI_init > sig) break
+      if(objfn=="pMI") if(abs(oldpMI) > sig) break
       ref <- Inf
       sid <- NULL
 
@@ -317,9 +317,11 @@ lmFilter <- function(y,x=NULL,W,objfn="MI",MX=NULL,sig=.05
         if(oldZMI < tol) break
       }
       if(objfn=="pMI"){
-        if(ref < sig){
+        if(abs(ref) > oldpMI){
+          oldpMI <- abs(ref)
           sel_id <- c(sel_id,sid)
-        } else break
+        }
+        if(abs(ref) > sig)  break
       }
 
       # remove selected eigenvectors from search set

@@ -277,7 +277,7 @@ glmFilter <- function(y,x=NULL,W,objfn="AIC",MX=NULL,model,optim.method="BFGS"
     if(objfn=="pMI"){
       fitvals <- fittedval(x=xe,params=o$par,model=model)
       resid <- residfun(y=y,fitvals=fitvals,model=model)[,resid.type]
-      test <- MI.resid(resid=resid,x=xe,W=W,boot=boot.MI,alternative=alternative)$pI
+      test <- -(MI.resid(resid=resid,x=xe,W=W,boot=boot.MI,alternative=alternative)$pI)
     }
     return(test)
   }
@@ -342,10 +342,10 @@ glmFilter <- function(y,x=NULL,W,objfn="AIC",MX=NULL,model,optim.method="BFGS"
     sig <- bonferroni <- NULL
   }
 
-  if(objfn=="pMI") pI_init <- MI.resid(resid=resid_init,x=x,W=W,boot=boot.MI
-                                       ,alternative=ifelse(dep=="positive"
-                                                           ,"greater","lower")
-                                       )$pI
+  if(objfn=="pMI") oldpMI <- -(MI.resid(resid=resid_init,x=x,W=W,boot=boot.MI
+                                        ,alternative=ifelse(dep=="positive"
+                                                            ,"greater","lower")
+                                        )$pI)
 
   #####
   # Search Algorithm:
@@ -359,7 +359,7 @@ glmFilter <- function(y,x=NULL,W,objfn="AIC",MX=NULL,model,optim.method="BFGS"
 
     # start forward selection
     for(i in which(sel)){
-      if(objfn=="pMI") if(pI_init > sig) break
+      if(objfn=="pMI") if(abs(oldpMI) > sig) break
       ref <- Inf
       sid <- NULL
 
@@ -397,9 +397,11 @@ glmFilter <- function(y,x=NULL,W,objfn="AIC",MX=NULL,model,optim.method="BFGS"
         if(oldZMI < tol) break
       }
       if(objfn=="pMI"){
-        if(ref < sig){
+        if(abs(ref) > oldpMI){
+          oldpMI <- abs(ref)
           sel_id <- c(sel_id,sid)
-        } else break
+        }
+        if(abs(ref) > sig)  break
       }
 
       # remove selected eigenvectors from candidate set
