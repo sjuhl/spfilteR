@@ -7,7 +7,7 @@
 \alias{W}
 \title{Synthetic Dataset}
 \format{
-An object of class \code{data.frame} with 100 rows and 9 columns.
+An object of class \code{data.frame} with 100 rows and 8 columns.
 
 An object of class \code{matrix} (inherits from \code{array}) with 100 rows and 100 columns.
 }
