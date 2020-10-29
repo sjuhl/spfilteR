@@ -1,5 +1,6 @@
 #' @rdname lmFilter
 #' @importFrom stats filter
+#' @export
 
 summary.spfilter <- function(obj,EV=FALSE){
   #####
@@ -73,18 +74,18 @@ summary.spfilter <- function(obj,EV=FALSE){
 }
 
 
-# print function
+#' @export
 print.spfilter <- function(obj){
   cat(paste(obj$other$nev,"out of",obj$other$ncandidates, "candidate eigenvectors selected"))
 }
 
 
-# coef function
+#' @export
 coef.spfilter <- function(obj){
   obj$estimates[,"Estimate"]
 }
 
-# vcov function
+#' @export
 vcov.spfilter <- function(obj){
   obj$varcovar
 }
@@ -92,6 +93,7 @@ vcov.spfilter <- function(obj){
 #' @rdname lmFilter
 #' @importFrom graphics plot legend polygon abline points
 #' @importFrom grDevices rgb
+#' @export
 
 plot.spfilter <- function(obj){
   plot(0,ylim=c(min(obj$evMI),max(obj$evMI)),xlim=c(1,length(obj$evMI))
