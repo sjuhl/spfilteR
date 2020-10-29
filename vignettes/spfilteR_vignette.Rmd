@@ -1,0 +1,153 @@
+---
+title: "spfilteR: Semiparametric Spatial Filtering with Eigenvectors in (Generalized) Linear Models"
+author: "Sebastian Juhl"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+bibliography: references.bib
+vignette: >
+  %\VignetteIndexEntry{spfilteR: Semiparametric Spatial Filtering with Eigenvectors in (Generalized) Linear Models}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+## Introduction
+The `spfilteR` package provides tools to implement the eigenvector-based spatial filtering (ESF) approach put forth by @griffith2003 in linear and generalized linear regression models. It allows users to obtain eigenvectors from a transformed connectivity matrix and supports the supervised and unsupervised creation of a synthetic spatial filter. For the unsupervised approach, eigenvectors can be selected based on either i) the maximization of model fit, ii) the minimization of residual autocorrelation, iii) the statistical significance of residual autocorrelation, or iv) the significance level of candidate eigenvectors. Alternatively, all eigenvectors in the search set may be included so that no selection takes place. While the functions provide a high flexibility, only a minimum of code is required to implement the unsupervised ESF approach.
+
+This vignette solely focuses on the workflow to illustrate the functionality of the `spfilteR` package. For a discussion on the ESF methodology, interested readers may be referred to other sources, for example @griffith2019 or @tiefelsdorf2007.
+
+## Installation
+A stable release version of the `spfilteR` package is available on CRAN and the latest development version can be downloaded from [GitHub](https://github.com/sjuhl/spfilteR).
+
+```{r, message=FALSE, warning=FALSE, results = "hide", eval=FALSE}
+# CRAN release
+install.packages("spfilteR")
+
+# GitHub
+library(devtools)
+devtools::install_github("sjuhl/spfilteR")
+```
+
+## Getting Started
+Together with the main functions, the package also contains an artificial dataset (`fakedataset`) and a connectivity matrix (`W`) connecting the 100 cross-sections on a regular grid by using the rook criterion of adjacency. For illustrative purposes, the following examples work with the fake dataset.
+
+```{r message=FALSE, warning=FALSE}
+# load the package
+library(spfilteR)
+
+# load the dataset
+data("fakedata")
+
+# take a look at the connectivity matrix and the variables
+dim(W)
+
+head(fakedataset)
+```
+
+Besides an `ID` variable, the dataset contains a binary `indicator` variable, two count variables, and four continuous variables.
+
+### Identifying Spatial Autocorrelation
+In a first step, we can use the function `MI.vec()` to check for the presence of spatial autocorrelation in the continuous variables by means of Moran's *I* [see also @cliff1981; @cliff1972]. The function also allows users to define the alternative hypothesis in order to obtain *p*-values.
+
+```{r}
+# select continuous variables
+cont <- cbind(fakedataset$x1,fakedataset$x2,fakedataset$x3,fakedataset$negative)
+
+# Moran test of spatial autocorrelation
+MI.vec(x=cont,W=W,alternative='greater')
+```
+
+The output suggests that the variables `x1` and `x2` are positively autocorrelated at conventional levels of statistical significance. Moreover, the standardized value of Moran's *I* (`zI`) indicates that the variable `negative` is negatively autocorrelated. We can use the function `MI.vec()` and specify `alternative='lower'` to assess the significance of the negative autocorrelation:
+
+```{r}
+MI.vec(x=fakedataset$negative,W=W,alternative='lower')
+```
+
+### Unsupervised Spatial Filtering in Linear Models
+Assume that we wish to regress `x1` on `x2` and test for residual autocorrelation using the function `MI.resid()`.
+
+```{r}
+# define variables
+y <- fakedataset$x1
+X <- cbind(1,fakedataset$x2)
+
+# OLS regression
+ols.resid <- resid(lm(y~X))
+
+# Moran test of residual spatial autocorrelation
+MI.resid(resid=ols.resid,W=W,alternative='greater')
+```
+
+The results show that the residuals are significantly autocorrelated which violates the assumption of uncorrelated errors. In order to resolve this problem of spatial autocorrelation in regression residuals, the function `lmFilter()` estimates a spatially filtered linear regression model using an unsupervised stepwise regression to identify relevant eigenvectors derived from the transformed connectivity matrix. Below, the unsupervised eigenvector search algorithm selects eigenvectors based on the reduction in residual autocorrelation. The output is a class `spfilter` object.
+
+```{r}
+# ESF model
+(lm.esf <- lmFilter(y=y,x=X,W=W,objfn='MI',positive=TRUE,ideal.setsize=TRUE,tol=.2))
+
+summary(lm.esf,EV=TRUE)
+```
+
+While the `print` method shows that 8 eigenvectors were selected from the candidate set consisting of 22 eigenvectors, the `summary` method provides additional information. Besides the ordinary least squares (OLS) parameter estimates, the output shows that the ESF model filters for positive spatial autocorrelation using the minimization of residual autocorrelation as objective function during the eigenvector search. A comparison between the filtered and the nonspatial OLS model with respect to model fit and residual autocorrelation is also provided. Since the option `EV` is set to `TRUE`, the `summary` method also displays information on the selected eigenvectors. As the results show, the ESF model successfully removes the spatial pattern from model residuals.
+
+The results can also be visualized easily by using the `plot` method. The plot displays the Moran coefficient associated with each of the eigenvectors. The shaded area signifies the candidate set and selected eigenvectors are illustrated by black dots.
+
+```{r fig_out, out.width = '50%', fig.align='center'}
+plot(lm.esf)
+```
+
+Moreover, `lmFilter()` also allows users to select eigenvectors based on alternative selection criteria:
+
+```{r}
+### Alternative selection criteria:
+# maximization of model fit
+lmFilter(y=y,x=X,W=W,objfn='R2',positive=TRUE,ideal.setsize=TRUE)
+
+# significance of residual autocorrelation
+lmFilter(y=y,x=X,W=W,objfn='pMI',sig=.1,bonferroni=FALSE
+         ,positive=TRUE,ideal.setsize=TRUE)
+
+# significance of eigenvectors
+lmFilter(y=y,x=X,W=W,objfn='p',sig=.1,bonferroni=TRUE
+         ,positive=TRUE,ideal.setsize=TRUE)
+
+# all eigenvectors in the candidate set
+lmFilter(y=y,x=X,W=W,objfn='all',positive=TRUE,ideal.setsize=TRUE)
+```
+
+If users wish to select eigenvectors based on individual selection criteria, they can obtain the eigenvectors using the function `getEVs()` and perform a supervised selection procedure using the basic [`stats::lm()`](https://www.rdocumentation.org/packages/stats/versions/3.6.2/topics/lm) command.
+
+### Extension to Generalized Linear Models
+The ESF approach outlined above easily extends to generalized linear models (GLMs) as well [see also @griffith2019]. Therefore, the `spfilteR` package contains the function `glmFilter()` which uses maximim likelihood estimation (MLE) to fit a spatially filtered GLM and performs an unsupervised eigenvector search based on alternative objective functions.
+
+Except for minor differences `glmFilter()` works similar to the `lmFilter()` function discussed above. The option `model` defines the model that needs to be estimated. Currently, unsupervised spatial filtering is possible for logit, probit, and poisson models. Moreover, the option `optim.method` specifies the optimization method used to maximize the log-likelihood function. Finally, the option `resid.type` allows users to define the type of residuals used to calculate Moran's *I* and `boot.MI` is an integer specifying the number of bootstrap permutations to obtain the variance of Moran's *I*.
+
+```{r}
+# define outcome variables
+y.bin <- fakedataset$indicator
+y.count <- fakedataset$count
+
+# ESF logit model
+(logit.esf <- glmFilter(y=y.bin,x=NULL,W=W,objfn='p',model='logit',optim.method='BFGS'
+                        ,sig=.1,bonferroni=FALSE,positive=TRUE,ideal.setsize=FALSE
+                        ,alpha=.25,resid.type='deviance',boot.MI=100))
+
+# ESF probit model
+(probit.esf <- glmFilter(y=y.bin,x=NULL,W=W,objfn='p',model='probit',optim.method='BFGS'
+                         ,sig=.1,bonferroni=FALSE,positive=TRUE,ideal.setsize=FALSE
+                         ,alpha=.25,resid.type='deviance',boot.MI=100))
+
+# ESF poisson model
+(poisson.esf <- glmFilter(y=y.count,x=NULL,W=W,objfn='BIC',model='poisson',optim.method='BFGS'
+                          ,positive=TRUE,ideal.setsize=FALSE,alpha=.25,resid.type='deviance'
+                          ,boot.MI=100))
+```
+
+Again, if users wish to define individual selection criteria or fit a GLM currently not implemented in `glmFilter()`, they can obtain the eigenvectors using the `getEVs()` command and perform supervised eigenvector selection with the standard [```stats::glm()```](https://www.rdocumentation.org/packages/stats/versions/3.6.2/topics/glm) function.
+
+## References
