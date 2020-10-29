@@ -38,8 +38,9 @@
 #' @param boot.MI number of iterations used to estimate the variance of Moran's I.
 #' If \code{boot=NULL} (default), analytical results will be used
 #' @param na.rm remove observations with missing values (TRUE/ FALSE)
-#' @param obj an object of class \code{spfilter}
+#' @param object an object of class \code{spfilter}
 #' @param EV display summary statistics for selected eigenvectors (TRUE/ FALSE)
+#' @param ... additional arguments
 #'
 #' @return An object of class \code{spfilter} containing the following
 #' information:

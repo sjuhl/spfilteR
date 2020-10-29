@@ -3,7 +3,6 @@
 \name{lmFilter}
 \alias{lmFilter}
 \alias{summary.spfilter}
-\alias{plot.spfilter}
 \title{Unsupervised Spatial Filtering with Eigenvectors in Linear Regression Models}
 \usage{
 lmFilter(
@@ -22,9 +21,7 @@ lmFilter(
   na.rm = TRUE
 )
 
-\method{summary}{spfilter}(obj, EV = FALSE)
-
-\method{plot}{spfilter}(obj)
+\method{summary}{spfilter}(object, EV = FALSE, ...)
 }
 \arguments{
 \item{y}{vector of regressands}
@@ -68,9 +65,11 @@ If \code{boot=NULL} (default), analytical results will be used}
 
 \item{na.rm}{remove observations with missing values (TRUE/ FALSE)}
 
-\item{obj}{an object of class \code{spfilter}}
+\item{object}{an object of class \code{spfilter}}
 
 \item{EV}{display summary statistics for selected eigenvectors (TRUE/ FALSE)}
+
+\item{...}{additional arguments}
 }
 \value{
 An object of class \code{spfilter} containing the following
