@@ -69,7 +69,7 @@ If \code{boot=NULL} (default), analytical results will be used}
 
 \item{EV}{display summary statistics for selected eigenvectors (TRUE/ FALSE)}
 
-\item{...}{additional arguments}
+\item{...}{additional arguments for summary}
 }
 \value{
 An object of class \code{spfilter} containing the following

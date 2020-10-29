@@ -40,7 +40,7 @@
 #' @param na.rm remove observations with missing values (TRUE/ FALSE)
 #' @param object an object of class \code{spfilter}
 #' @param EV display summary statistics for selected eigenvectors (TRUE/ FALSE)
-#' @param ... additional arguments
+#' @param ... additional arguments for summary
 #'
 #' @return An object of class \code{spfilter} containing the following
 #' information:

@@ -98,7 +98,7 @@ vcov.spfilter <- function(object,...){
 plot.spfilter <- function(x,...){
   plot(0,ylim=c(min(x$evMI),max(x$evMI)),xlim=c(1,length(x$evMI))
        ,main="Moran Coefficients for\n all Eigenvectors"
-       ,ylab="Moran Coefficient",xlab="Eigenvector",type="n",las=1)
+       ,ylab="Moran Coefficient",xlab="Eigenvector",type="n",las=1,...)
   # area of candidate set
   xstart <- ifelse(x$other$dependence=="positive",-100,length(x$evMI)-x$other$ncandidates)
   xend <- ifelse(x$other$dependence=="positive",x$other$ncandidates,length(x$evMI)*2)
