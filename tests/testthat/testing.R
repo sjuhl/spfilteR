@@ -13,9 +13,9 @@ test_that("getEVs() returns a list", {
 })
 
 test_that("getEVs() adds an intercept term", {
-  covars <- fakedataset$x4
+  covars <- fakedataset$x3
   EVs1 <- getEVs(W=W,covars=covars)$vectors
-  covars2 <- cbind(1,fakedataset$x4)
+  covars2 <- cbind(1,fakedataset$x3)
   EVs2 <- getEVs(W=W,covars=covars2)$vectors
   out <- all(EVs1==EVs2)
   expect_true(out)
@@ -322,7 +322,7 @@ test_that("lmFilter() breaks if missings are present but na.rm=FALSE", {
 })
 
 test_that("check ideal candidate set size", {
-  sf <- lmFilter(y=fakedataset$x4,W=W,positive=TRUE
+  sf <- lmFilter(y=fakedataset$x3,W=W,positive=TRUE
                  ,ideal.setsize=TRUE)
   expect_is(sf, "spfilter")
 })
@@ -331,7 +331,7 @@ test_that("check 'tol' in lmFilter()", {
   tol <- c(.1,.01)
   nev <- NULL
   for(i in 1:2){
-    sf <- lmFilter(y=fakedataset$x4,objfn="MI",alpha=.05,W=W,tol=tol[i])
+    sf <- lmFilter(y=fakedataset$x3,objfn="MI",alpha=.05,W=W,tol=tol[i])
     nev[i] <- sf$other$nev
   }
   expect_true(nev[1]<nev[2])
@@ -355,7 +355,7 @@ test_that("check 'pMI' with negative autocorrelation in lmFilter()", {
 })
 
 test_that("selects no EVs if objfn=='pMI' and initial residuals are insignificant", {
-  sf <- lmFilter(y=fakedataset$x4,W=W,objfn="pMI",positive=TRUE
+  sf <- lmFilter(y=fakedataset$x3,W=W,objfn="pMI",positive=TRUE
                  ,bonferroni=TRUE)
   expect_equal(sf$other$nev,0)
 })
@@ -367,14 +367,14 @@ test_that("selects no EVs if objfn=='pMI' and initial residuals are insignifican
 #####
 test_that("glmFilter() estimates poisson models", {
   y <- fakedataset$count
-  X <- cbind(fakedataset$x1,fakedataset$x2,fakedataset$x3,fakedataset$x4)
+  X <- cbind(fakedataset$x1,fakedataset$x2,fakedataset$x3)
   out <- glmFilter(y=y,x=X,W=W,objfn="MI",model="poisson")
   expect_is(out, "spfilter")
 })
 
 test_that("glmFilter() estimates probit models", {
   y <- fakedataset$indicator
-  X <- cbind(fakedataset$x1,fakedataset$x2,fakedataset$x3,fakedataset$x4)
+  X <- cbind(fakedataset$x1,fakedataset$x2,fakedataset$x3,fakedataset$x3)
   out <- glmFilter(y=y,x=NULL,W=W,objfn="MI",model="probit")
   expect_is(out, "spfilter")
 })
@@ -561,7 +561,7 @@ test_that("check 'pMI' with negative autocorrelation in lmFilter()", {
 
 test_that("selects EVs if objfn=='pMI' and initial residuals are significant", {
   y <- fakedataset$indicator
-  X <- cbind(1,fakedataset$x4)
+  X <- cbind(1,fakedataset$x3)
   sf <- glmFilter(y=y,x=X,W=W,objfn="pMI",model="poisson",sig=.15,positive=TRUE
                  ,bonferroni=FALSE,boot.MI=NULL,resid.type="deviance")
   expect_true(sf$other$nev>0)
@@ -584,12 +584,12 @@ test_that("summary function for glmFilter()", {
 })
 
 test_that("summary function shows significance level without adjustment", {
-  sf <- lmFilter(y=fakedataset$x4,W=W,objfn="p",bonferroni=FALSE)
+  sf <- lmFilter(y=fakedataset$x3,W=W,objfn="p",bonferroni=FALSE)
   expect_output(summary(sf))
 })
 
 test_that("summary function shows significance level with adjustment", {
-  sf <- lmFilter(y=fakedataset$x4,W=W,objfn="p",bonferroni=TRUE)
+  sf <- lmFilter(y=fakedataset$x3,W=W,objfn="p",bonferroni=TRUE)
   expect_output(summary(sf,EV=TRUE))
 })
 
@@ -653,14 +653,14 @@ test_that("residfun() takes as model types 'linear', 'probit'
             out <- NULL
             for(i in 1:5){
               if(model[i]=="linear"){
-                y <- fakedataset$x3
-                fit <- fakedataset$x3+rnorm(length(y),0,.3)
+                y <- fakedataset$x1
+                fit <- fakedataset$x1+rnorm(length(y),0,.3)
               } else if(model[i] %in% c("probit","logit")){
                 y <- fakedataset$indicator
                 fit <- runif(length(y),.001,.999)
               } else {
                 y <- fakedataset$count
-                fit <- round(fakedataset$x3+rnorm(length(y),0,.3))
+                fit <- round(fakedataset$x1+rnorm(length(y),0,.3))
               }
               res <- try(residfun(y=y,fitvals=fit,model=model[i])
                          ,silent=TRUE)
