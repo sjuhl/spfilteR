@@ -5,17 +5,22 @@ cache: packages
 
 r_packages:
   - covr
-#  - pkgdown
+  - pkgdown
+
+before_install:
+  - sudo apt-get update
+  - sudo apt-get -y install libharfbuzz-dev
+  - sudo apt-get -y install libfribidi-dev
 
 after_success:
   - Rscript -e 'library(covr); covr::codecov()'
-#  - Rscript -e 'library(pkgdown); pkgdown::build_site()'
+  - Rscript -e 'library(pkgdown); pkgdown::build_site()'
 
-#deploy:
-#  provider: pages
-#  skip-cleanup: true
-#  github-token: $GH_PAT
-#  keep-history: true
-#  local-dir: docs
-#  on:
-#    branch: master
+deploy:
+  provider: pages
+  skip-cleanup: true
+  github-token: $GH_PAT
+  keep-history: true
+  local-dir: docs
+  on:
+    branch: master
