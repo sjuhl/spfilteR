@@ -9,8 +9,7 @@ r_packages:
 
 before_install:
   - sudo apt-get update
-  - sudo apt-get -y install libharfbuzz-dev
-  - sudo apt-get -y install libfribidi-dev
+  - sudo apt-get -y install libharfbuzz-dev libfribidi-dev
 
 after_success:
   - Rscript -e 'library(covr); covr::codecov()'
