@@ -65,11 +65,11 @@ summary.spfilter <- function(object,EV=FALSE,...){
   m_signif <- star(p=object$moran[,"p-value"])
   moran <- data.frame(object$moran,m_signif)
   colnames(moran) <- c(colnames(object$moran),"")
-  cat(paste0("\n","Moran's I (",ifelse(object$other$model!="linear"
-                                ,paste0(toupper(substring(object$other$resid.type,1,1))
+  cat(paste0("\n","Moran's I ",ifelse(object$other$model!="linear"
+                                ,paste0("(",toupper(substring(object$other$resid.type,1,1))
                                         ,substring(object$other$resid.type,2)
-                                        ,""),"")
-             ," Residuals):\n"))
+                                        ,""),"(")
+             ,"Residuals):\n"))
   print(moran)
 }
 
