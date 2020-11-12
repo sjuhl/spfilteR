@@ -134,3 +134,14 @@ pseudoR2 <- function(negloglik_n,negloglik_f,nev){
   adjR2 <- 1-((-negloglik_n-nev)/-negloglik_f)
   return(R2)
 }
+
+
+#' @name Zscore
+#' @importFrom stats sd
+#' @noRd
+
+Zscore <- function(x){
+  x <- as.matrix(x)
+  Z <- apply(x,2,function(v) (v-mean(v))/sd(v))
+  return(Z)
+}
