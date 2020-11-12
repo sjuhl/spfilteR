@@ -13,7 +13,8 @@ pfunc <- function(z,alternative,draws=NULL){
     } else p <- 2*pnorm(abs(z), lower.tail=FALSE)
   } else {
     # simulation-based variance estimate
-    # see e.g., North/ Curtis/ Sham (2002) [Am J Hum Genet] for the '+1'
+    # see e.g., North/ Curtis/ Sham (2002) [Am J Hum Genet]
+    # or Dary (2011) [Geogr. An.] for the '+1'
     if(alternative=="greater"){
       p <- (sum(draws>=z)+1)/(length(draws)+1)
     } else if(alternative=="lower"){
