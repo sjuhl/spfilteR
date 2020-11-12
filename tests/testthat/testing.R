@@ -142,6 +142,14 @@ test_that("partialR2() produces a warning if no eigenvectors were
   expect_warning(partialR2(y=y,x=x,evecs=NULL), "No eigenvectors supplied")
 })
 
+test_that("partialR2() works without covariates (intercept-only model)", {
+  y <- fakedataset$x1
+  E <- getEVs(W=W)$vectors[,1:5]
+  res <- try(partialR2(y=y,x=NULL,evecs=E),silent=TRUE)
+  out <- class(res)!="try-error"
+  expect_true(out)
+})
+
 test_that("partialR2() preserves number/names of eigenvectors (if supplied)", {
   y <- fakedataset$x1
   x <- fakedataset$x2
