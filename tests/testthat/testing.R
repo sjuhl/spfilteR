@@ -682,3 +682,9 @@ test_that("conditionNumber() returns NULL if no EVs supplied", {
   expect_null(out)
 })
 
+test_that("Zscore() returns standardized values", {
+  x <- fakedataset$x1
+  z <- Zscore(x)
+  expect_true(all(round(mean(z),10)==0 & sd(z)==1))
+})
+
