@@ -33,7 +33,7 @@
 #'
 #' @export
 
-partialR2 <- function(y,x,evecs){
+partialR2 <- function(y,x=NULL,evecs){
   # if no evecs are supplied
   if(is.null(evecs)){ warning("No eigenvectors supplied"); return(pR2 <- NULL)}
 
@@ -41,6 +41,7 @@ partialR2 <- function(y,x,evecs){
   # Extract Information
   # & Formatting
   #####
+  if(is.null(x)) x <- rep(1,length(y))
   x <- as.matrix(x)
   if (!all(x[,1]==1)) x <- cbind(1,x)
   evecs <- as.matrix(evecs)

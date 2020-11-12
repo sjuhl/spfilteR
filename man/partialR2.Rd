@@ -4,7 +4,7 @@
 \alias{partialR2}
 \title{Coefficient of Partial Determination}
 \usage{
-partialR2(y, x, evecs)
+partialR2(y, x = NULL, evecs)
 }
 \arguments{
 \item{y}{vector of regressands}
