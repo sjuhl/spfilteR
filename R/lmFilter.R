@@ -382,8 +382,8 @@ lmFilter <- function(y,x=NULL,W,objfn="MI",MX=NULL,sig=.05
     gammas <- coefs[(nx+1):(nx+count)]
     gse <- se[(nx+1):(nx+count)]
     gp <- 2*pt(abs(gammas/gse),df=(n-ncol(xev)),lower.tail=FALSE)
-    pR2 <- partialR2(y=y,x=xev[,1:nx],evecs=xev[,(nx+1):(nx+count)])
-    vif <- vif.ev(x=xev[,1:nx],evecs=xev[,(nx+1):(nx+count)])
+    pR2 <- partialR2(y=y,x=x,evecs=selvecs)
+    vif <- vif.ev(x=x,evecs=selvecs)
     EV <- cbind(gammas,gse,gp,pR2,vif,evMI[sel_id])
     colnames(EV) <- c("Estimate","SE","p-value","partialR2","VIF","MI")
     rownames(EV) <- paste0("ev_", sel_id)
