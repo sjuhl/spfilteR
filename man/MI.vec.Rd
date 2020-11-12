@@ -46,8 +46,7 @@ For inherently non-symmetric matrices, it is recommended to specify
 }
 \examples{
 data(fakedata)
-X <- cbind(fakedataset$x1,fakedataset$x2
-,fakedataset$x3,fakedataset$x4)
+X <- cbind(fakedataset$x1,fakedataset$x2,fakedataset$x3)
 
 MI <- MI.vec(x=X,W=W,alternative="greater",symmetrize=TRUE)
 MI
