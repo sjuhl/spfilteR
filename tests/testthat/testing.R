@@ -76,6 +76,57 @@ test_that("W must be of class 'matrix', 'Matrix', or 'data.frame'", {
 
 
 #####
+# MI.decomp()
+#####
+test_that("MI.decomp() works with matrix input and returns a data frame with
+          number of columns equal to number of columns in x", {
+            X <- cbind(fakedataset$x1,fakedataset$x2,fakedataset$x3)
+            out <- MI.decomp(x=X,W=W,nsim=100)
+            expect_equal(nrow(out), ncol(X))
+          })
+
+test_that("MI.decomp() detects NAs and returns an error message", {
+  x <- fakedataset$x1
+  x[1] <- NA
+  expect_error(MI.decomp(x=x,W=W), "Missing values detected")
+})
+
+test_that("MI.decomp() works with named input", {
+  x <- as.matrix(fakedataset$x1)
+  colnames(x) <- "name"
+  out <- MI.decomp(x=x,W=W)
+  expect_equal(rownames(out), colnames(x))
+})
+
+test_that("MI.decomp() warns if a constant is supplied", {
+  X <- cbind(1,fakedataset$x1)
+  expect_warning(MI.decomp(x=X,W=W), "Constant term detected in x")
+})
+
+test_that("W must be of class 'matrix', 'Matrix', or 'data.frame'", {
+  W2 <- as.vector(W)
+  expect_error(MI.decomp(x=fakedataset$x1,W=W2), "W must be of class 'matrix' or 'data.frame'")
+})
+
+test_that("MI.decomp() warns if nsim < 100", {
+  nsim <- 99
+  test <- tryCatch(MI.decomp(x=fakedataset$x1,W=W,nsim=nsim),warning=function(t) TRUE)
+  expect_true(test)
+})
+
+test_that("If nsim < 100, MI.decomp() sets nsim=100", {
+  x <- fakedataset$x1
+  nsim1 <- 90
+  nsim2 <- 100
+  set.seed(123)
+  MI1 <- suppressWarnings(MI.decomp(x=x,W=W,nsim=nsim1))
+  set.seed(123)
+  MI2 <- MI.decomp(x=x,W=W,nsim=nsim2)
+  expect_equal(MI1[,"VarI+"],MI2[,"VarI+"])
+})
+
+
+#####
 # MI.resid()
 #####
 test_that("The argument 'alternative' in MI.resid() needs to be either
