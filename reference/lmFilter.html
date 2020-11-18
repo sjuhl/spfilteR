@@ -41,8 +41,8 @@
 
 <meta property="og:title" content="Unsupervised Spatial Filtering with Eigenvectors in Linear Regression Models — lmFilter" />
 <meta property="og:description" content="This function implements the eigenvector-based semiparametric
-spatial filtering approach in a linear regression framework using OLS.
-Eigenvectors are selected by an unsupervised stepwise regression
+spatial filtering approach in a linear regression framework using ordinary least
+squares (OLS). Eigenvectors are selected by an unsupervised stepwise regression
 technique. Supported selection criteria are the minimization of residual
 autocorrelation, maximization of model fit, significance of residual autocorrelation,
 and the statistical significance of eigenvectors. Alternatively, all eigenvectors in
@@ -136,8 +136,8 @@ the candidate set can be included as well." />
 
     <div class="ref-description">
     <p>This function implements the eigenvector-based semiparametric
-spatial filtering approach in a linear regression framework using OLS.
-Eigenvectors are selected by an unsupervised stepwise regression
+spatial filtering approach in a linear regression framework using ordinary least
+squares (OLS). Eigenvectors are selected by an unsupervised stepwise regression
 technique. Supported selection criteria are the minimization of residual
 autocorrelation, maximization of model fit, significance of residual autocorrelation,
 and the statistical significance of eigenvectors. Alternatively, all eigenvectors in
@@ -168,7 +168,7 @@ the candidate set can be included as well.</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>y</th>
-      <td><p>vector of regressands</p></td>
+      <td><p>response variable</p></td>
     </tr>
     <tr>
       <th>x</th>
@@ -180,10 +180,10 @@ the candidate set can be included as well.</p>
     </tr>
     <tr>
       <th>objfn</th>
-      <td><p>the objective function to be used for eigenvector
-selection. Possible criteria are: the maximization of the
-adjusted R-squared ('R2'), minimization of residual autocorrelation ('MI'),
-significance level of candidate eigenvectors ('p'), significance of residual spatial
+      <td><p>the objective function to be used for eigenvector selection.
+Possible criteria are: the maximization of the adjusted R-squared ('R2'),
+minimization of residual autocorrelation ('MI'), significance level of
+candidate eigenvectors ('p'), significance of residual spatial
 autocorrelation ('pMI') or all eigenvectors in the candidate set ('all')</p></td>
     </tr>
     <tr>
@@ -209,7 +209,7 @@ levels of spatial autocorrelation (TRUE/ FALSE)</p></td>
     </tr>
     <tr>
       <th>ideal.setsize</th>
-      <td><p>if <code>positive=TRUE</code>, uses the formula proposed in
+      <td><p>if <code>positive=TRUE</code>, uses the formula proposed by
 Chun et al. (2016) to determine the ideal size of the candidate set
 (TRUE/ FALSE)</p></td>
     </tr>
@@ -227,7 +227,7 @@ autocorrelation at which the eigenvector selection terminates</p></td>
     <tr>
       <th>boot.MI</th>
       <td><p>number of iterations used to estimate the variance of Moran's I.
-If <code>boot=NULL</code> (default), analytical results will be used</p></td>
+If <code>boot.MI=NULL</code> (default), analytical results will be used</p></td>
     </tr>
     <tr>
       <th>na.rm</th>
@@ -243,7 +243,7 @@ If <code>boot=NULL</code> (default), analytical results will be used</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>additional arguments for summary</p></td>
+      <td><p>additional arguments</p></td>
     </tr>
     </table>
 
@@ -251,12 +251,12 @@ If <code>boot=NULL</code> (default), analytical results will be used</p></td>
 
     <p>An object of class <code>spfilter</code> containing the following
 information:</p><dl>
-<dt><code>Estimates</code></dt><dd><p>summary statistics of the parameter estimates</p></dd>
+<dt><code>estimates</code></dt><dd><p>summary statistics of the parameter estimates</p></dd>
 <dt><code>varcovar</code></dt><dd><p>estimated variance-covariance matrix</p></dd>
-<dt><code>EV</code></dt><dd><p>a matrix with summary statistics of selected eigenvectors</p></dd>
+<dt><code>EV</code></dt><dd><p>a matrix containing the summary statistics of selected eigenvectors</p></dd>
 <dt><code>selvecs</code></dt><dd><p>vector/ matrix of selected eigenvectors</p></dd>
 <dt><code>evMI</code></dt><dd><p>Moran coefficient of all eigenvectors</p></dd>
-<dt><code>moran</code></dt><dd><p>residual autocorrelation for the initial and the
+<dt><code>moran</code></dt><dd><p>residual autocorrelation in the initial and the
 filtered model</p></dd>
 <dt><code>fit</code></dt><dd><p>adjusted R-squared of the initial and the filtered model</p></dd>
 <dt><code>residuals</code></dt><dd><p>initial and filtered model residuals</p></dd>
@@ -267,9 +267,9 @@ filtered model</p></dd>
 <dt><code>sel_id</code></dt><dd><p>ID of selected eigenvectors</p></dd>
 <dt><code>sf</code></dt><dd><p>vector representing the spatial filter</p></dd>
 <dt><code>sfMI</code></dt><dd><p>Moran coefficient of the spatial filter</p></dd>
-<dt><code>model</code></dt><dd><p>type of the regression model</p></dd>
+<dt><code>model</code></dt><dd><p>type of the fitted regression model</p></dd>
 <dt><code>dependence</code></dt><dd><p>filtered for positive or negative spatial dependence</p></dd>
-<dt><code>objfn</code></dt><dd><p>selection criteria specified in the objective function of
+<dt><code>objfn</code></dt><dd><p>selection criterion specified in the objective function of
 the stepwise regression procedure</p></dd>
 <dt><code>bonferroni</code></dt><dd><p>TRUE/ FALSE: Bonferroni-adjusted significance level
 (if <code>objfn='p'</code>)</p></dd>
@@ -281,7 +281,7 @@ the stepwise regression procedure</p></dd>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>If <em><strong>W</strong></em> is not symmetric, it gets symmetrized by
-1/2 * (<em><strong>W</strong></em> + <em><strong>W</strong></em>') the eigenfunction decomposition.</p>
+1/2 * (<em><strong>W</strong></em> + <em><strong>W</strong></em>') before the decomposition.</p>
 <p>If covariates are supplied to <code>MX</code>, the function uses these regressors
 to construct the following projection matrix:</p>
 <p><em><strong>M</strong> = <strong>I</strong> - <strong>X</strong> (<strong>X</strong>'<strong>X</strong>)^-1<strong>X</strong>'</em></p>

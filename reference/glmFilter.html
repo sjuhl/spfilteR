@@ -43,12 +43,12 @@ Linear Regression Models — glmFilter • spfilteR</title>
 <meta property="og:title" content="Unsupervised Spatial Filtering with Eigenvectors in Generalized
 Linear Regression Models — glmFilter" />
 <meta property="og:description" content="This function implements the eigenvector-based semiparametric
-spatial filtering approach in a generalized linear regression framework using MLE.
-Eigenvectors are selected by an unsupervised stepwise regression
-technique. Supported selection criteria are the minimization of residual
-autocorrelation, maximization of model fit, significance of residual autocorrelation,
-and the statistical significance of eigenvectors. Alternatively, all eigenvectors in
-the candidate set can be included as well." />
+spatial filtering approach in a generalized linear regression framework using
+maximum likelihood estimation (MLE). Eigenvectors are selected by an unsupervised
+stepwise regression technique. Supported selection criteria are the minimization of
+residual autocorrelation, maximization of model fit, significance of residual
+autocorrelation, and the statistical significance of eigenvectors. Alternatively,
+all eigenvectors in the candidate set can be included as well." />
 
 
 
@@ -139,12 +139,12 @@ Linear Regression Models</h1>
 
     <div class="ref-description">
     <p>This function implements the eigenvector-based semiparametric
-spatial filtering approach in a generalized linear regression framework using MLE.
-Eigenvectors are selected by an unsupervised stepwise regression
-technique. Supported selection criteria are the minimization of residual
-autocorrelation, maximization of model fit, significance of residual autocorrelation,
-and the statistical significance of eigenvectors. Alternatively, all eigenvectors in
-the candidate set can be included as well.</p>
+spatial filtering approach in a generalized linear regression framework using
+maximum likelihood estimation (MLE). Eigenvectors are selected by an unsupervised
+stepwise regression technique. Supported selection criteria are the minimization of
+residual autocorrelation, maximization of model fit, significance of residual
+autocorrelation, and the statistical significance of eigenvectors. Alternatively,
+all eigenvectors in the candidate set can be included as well.</p>
     </div>
 
     <pre class="usage"><span class='fu'>glmFilter</span><span class='op'>(</span>
@@ -172,7 +172,7 @@ the candidate set can be included as well.</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>y</th>
-      <td><p>vector of regressands</p></td>
+      <td><p>response variable</p></td>
     </tr>
     <tr>
       <th>x</th>
@@ -197,12 +197,13 @@ Details</p></td>
     </tr>
     <tr>
       <th>model</th>
-      <td><p>a character string indicating the model to be estimated.
+      <td><p>a character string indicating the type of model to be estimated.
 Currently, 'probit', 'logit', and 'poisson' are valid inputs</p></td>
     </tr>
     <tr>
       <th>optim.method</th>
-      <td><p>a character specifying the optimization method</p></td>
+      <td><p>a character specifying the optimization method used by
+the <code>optim</code> function</p></td>
     </tr>
     <tr>
       <th>sig</th>
@@ -222,7 +223,7 @@ levels of spatial autocorrelation (TRUE/ FALSE)</p></td>
     </tr>
     <tr>
       <th>ideal.setsize</th>
-      <td><p>if <code>positive=TRUE</code>, uses the formula proposed in
+      <td><p>if <code>positive=TRUE</code>, uses the formula proposed by
 Chun et al. (2016) to determine the ideal size of the candidate set
 (TRUE/ FALSE)</p></td>
     </tr>
@@ -235,7 +236,7 @@ current AIC/ BIC) a candidate eigenvector need to achieve in order to be selecte
     <tr>
       <th>boot.MI</th>
       <td><p>number of iterations used to estimate the variance of Moran's I
-(default=100). Alternatively, if <code>boot=NULL</code>, analytical results will
+(default=100). Alternatively, if <code>boot.MI=NULL</code>, analytical results will
 be used</p></td>
     </tr>
     <tr>
@@ -264,12 +265,12 @@ autocorrelation at which the eigenvector selection terminates</p></td>
 
     <p>An object of class <code>spfilter</code> containing the following
 information:</p><dl>
-<dt><code>Estimates</code></dt><dd><p>summary statistics of the parameter estimates</p></dd>
+<dt><code>estimates</code></dt><dd><p>summary statistics of the parameter estimates</p></dd>
 <dt><code>varcovar</code></dt><dd><p>estimated variance-covariance matrix</p></dd>
-<dt><code>EV</code></dt><dd><p>a matrix with summary statistics of selected eigenvectors</p></dd>
+<dt><code>EV</code></dt><dd><p>a matrix containing the summary statistics of selected eigenvectors</p></dd>
 <dt><code>selvecs</code></dt><dd><p>vector/ matrix of selected eigenvectors</p></dd>
 <dt><code>evMI</code></dt><dd><p>Moran coefficient of all eigenvectors</p></dd>
-<dt><code>moran</code></dt><dd><p>residual autocorrelation for the initial and the
+<dt><code>moran</code></dt><dd><p>residual autocorrelation in the initial and the
 filtered model</p></dd>
 <dt><code>fit</code></dt><dd><p>adjusted R-squared of the initial and the filtered model</p></dd>
 <dt><code>residuals</code></dt><dd><p>initial and filtered model residuals</p></dd>
@@ -285,7 +286,7 @@ among the eigenvectors induced by the link function, see e.g., Griffith/ Amrhein
 <dt><code>sfMI</code></dt><dd><p>Moran coefficient of the spatial filter</p></dd>
 <dt><code>model</code></dt><dd><p>type of the regression model</p></dd>
 <dt><code>dependence</code></dt><dd><p>filtered for positive or negative spatial dependence</p></dd>
-<dt><code>objfn</code></dt><dd><p>selection criteria specified in the objective function of
+<dt><code>objfn</code></dt><dd><p>selection criterion specified in the objective function of
 the stepwise regression procedure</p></dd>
 <dt><code>bonferroni</code></dt><dd><p>TRUE/ FALSE: Bonferroni-adjusted significance level
 (if <code>objfn='p'</code>)</p></dd>
@@ -299,7 +300,7 @@ the stepwise regression procedure</p></dd>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>If <em><strong>W</strong></em> is not symmetric, it gets symmetrized by
-1/2 * (<em><strong>W</strong></em> + <em><strong>W</strong></em>') the eigenfunction decomposition.</p>
+1/2 * (<em><strong>W</strong></em> + <em><strong>W</strong></em>') before the decomposition.</p>
 <p>If covariates are supplied to <code>MX</code>, the function uses these regressors
 to construct the following projection matrix:</p>
 <p><em><strong>M</strong> = <strong>I</strong> - <strong>X</strong> (<strong>X</strong>'<strong>X</strong>)^-1<strong>X</strong>'</em></p>
@@ -317,12 +318,12 @@ FALSE if eigenvectors are added to the model until the residuals exhibit no
 significant level of spatial autocorrelation (<code>objfn='pMI'</code>).</p>
     <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
 
-    <p>If the condition number (<code>condnum</code>) suggests high levels of multicollinearity,
-eigenvectors can be sequentially removed from <code>selvecs</code> and
-the model can be re-estimated using the <code>glm</code> function in order to
+    <p>If the condition number (<code>condnum</code>) suggests high levels of
+multicollinearity, eigenvectors can be sequentially removed from <code>selvecs</code>
+and the model can be re-estimated using the <code>glm</code> function in order to
 identify and manually remove the problematic eigenvectors. Moreover, if other
 models that are currently not implemented here need to be estimated
-(e.g., quasi-binomials), users can extract eigenvectors using the function
+(e.g., quasi-binomial models), users can extract eigenvectors using the function
 <code>getEVs</code> and perform a supervised eigenvector search using the <code>glm</code>
 function.</p>
 <p>In contrast to eigenvector-based spatial filtering in linear regression models,
@@ -346,7 +347,8 @@ Berlin/ Heidelberg, Springer.</p>
 Analysis for Geographers. Englewood Cliffs, Prentice Hall.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='lmFilter.html'>lmFilter</a></code>, <code><a href='getEVs.html'>getEVs</a></code>, <code><a href='MI.resid.html'>MI.resid</a></code></p></div>
+    <div class='dont-index'><p><code><a href='lmFilter.html'>lmFilter</a></code>, <code><a href='getEVs.html'>getEVs</a></code>, <code><a href='MI.resid.html'>MI.resid</a></code>,
+<code><a href='https://rdrr.io/r/stats/optim.html'>optim</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>fakedata</span><span class='op'>)</span>
@@ -356,28 +358,28 @@ Analysis for Geographers. Englewood Cliffs, Prentice Hall.</p>
 <span class='va'>poisson</span> <span class='op'>&lt;-</span> <span class='fu'>glmFilter</span><span class='op'>(</span>y<span class='op'>=</span><span class='va'>y_pois</span>,x<span class='op'>=</span><span class='cn'>NULL</span>,W<span class='op'>=</span><span class='va'>W</span>,objfn<span class='op'>=</span><span class='st'>"MI"</span>,positive<span class='op'>=</span><span class='cn'>FALSE</span>
 ,model<span class='op'>=</span><span class='st'>"poisson"</span>,boot.MI<span class='op'>=</span><span class='fl'>100</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>poisson</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; 1 out of 31 candidate eigenvectors selected</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>poisson</span>,EV<span class='op'>=</span><span class='cn'>FALSE</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; 2 out of 31 candidate eigenvectors selected</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>poisson</span>,EV<span class='op'>=</span><span class='cn'>FALSE</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; 
 #&gt; 	- Spatial Filtering with Eigenvectors (Poisson Model)  -
 #&gt; 
 #&gt; Coefficients (ML):
 #&gt;             Estimate         SE      p-value    
-#&gt; (Intercept) 2.532077 0.02819506 6.266917e-96 ***
+#&gt; (Intercept) 2.512416 0.02874804 4.773493e-94 ***
 #&gt; 
 #&gt; Model Fit:
 #&gt;          logL      AIC      BIC     
 #&gt; Initial  -1688.207 3378.415 3381.02 
-#&gt; Filtered -1688.169 3380.337 3385.548
+#&gt; Filtered -1663.583 3333.165 3340.981
 #&gt; 
 #&gt; Filtered for positive spatial autocorrelation
-#&gt; 1 out of 31 candidate eigenvectors selected
+#&gt; 2 out of 31 candidate eigenvectors selected
 #&gt; Condition Number (Multicollinearity): 1
 #&gt; Objective Function: "MI"
 #&gt; 
 #&gt; Moran's I (PearsonResiduals):
-#&gt;           Observed    Expected    Variance        z   p-value  
-#&gt; Initial  0.1144870 -0.01010101 0.006364462 1.561691 0.1386139  
-#&gt; Filtered 0.1148552 -0.01328842 0.013196899 1.115478 0.2376238  </div><div class='input'>
+#&gt;           Observed    Expected    Variance        z    p-value  
+#&gt; Initial  0.1144870 -0.01010101 0.008277873 1.369357 0.15841584  
+#&gt; Filtered 0.1161373 -0.01643915 0.005339703 1.814295 0.08910891 .</div><div class='input'>
 <span class='co'># probit model - summarize EVs</span>
 <span class='va'>y_prob</span> <span class='op'>&lt;-</span> <span class='va'>fakedataset</span><span class='op'>$</span><span class='va'>indicator</span>
 <span class='va'>probit</span> <span class='op'>&lt;-</span> <span class='fu'>glmFilter</span><span class='op'>(</span>y<span class='op'>=</span><span class='va'>y_prob</span>,x<span class='op'>=</span><span class='cn'>NULL</span>,W<span class='op'>=</span><span class='va'>W</span>,objfn<span class='op'>=</span><span class='st'>"p"</span>,positive<span class='op'>=</span><span class='cn'>FALSE</span>
@@ -405,8 +407,8 @@ Analysis for Geographers. Englewood Cliffs, Prentice Hall.</p>
 #&gt; 
 #&gt; Moran's I (PearsonResiduals):
 #&gt;              Observed    Expected    Variance         z   p-value  
-#&gt; Initial  -0.001603494 -0.01010101 0.005881039 0.1108064 0.5445545  
-#&gt; Filtered -0.001603494 -0.01010101 0.004730811 0.1235447 0.6237624  </div><div class='input'>
+#&gt; Initial  -0.001603494 -0.01010101 0.005566984 0.1138891 0.5841584  
+#&gt; Filtered -0.001603494 -0.01010101 0.006916035 0.1021794 0.4455446  </div><div class='input'>
 <span class='co'># logit model - AIC objective function</span>
 <span class='va'>y_logit</span> <span class='op'>&lt;-</span> <span class='va'>fakedataset</span><span class='op'>$</span><span class='va'>indicator</span>
 <span class='va'>logit</span> <span class='op'>&lt;-</span> <span class='fu'>glmFilter</span><span class='op'>(</span>y<span class='op'>=</span><span class='va'>y_logit</span>,x<span class='op'>=</span><span class='cn'>NULL</span>,W<span class='op'>=</span><span class='va'>W</span>,objfn<span class='op'>=</span><span class='st'>"AIC"</span>,positive<span class='op'>=</span><span class='cn'>FALSE</span>
@@ -431,8 +433,8 @@ Analysis for Geographers. Englewood Cliffs, Prentice Hall.</p>
 #&gt; 
 #&gt; Moran's I (PearsonResiduals):
 #&gt;              Observed    Expected    Variance         z   p-value  
-#&gt; Initial  -0.001603471 -0.01010101 0.006918703 0.1021600 0.4257426  
-#&gt; Filtered -0.001603471 -0.01010101 0.006766722 0.1033009 0.5445545  </div><div class='input'>
+#&gt; Initial  -0.001603471 -0.01010101 0.005414074 0.1154865 0.4653465  
+#&gt; Filtered -0.001603471 -0.01010101 0.005989065 0.1098029 0.5445545  </div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
