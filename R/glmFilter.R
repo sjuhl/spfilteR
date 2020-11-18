@@ -4,14 +4,14 @@
 #' Linear Regression Models
 #'
 #' @description This function implements the eigenvector-based semiparametric
-#' spatial filtering approach in a generalized linear regression framework using MLE.
-#' Eigenvectors are selected by an unsupervised stepwise regression
-#' technique. Supported selection criteria are the minimization of residual
-#' autocorrelation, maximization of model fit, significance of residual autocorrelation,
-#' and the statistical significance of eigenvectors. Alternatively, all eigenvectors in
-#' the candidate set can be included as well.
+#' spatial filtering approach in a generalized linear regression framework using
+#' maximum likelihood estimation (MLE). Eigenvectors are selected by an unsupervised
+#' stepwise regression technique. Supported selection criteria are the minimization of
+#' residual autocorrelation, maximization of model fit, significance of residual
+#' autocorrelation, and the statistical significance of eigenvectors. Alternatively,
+#' all eigenvectors in the candidate set can be included as well.
 #'
-#' @param y vector of regressands
+#' @param y response variable
 #' @param x vector/ matrix of regressors (default=NULL)
 #' @param W spatial connectivity matrix
 #' @param objfn the objective function to be used for eigenvector
@@ -21,9 +21,10 @@
 #' autocorrelation ('pMI'), or all eigenvectors in the candidate set ('all')
 #' @param MX covariates used to construct the projection matrix (default=NULL) - see
 #' Details
-#' @param model a character string indicating the model to be estimated.
+#' @param model a character string indicating the type of model to be estimated.
 #' Currently, 'probit', 'logit', and 'poisson' are valid inputs
-#' @param optim.method a character specifying the optimization method
+#' @param optim.method a character specifying the optimization method used by
+#' the \code{optim} function
 #' @param sig significance level to be used for eigenvector selection
 #' if \code{objfn='p'} or \code{objfn='pMI'}
 #' @param bonferroni Bonferroni adjustment for the significance level
@@ -31,14 +32,14 @@
 #' see Details
 #' @param positive restrict search to eigenvectors associated with positive
 #' levels of spatial autocorrelation (TRUE/ FALSE)
-#' @param ideal.setsize if \code{positive=TRUE}, uses the formula proposed in
+#' @param ideal.setsize if \code{positive=TRUE}, uses the formula proposed by
 #' Chun et al. (2016) to determine the ideal size of the candidate set
 #' (TRUE/ FALSE)
 #' @param min.reduction if \code{objfn} is either 'AIC' or 'BIC'. A value in the
 #' interval [0,1) that determines the minimum reduction in AIC/ BIC (relative to the
 #' current AIC/ BIC) a candidate eigenvector need to achieve in order to be selected
 #' @param boot.MI number of iterations used to estimate the variance of Moran's I
-#' (default=100). Alternatively, if \code{boot=NULL}, analytical results will
+#' (default=100). Alternatively, if \code{boot.MI=NULL}, analytical results will
 #' be used
 #' @param resid.type character string specifying the residual type to be used.
 #' Options are 'raw', 'deviance', and 'pearson' (default)
@@ -52,12 +53,12 @@
 #' @return An object of class \code{spfilter} containing the following
 #' information:
 #' \describe{
-#' \item{\code{Estimates}}{summary statistics of the parameter estimates}
+#' \item{\code{estimates}}{summary statistics of the parameter estimates}
 #' \item{\code{varcovar}}{estimated variance-covariance matrix}
-#' \item{\code{EV}}{a matrix with summary statistics of selected eigenvectors}
+#' \item{\code{EV}}{a matrix containing the summary statistics of selected eigenvectors}
 #' \item{\code{selvecs}}{vector/ matrix of selected eigenvectors}
 #' \item{\code{evMI}}{Moran coefficient of all eigenvectors}
-#' \item{\code{moran}}{residual autocorrelation for the initial and the
+#' \item{\code{moran}}{residual autocorrelation in the initial and the
 #' filtered model}
 #' \item{\code{fit}}{adjusted R-squared of the initial and the filtered model}
 #' \item{\code{residuals}}{initial and filtered model residuals}
@@ -73,7 +74,7 @@
 #' \item{\code{sfMI}}{Moran coefficient of the spatial filter}
 #' \item{\code{model}}{type of the regression model}
 #' \item{\code{dependence}}{filtered for positive or negative spatial dependence}
-#' \item{\code{objfn}}{selection criteria specified in the objective function of
+#' \item{\code{objfn}}{selection criterion specified in the objective function of
 #' the stepwise regression procedure}
 #' \item{\code{bonferroni}}{TRUE/ FALSE: Bonferroni-adjusted significance level
 #' (if \code{objfn='p'})}
@@ -86,7 +87,7 @@
 #' }
 #'
 #' @details If \emph{\strong{W}} is not symmetric, it gets symmetrized by
-#' 1/2 * (\emph{\strong{W}} + \emph{\strong{W}}') the eigenfunction decomposition.
+#' 1/2 * (\emph{\strong{W}} + \emph{\strong{W}}') before the decomposition.
 #'
 #' If covariates are supplied to \code{MX}, the function uses these regressors
 #' to construct the following projection matrix:
@@ -107,12 +108,12 @@
 #' FALSE if eigenvectors are added to the model until the residuals exhibit no
 #' significant level of spatial autocorrelation (\code{objfn='pMI'}).
 #'
-#' @note If the condition number (\code{condnum}) suggests high levels of multicollinearity,
-#' eigenvectors can be sequentially removed from \code{selvecs} and
-#' the model can be re-estimated using the \code{glm} function in order to
+#' @note If the condition number (\code{condnum}) suggests high levels of
+#' multicollinearity, eigenvectors can be sequentially removed from \code{selvecs}
+#' and the model can be re-estimated using the \code{glm} function in order to
 #' identify and manually remove the problematic eigenvectors. Moreover, if other
 #' models that are currently not implemented here need to be estimated
-#' (e.g., quasi-binomials), users can extract eigenvectors using the function
+#' (e.g., quasi-binomial models), users can extract eigenvectors using the function
 #' \code{getEVs} and perform a supervised eigenvector search using the \code{glm}
 #' function.
 #'
@@ -164,7 +165,8 @@
 #'
 #' @importFrom stats pnorm dpois optim pt sd
 #'
-#' @seealso \code{\link{lmFilter}}, \code{\link{getEVs}}, \code{\link{MI.resid}}
+#' @seealso \code{\link{lmFilter}}, \code{\link{getEVs}}, \code{\link{MI.resid}},
+#' \code{\link[stats]{optim}}
 #'
 #' @export
 

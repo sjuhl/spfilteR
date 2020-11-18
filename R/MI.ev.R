@@ -7,7 +7,7 @@
 #' @param W spatial connectivity matrix
 #' @param evals vector of eigenvalues
 #'
-#' @return Returns a vector containing the Moran coefficients of each
+#' @return Returns a vector containing the Moran coefficients of the supplied
 #' eigenvector.
 #'
 #' @author Sebastian Juhl

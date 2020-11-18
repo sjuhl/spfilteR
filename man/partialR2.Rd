@@ -7,14 +7,14 @@
 partialR2(y, x = NULL, evecs)
 }
 \arguments{
-\item{y}{vector of regressands}
+\item{y}{response variable}
 
 \item{x}{vector/ matrix of regressors}
 
 \item{evecs}{(selected) eigenvectors}
 }
 \value{
-Vector of partial R-squared values for each eigenvector.
+Vector of partial R-squared values of the eigenvectors.
 }
 \description{
 This function computes the partial R-squared of all

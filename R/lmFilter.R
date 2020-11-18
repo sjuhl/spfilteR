@@ -3,20 +3,20 @@
 #' @title Unsupervised Spatial Filtering with Eigenvectors in Linear Regression Models
 #'
 #' @description This function implements the eigenvector-based semiparametric
-#' spatial filtering approach in a linear regression framework using OLS.
-#' Eigenvectors are selected by an unsupervised stepwise regression
+#' spatial filtering approach in a linear regression framework using ordinary least
+#' squares (OLS). Eigenvectors are selected by an unsupervised stepwise regression
 #' technique. Supported selection criteria are the minimization of residual
 #' autocorrelation, maximization of model fit, significance of residual autocorrelation,
 #' and the statistical significance of eigenvectors. Alternatively, all eigenvectors in
 #' the candidate set can be included as well.
 #'
-#' @param y vector of regressands
+#' @param y response variable
 #' @param x vector/ matrix of regressors (default=NULL)
 #' @param W spatial connectivity matrix
-#' @param objfn the objective function to be used for eigenvector
-#' selection. Possible criteria are: the maximization of the
-#' adjusted R-squared ('R2'), minimization of residual autocorrelation ('MI'),
-#' significance level of candidate eigenvectors ('p'), significance of residual spatial
+#' @param objfn the objective function to be used for eigenvector selection.
+#' Possible criteria are: the maximization of the adjusted R-squared ('R2'),
+#' minimization of residual autocorrelation ('MI'), significance level of
+#' candidate eigenvectors ('p'), significance of residual spatial
 #' autocorrelation ('pMI') or all eigenvectors in the candidate set ('all')
 #' @param MX covariates used to construct the projection matrix (default=NULL) - see
 #' Details
@@ -27,7 +27,7 @@
 #' see Details
 #' @param positive restrict search to eigenvectors associated with positive
 #' levels of spatial autocorrelation (TRUE/ FALSE)
-#' @param ideal.setsize if \code{positive=TRUE}, uses the formula proposed in
+#' @param ideal.setsize if \code{positive=TRUE}, uses the formula proposed by
 #' Chun et al. (2016) to determine the ideal size of the candidate set
 #' (TRUE/ FALSE)
 #' @param alpha a value in (0,1] indicating the range of candidate eigenvectors
@@ -36,21 +36,21 @@
 #' @param tol if \code{objfn='MI'}, determines the amount of remaining residual
 #' autocorrelation at which the eigenvector selection terminates
 #' @param boot.MI number of iterations used to estimate the variance of Moran's I.
-#' If \code{boot=NULL} (default), analytical results will be used
+#' If \code{boot.MI=NULL} (default), analytical results will be used
 #' @param na.rm remove observations with missing values (TRUE/ FALSE)
 #' @param object an object of class \code{spfilter}
 #' @param EV display summary statistics for selected eigenvectors (TRUE/ FALSE)
-#' @param ... additional arguments for summary
+#' @param ... additional arguments
 #'
 #' @return An object of class \code{spfilter} containing the following
 #' information:
 #' \describe{
-#' \item{\code{Estimates}}{summary statistics of the parameter estimates}
+#' \item{\code{estimates}}{summary statistics of the parameter estimates}
 #' \item{\code{varcovar}}{estimated variance-covariance matrix}
-#' \item{\code{EV}}{a matrix with summary statistics of selected eigenvectors}
+#' \item{\code{EV}}{a matrix containing the summary statistics of selected eigenvectors}
 #' \item{\code{selvecs}}{vector/ matrix of selected eigenvectors}
 #' \item{\code{evMI}}{Moran coefficient of all eigenvectors}
-#' \item{\code{moran}}{residual autocorrelation for the initial and the
+#' \item{\code{moran}}{residual autocorrelation in the initial and the
 #' filtered model}
 #' \item{\code{fit}}{adjusted R-squared of the initial and the filtered model}
 #' \item{\code{residuals}}{initial and filtered model residuals}
@@ -61,9 +61,9 @@
 #' \item{\code{sel_id}}{ID of selected eigenvectors}
 #' \item{\code{sf}}{vector representing the spatial filter}
 #' \item{\code{sfMI}}{Moran coefficient of the spatial filter}
-#' \item{\code{model}}{type of the regression model}
+#' \item{\code{model}}{type of the fitted regression model}
 #' \item{\code{dependence}}{filtered for positive or negative spatial dependence}
-#' \item{\code{objfn}}{selection criteria specified in the objective function of
+#' \item{\code{objfn}}{selection criterion specified in the objective function of
 #' the stepwise regression procedure}
 #' \item{\code{bonferroni}}{TRUE/ FALSE: Bonferroni-adjusted significance level
 #' (if \code{objfn='p'})}
@@ -74,7 +74,7 @@
 #' }
 #'
 #' @details If \emph{\strong{W}} is not symmetric, it gets symmetrized by
-#' 1/2 * (\emph{\strong{W}} + \emph{\strong{W}}') the eigenfunction decomposition.
+#' 1/2 * (\emph{\strong{W}} + \emph{\strong{W}}') before the decomposition.
 #'
 #' If covariates are supplied to \code{MX}, the function uses these regressors
 #' to construct the following projection matrix:

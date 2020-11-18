@@ -6,7 +6,8 @@
 #' @description Extract eigenvectors and corresponding eigenvalues from
 #' the matrix \emph{\strong{MWM}}, where \emph{\strong{M}} denotes a symmetric
 #' and idempotent projection matrix and \emph{\strong{W}} is the spatial
-#' connectivity matrix.
+#' connectivity matrix. This function also reports the Moran coefficient
+#' associated with each of the eigenvectors.
 #'
 #' @param W spatial connectivity matrix
 #' @param covars vector/ matrix of regressors included in the construction
@@ -23,8 +24,8 @@
 #' @details The eigenfunctions obtained by \code{getEVs}
 #' can be used to perform supervised eigenvector selection and to
 #' manually create a spatial filter. To this end, a candidate set
-#' might be determined by 1) the sign of the spatial autocorrelation
-#' in the model residuals and 2) the strength of spatial association
+#' may be determined by 1) the sign of the spatial autocorrelation
+#' in model residuals and 2) the strength of spatial association
 #' found in each eigenvector as indicated by \code{moran}.
 #'
 #' Prior to the spectral decomposition, \code{getEVs} symmetrizes the

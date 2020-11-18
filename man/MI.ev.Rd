@@ -12,7 +12,7 @@ MI.ev(W, evals)
 \item{evals}{vector of eigenvalues}
 }
 \value{
-Returns a vector containing the Moran coefficients of each
+Returns a vector containing the Moran coefficients of the supplied
 eigenvector.
 }
 \description{

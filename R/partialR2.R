@@ -5,11 +5,11 @@
 #' @description This function computes the partial R-squared of all
 #' selected eigenvectors in a spatially filtered linear regression model.
 #'
-#' @param y vector of regressands
+#' @param y response variable
 #' @param x vector/ matrix of regressors
 #' @param evecs (selected) eigenvectors
 #'
-#' @return Vector of partial R-squared values for each eigenvector.
+#' @return Vector of partial R-squared values of the eigenvectors.
 #'
 #' @note The function assumes a linear regression model. Since the
 #' eigenvectors are mutually uncorrelated, \code{partialR2} evaluates
