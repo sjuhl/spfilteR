@@ -12,8 +12,7 @@ before_install:
   - sudo apt-get -y install libharfbuzz-dev libfribidi-dev
 
 after_success:
-  - Rscript -e 'library(covr); covr::codecov()'
-  - Rscript -e 'library(pkgdown); pkgdown::build_site()'
+  - Rscript -e 'library(covr); covr::codecov(); library(pkgdown); pkgdown::build_site()'
 
 deploy:
   provider: pages
