@@ -58,15 +58,30 @@ In a first step, the function `MI.vec()` checks for the presence of spatial auto
 ```{r}
 # select continuous variables
 cont <- cbind(fakedataset$x1,fakedataset$x2,fakedataset$x3,fakedataset$negative)
+colnames(cont) <- c("x1","x2","x3","negative")
 
 # Moran test of spatial autocorrelation
-MI.vec(x=cont,W=W,alternative='greater')
+(I <- MI.vec(x=cont,W=W,alternative='greater'))
 ```
 
 The output suggests that the variables `x1` and `x2` are positively autocorrelated at conventional levels of statistical significance. Moreover, the standardized value of Moran's *I* (`zI`) indicates that the variable `negative` is negatively autocorrelated. We can use the function `MI.vec()` and specify `alternative='lower'` to assess the significance of the negative autocorrelation:
 
 ```{r}
 MI.vec(x=fakedataset$negative,W=W,alternative='lower')
+```
+
+Since the Moran coefficient is a global measure of spatial autocorrelation, spatial heterogeneity constitutes a problem for this statistic. More specifically, the simultaneous presence of positive and negative spatial autocorrelation at different scales cannot be revealed by the classical Moran's *I*. To circumvent this problem, the function `MI.decomp()` decomposes the Moran coefficient into a positively and a negatively autocorrelated part and performs a permutation procedure to assess the significance [@dary2011]:
+
+```{r}
+# decompose Moran's I
+(I.dec <- MI.decomp(x=cont,W=W,nsim=100))
+```
+
+Note that the global Moran's *I* is the sum of `I+` and `I-`:
+
+```{r}
+# I = 'I+' + 'I-'
+cbind(I[,"I"], I.dec[,"I+"] + I.dec[,"I-"])
 ```
 
 ### Unsupervised Spatial Filtering in Linear Models
