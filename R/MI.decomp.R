@@ -100,16 +100,24 @@ MI.decomp <- function(x,W,nsim=100){
   }
   var.Ipos <- apply(Ip,1,var)
   var.Ineg <- apply(In,1,var)
-  p.Ipos <- p.Ineg <- ptwo <- NULL
+  p <- stars <- matrix(NA,ncol=3,nrow=nx)
+  colnames(p) <- colnames(stars) <- c("pos","neg","two")
   for(i in seq_len(nx)){
-    p.Ipos[i] <- pfunc(z=Ipos[i],alternative="greater",draws=Ip[i,])
-    p.Ineg[i] <- pfunc(z=Ineg[i],alternative="lower",draws=In[i,])
-    ptwo[i] <- 2*min(p.Ipos[i],p.Ineg[i])
+    p[i,"pos"] <- pfunc(z=Ipos[i],alternative="greater",draws=Ip[i,])
+    p[i,"neg"] <- pfunc(z=Ineg[i],alternative="lower",draws=In[i,])
+    p[i,"two"] <- 2*min(p[i,c("pos","neg")]) #2*min(p.Ipos[i],p.Ineg[i])
+    stars[i,"pos"] <- star(p=p[i,"pos"])
+    stars[i,"neg"] <- star(p=p[i,"neg"])
+    stars[i,"two"] <- star(p=p[i,"two"])
   }
 
   # output
-  out <- cbind(Ipos,var.Ipos,p.Ipos,Ineg,var.Ineg,p.Ineg,ptwo)
-  colnames(out) <- c("I+","VarI+","pI+","I-","VarI-","pI-","pItwo.sided")
+  out <- cbind(Ipos,var.Ipos,p[,"pos"],stars[,"pos"]
+               ,Ineg,var.Ineg,p[,"neg"],stars[,"neg"]
+               ,p[,"two"],stars[,"two"])
+  colnames(out) <- c("I+","VarI+","pI+",""
+                     ,"I-","VarI-","pI-",""
+                     ,"pItwo.sided","")
   if(!is.null(colnames(x))) rownames(out) <- nams
 
   return(out)
