@@ -14,8 +14,8 @@ MI.decomp(x, W, nsim = 100)
 \item{nsim}{number of iterations to simulate the null distribution}
 }
 \value{
-Returns a matrix that contains the following information for each
-variable:
+Returns a \code{data.frame} that contains the following information
+for each variable:
 \describe{
 \item{\code{I+}}{observed value of Moran's I (positive part)}
 \item{\code{VarI+}}{variance of Moran's I (positive part)}

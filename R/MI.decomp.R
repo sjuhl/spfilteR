@@ -9,8 +9,8 @@
 #' @param W spatial connectivity matrix
 #' @param nsim number of iterations to simulate the null distribution
 #'
-#' @return Returns a matrix that contains the following information for each
-#' variable:
+#' @return Returns a \code{data.frame} that contains the following information
+#' for each variable:
 #' \describe{
 #' \item{\code{I+}}{observed value of Moran's I (positive part)}
 #' \item{\code{VarI+}}{variance of Moran's I (positive part)}
@@ -85,11 +85,6 @@ MI.decomp <- function(x,W,nsim=100){
   # eigendecomposition
   eigen <- getEVs(W=W)
 
-  # observed value
-  cor2 <- cor(Z,eigen$vectors, method="pearson")^2
-  Ipos <- cor2[,eigen$values>EI] %*% eigen$moran[eigen$values>EI]
-  Ineg <- cor2[,eigen$values<EI] %*% eigen$moran[eigen$values<EI]
-
   # null distribution
   Ip <- In <- matrix(NA,nrow=nx,ncol=nsim)
   for(i in seq_len(nsim)){
@@ -98,26 +93,30 @@ MI.decomp <- function(x,W,nsim=100){
     Ip[,i] <- c2[,eigen$values>EI] %*% eigen$moran[eigen$values>EI]
     In[,i] <- c2[,eigen$values<EI] %*% eigen$moran[eigen$values<EI]
   }
-  var.Ipos <- apply(Ip,1,var)
-  var.Ineg <- apply(In,1,var)
-  p <- stars <- matrix(NA,ncol=3,nrow=nx)
-  colnames(p) <- colnames(stars) <- c("pos","neg","two")
-  for(i in seq_len(nx)){
-    p[i,"pos"] <- pfunc(z=Ipos[i],alternative="greater",draws=Ip[i,])
-    p[i,"neg"] <- pfunc(z=Ineg[i],alternative="lower",draws=In[i,])
-    p[i,"two"] <- 2*min(p[i,c("pos","neg")]) #2*min(p.Ipos[i],p.Ineg[i])
-    stars[i,"pos"] <- star(p=p[i,"pos"])
-    stars[i,"neg"] <- star(p=p[i,"neg"])
-    stars[i,"two"] <- star(p=p[i,"two"])
-  }
 
-  # output
-  out <- cbind(Ipos,var.Ipos,p[,"pos"],stars[,"pos"]
-               ,Ineg,var.Ineg,p[,"neg"],stars[,"neg"]
-               ,p[,"two"],stars[,"two"])
+  #####
+  # Output
+  #####
+  out <- data.frame(matrix(NA,nrow=nx,ncol=10))
   colnames(out) <- c("I+","VarI+","pI+",""
                      ,"I-","VarI-","pI-",""
                      ,"pItwo.sided","")
+  # observed
+  cor2 <- cor(Z,eigen$vectors, method="pearson")^2
+  out[,"I+"] <- cor2[,eigen$values>EI] %*% eigen$moran[eigen$values>EI]
+  out[,"I-"] <- cor2[,eigen$values<EI] %*% eigen$moran[eigen$values<EI]
+  # variance
+  out[,"VarI+"] <- apply(Ip,1,var)
+  out[,"VarI-"] <- apply(In,1,var)
+  # significance
+  for(i in seq_len(nx)){
+    out[i,"pI+"] <- pfunc(z=out[i,"I+"],alternative="greater",draws=Ip[i,])
+    out[i,"pI-"] <- pfunc(z=out[i,"I-"],alternative="lower",draws=In[i,])
+    out[i,"pItwo.sided"] <- 2*min(out[i,c("pI+","pI-")])
+    out[i,4] <- star(p=out[i,"pI+"])
+    out[i,8] <- star(p=out[i,"pI-"])
+    out[i,10] <- star(p=out[i,"pItwo.sided"])
+  }
   if(!is.null(colnames(x))) rownames(out) <- nams
 
   return(out)
