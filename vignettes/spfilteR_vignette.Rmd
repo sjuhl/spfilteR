@@ -1,7 +1,7 @@
 ---
 title: "spfilteR: Semiparametric Spatial Filtering with Eigenvectors in (Generalized) Linear Models"
 author: "Sebastian Juhl"
-date: "`r Sys.Date()`"
+date: "2020-11-18"
 output: rmarkdown::html_vignette
 bibliography: references.bib
 vignette: >
