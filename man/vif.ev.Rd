@@ -11,7 +11,7 @@ vif.ev(x = NULL, evecs, na.rm = TRUE)
 
 \item{evecs}{(selected) eigenvectors}
 
-\item{na.rm}{remove missing values in supplied covariates (TRUE/ FALSE)}
+\item{na.rm}{remove missing values in covariates (TRUE/ FALSE)}
 }
 \value{
 Returns a vector containing the VIF for each eigenvector.
@@ -21,8 +21,10 @@ Calculate the variance inflation factor (VIF) of
 the eigenvectors in the spatial filter.
 }
 \note{
-This function assumes a linear model which assures the
-uncorrelatedness of the eigenvectors.
+This function assumes a linear model which ensures the
+uncorrelatedness of the eigenvectors. Note that regression weights
+or the link function used in generalized linear models can corrupt
+this property.
 }
 \examples{
 data(fakedata)

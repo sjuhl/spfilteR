@@ -3,7 +3,8 @@
 #' @title Decomposition of the Moran Coefficient
 #'
 #' @description A decomposition of the Moran coefficient in order to separately
-#' test for the presence of positive and negative autocorrelation in a variable.
+#' test for the simultaneous presence of positive and negative autocorrelation
+#' in a variable.
 #'
 #' @param x a vector or matrix
 #' @param W spatial connectivity matrix
@@ -25,7 +26,8 @@
 #' test for spatial autocorrelation for each column.
 #'
 #' The \emph{p}-values calculated for \code{I+} and \code{I-} assume
-#' a directed alternative hypothesis.
+#' a directed alternative hypothesis. Statistical significance is assessed
+#' using a permutation procedure to generate a simulated null distribution.
 #'
 #' @author Sebastian Juhl
 #'

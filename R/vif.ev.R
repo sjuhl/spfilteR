@@ -7,12 +7,14 @@
 #'
 #' @param x vector/ matrix of regressors (default=NULL)
 #' @param evecs (selected) eigenvectors
-#' @param na.rm remove missing values in supplied covariates (TRUE/ FALSE)
+#' @param na.rm remove missing values in covariates (TRUE/ FALSE)
 #'
 #' @return Returns a vector containing the VIF for each eigenvector.
 #'
-#' @note This function assumes a linear model which assures the
-#' uncorrelatedness of the eigenvectors.
+#' @note This function assumes a linear model which ensures the
+#' uncorrelatedness of the eigenvectors. Note that regression weights
+#' or the link function used in generalized linear models can corrupt
+#' this property.
 #'
 #' @examples
 #' data(fakedata)
