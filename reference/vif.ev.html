@@ -149,7 +149,7 @@ the eigenvectors in the spatial filter.</p>
     </tr>
     <tr>
       <th>na.rm</th>
-      <td><p>remove missing values in supplied covariates (TRUE/ FALSE)</p></td>
+      <td><p>remove missing values in covariates (TRUE/ FALSE)</p></td>
     </tr>
     </table>
 
@@ -158,8 +158,10 @@ the eigenvectors in the spatial filter.</p>
     <p>Returns a vector containing the VIF for each eigenvector.</p>
     <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
 
-    <p>This function assumes a linear model which assures the
-uncorrelatedness of the eigenvectors.</p>
+    <p>This function assumes a linear model which ensures the
+uncorrelatedness of the eigenvectors. Note that regression weights
+or the link function used in generalized linear models can corrupt
+this property.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><code><a href='lmFilter.html'>lmFilter</a></code>, <code><a href='getEVs.html'>getEVs</a></code></p></div>

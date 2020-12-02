@@ -41,7 +41,8 @@
 
 <meta property="og:title" content="Decomposition of the Moran Coefficient — MI.decomp" />
 <meta property="og:description" content="A decomposition of the Moran coefficient in order to separately
-test for the presence of positive and negative autocorrelation in a variable." />
+test for the simultaneous presence of positive and negative autocorrelation
+in a variable." />
 
 
 
@@ -131,7 +132,8 @@ test for the presence of positive and negative autocorrelation in a variable." /
 
     <div class="ref-description">
     <p>A decomposition of the Moran coefficient in order to separately
-test for the presence of positive and negative autocorrelation in a variable.</p>
+test for the simultaneous presence of positive and negative autocorrelation
+in a variable.</p>
     </div>
 
     <pre class="usage"><span class='fu'>MI.decomp</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>W</span>, nsim <span class='op'>=</span> <span class='fl'>100</span><span class='op'>)</span></pre>
@@ -172,7 +174,8 @@ for each variable:</p><dl>
     <p>If <code>x</code> is a matrix, this function computes the Moran
 test for spatial autocorrelation for each column.</p>
 <p>The <em>p</em>-values calculated for <code>I+</code> and <code>I-</code> assume
-a directed alternative hypothesis.</p>
+a directed alternative hypothesis. Statistical significance is assessed
+using a permutation procedure to generate a simulated null distribution.</p>
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     <p>Dary, Stéphane (2011): A New Perspective about Moran’s
