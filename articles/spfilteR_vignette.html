@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">spfilteR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0.9000</span>
       </span>
     </div>
 
@@ -39,7 +39,7 @@
       <ul class="nav navbar-nav">
 <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -65,7 +65,7 @@
 <ul class="nav navbar-nav navbar-right">
 <li>
   <a href="https://github.com/sjuhl/spfilteR/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -79,8 +79,7 @@
 
       
 
-      </header><link href="spfilteR_vignette_files/anchor-sections-1.0/anchor-sections.css" rel="stylesheet">
-<script src="spfilteR_vignette_files/anchor-sections-1.0/anchor-sections.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>spfilteR: Semiparametric Spatial Filtering with Eigenvectors in (Generalized) Linear Models</h1>
@@ -163,13 +162,13 @@
 <span class="co"># decompose Moran's I</span>
 <span class="op">(</span><span class="va">I.dec</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/MI.decomp.html">MI.decomp</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">cont</span>,W<span class="op">=</span><span class="va">W</span>,nsim<span class="op">=</span><span class="fl">100</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt;                 I+       VarI+        pI+            I-       VarI-        pI-</span>
-<span class="co">#&gt; x1       0.3894789 0.001508116 0.00990099 ** -0.0783007 0.002117289 1.00000000</span>
-<span class="co">#&gt; x2       0.3048369 0.001851130 0.01980198  * -0.1360794 0.001693992 0.98019802</span>
-<span class="co">#&gt; x3       0.2247566 0.002232083 0.37623762    -0.2156438 0.001715071 0.52475248</span>
-<span class="co">#&gt; negative 0.1131614 0.001638523 1.00000000    -0.3572259 0.001642295 0.00990099</span>
+<span class="co">#&gt; x1       0.3894789 0.001415923 0.00990099 ** -0.0783007 0.001738601 1.00000000</span>
+<span class="co">#&gt; x2       0.3048369 0.001305470 0.00990099 ** -0.1360794 0.001562935 0.99009901</span>
+<span class="co">#&gt; x3       0.2247566 0.001816819 0.37623762    -0.2156438 0.001993810 0.41584158</span>
+<span class="co">#&gt; negative 0.1131614 0.001767233 0.99009901    -0.3572259 0.001818835 0.00990099</span>
 <span class="co">#&gt;             pItwo.sided  </span>
 <span class="co">#&gt; x1           0.01980198 *</span>
-<span class="co">#&gt; x2           0.03960396 *</span>
+<span class="co">#&gt; x2           0.01980198 *</span>
 <span class="co">#&gt; x3           0.75247525  </span>
 <span class="co">#&gt; negative **  0.01980198 *</span></pre></div>
 <p>Note that the global Moran’s <em>I</em> is the sum of <code>I+</code> and <code>I-</code>:</p>
