@@ -1,5 +1,5 @@
 ---
-title: "spfilteR: Semiparametric Spatial Filtering with Eigenvectors in (Generalized) Linear Models"
+title: "spfilteR: Spatial Filtering with Eigenvectors"
 author: "Sebastian Juhl"
 date: "2020-11-18"
 output: rmarkdown::html_vignette
