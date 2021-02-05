@@ -5,13 +5,13 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>spfilteR: Semiparametric Spatial Filtering with Eigenvectors in (Generalized) Linear Models • spfilteR</title>
+<title>spfilteR: Spatial Filtering with Eigenvectors • spfilteR</title>
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
 <script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="spfilteR: Semiparametric Spatial Filtering with Eigenvectors in (Generalized) Linear Models">
+<script src="../pkgdown.js"></script><meta property="og:title" content="spfilteR: Spatial Filtering with Eigenvectors">
 <meta property="og:description" content="spfilteR">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
@@ -54,7 +54,7 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/spfilteR_vignette.html">spfilteR: Semiparametric Spatial Filtering with Eigenvectors in (Generalized) Linear Models</a>
+      <a href="../articles/spfilteR_vignette.html">spfilteR: Spatial Filtering with Eigenvectors</a>
     </li>
   </ul>
 </li>
@@ -82,7 +82,7 @@
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1 data-toc-skip>spfilteR: Semiparametric Spatial Filtering with Eigenvectors in (Generalized) Linear Models</h1>
+      <h1 data-toc-skip>spfilteR: Spatial Filtering with Eigenvectors</h1>
                         <h4 class="author">Sebastian Juhl</h4>
             
             <h4 class="date">2020-11-18</h4>
@@ -104,20 +104,20 @@
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
 <p>A stable release version of the <code>spfilteR</code> package is available on CRAN and the latest development version can be downloaded from <a href="https://github.com/sjuhl/spfilteR">GitHub</a>.</p>
-<div class="sourceCode" id="cb1"><pre class="downlit">
-<span class="co"># CRAN release</span>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># CRAN release</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"spfilteR"</span><span class="op">)</span>
 
 <span class="co"># GitHub</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">devtools</span><span class="op">)</span>
-<span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"sjuhl/spfilteR"</span><span class="op">)</span></pre></div>
+<span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"sjuhl/spfilteR"</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="getting-started" class="section level2">
 <h2 class="hasAnchor">
 <a href="#getting-started" class="anchor"></a>Getting Started</h2>
 <p>Together with the main functions, the package contains an artificial dataset (<code>fakedataset</code>) and a connectivity matrix (<code>W</code>) connecting the 100 cross-sections on a regular grid by using the rook criterion of adjacency. For illustrative purposes, the following examples utilize the fake dataset.</p>
-<div class="sourceCode" id="cb2"><pre class="downlit">
-<span class="co"># load the package</span>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># load the package</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/sjuhl/spfilteR">spfilteR</a></span><span class="op">)</span>
 
 <span class="co"># load the dataset</span>
@@ -134,14 +134,14 @@
 <span class="co">#&gt; 3  3         1     1 17.31431 10.525834 -0.7022595 -1.868379        5</span>
 <span class="co">#&gt; 4  4         1     4 15.21778  7.817901  1.5948141 -2.737914        2</span>
 <span class="co">#&gt; 5  5         1     3 15.56298  7.903947 -1.2708973 -1.117427        2</span>
-<span class="co">#&gt; 6  6         1     2 17.43941 11.254842 -1.4158475  1.577442        2</span></pre></div>
+<span class="co">#&gt; 6  6         1     2 17.43941 11.254842 -1.4158475  1.577442        2</span></code></pre></div>
 <p>Besides an <code>ID</code> variable, the dataset contains a binary <code>indicator</code> variable, two count variables, and four continuous variables.</p>
 <div id="identifying-spatial-autocorrelation" class="section level3">
 <h3 class="hasAnchor">
 <a href="#identifying-spatial-autocorrelation" class="anchor"></a>Identifying Spatial Autocorrelation</h3>
 <p>In a first step, the function <code><a href="../reference/MI.vec.html">MI.vec()</a></code> checks for the presence of spatial autocorrelation in the continuous variables by means of Moran’s <em>I</em> <span class="citation">(see also Cliff and Ord 1981, 1972)</span>. The function further allows users to define the alternative hypothesis in order to obtain <em>p</em>-values.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit">
-<span class="co"># select continuous variables</span>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># select continuous variables</span>
 <span class="va">cont</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span><span class="op">(</span><span class="va">fakedataset</span><span class="op">$</span><span class="va">x1</span>,<span class="va">fakedataset</span><span class="op">$</span><span class="va">x2</span>,<span class="va">fakedataset</span><span class="op">$</span><span class="va">x3</span>,<span class="va">fakedataset</span><span class="op">$</span><span class="va">negative</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">cont</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"x1"</span>,<span class="st">"x2"</span>,<span class="st">"x3"</span>,<span class="st">"negative"</span><span class="op">)</span>
 
@@ -151,42 +151,42 @@
 <span class="co">#&gt; x1        0.311178214 -0.01010101 0.005344193  4.3948248 5.543107e-06 ***</span>
 <span class="co">#&gt; x2        0.168757531 -0.01010101 0.005344193  2.4466317 7.209904e-03  **</span>
 <span class="co">#&gt; x3        0.009112739 -0.01010101 0.005344193  0.2628276 3.963417e-01    </span>
-<span class="co">#&gt; negative -0.244064424 -0.01010101 0.005344193 -3.2004192 9.993139e-01</span></pre></div>
+<span class="co">#&gt; negative -0.244064424 -0.01010101 0.005344193 -3.2004192 9.993139e-01</span></code></pre></div>
 <p>The output suggests that the variables <code>x1</code> and <code>x2</code> are positively autocorrelated at conventional levels of statistical significance. Moreover, the standardized value of Moran’s <em>I</em> (<code>zI</code>) indicates that the variable <code>negative</code> is negatively autocorrelated. We can use the function <code><a href="../reference/MI.vec.html">MI.vec()</a></code> and specify <code>alternative='lower'</code> to assess the significance of the negative autocorrelation:</p>
-<div class="sourceCode" id="cb4"><pre class="downlit">
-<span class="fu"><a href="../reference/MI.vec.html">MI.vec</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">fakedataset</span><span class="op">$</span><span class="va">negative</span>,W<span class="op">=</span><span class="va">W</span>,alternative<span class="op">=</span><span class="st">'lower'</span><span class="op">)</span>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/MI.vec.html">MI.vec</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">fakedataset</span><span class="op">$</span><span class="va">negative</span>,W<span class="op">=</span><span class="va">W</span>,alternative<span class="op">=</span><span class="st">'lower'</span><span class="op">)</span>
 <span class="co">#&gt;            I          EI        VarI        zI           pI    </span>
-<span class="co">#&gt; 1 -0.2440644 -0.01010101 0.005344193 -3.200419 0.0006861391 ***</span></pre></div>
+<span class="co">#&gt; 1 -0.2440644 -0.01010101 0.005344193 -3.200419 0.0006861391 ***</span></code></pre></div>
 <p>Since the Moran coefficient is a global measure of spatial autocorrelation, spatial heterogeneity constitutes a problem for this statistic. More specifically, the simultaneous presence of positive and negative spatial autocorrelation at different scales cannot be revealed by the classical Moran’s <em>I</em>. To circumvent this problem, the function <code><a href="../reference/MI.decomp.html">MI.decomp()</a></code> decomposes the Moran coefficient into a positively and a negatively autocorrelated part and performs a permutation procedure to assess the significance <span class="citation">(Dray 2011)</span>:</p>
-<div class="sourceCode" id="cb5"><pre class="downlit">
-<span class="co"># decompose Moran's I</span>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># decompose Moran's I</span>
 <span class="op">(</span><span class="va">I.dec</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/MI.decomp.html">MI.decomp</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">cont</span>,W<span class="op">=</span><span class="va">W</span>,nsim<span class="op">=</span><span class="fl">100</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt;                 I+       VarI+        pI+            I-       VarI-        pI-</span>
-<span class="co">#&gt; x1       0.3894789 0.001487840 0.00990099 ** -0.0783007 0.001651237 1.00000000</span>
-<span class="co">#&gt; x2       0.3048369 0.001750563 0.00990099 ** -0.1360794 0.002537612 0.97029703</span>
-<span class="co">#&gt; x3       0.2247566 0.002070608 0.29702970    -0.2156438 0.002692574 0.54455446</span>
-<span class="co">#&gt; negative 0.1131614 0.001852921 0.99009901    -0.3572259 0.001865463 0.00990099</span>
-<span class="co">#&gt;             pItwo.sided  </span>
-<span class="co">#&gt; x1           0.01980198 *</span>
-<span class="co">#&gt; x2           0.01980198 *</span>
-<span class="co">#&gt; x3           0.59405941  </span>
-<span class="co">#&gt; negative **  0.01980198 *</span></pre></div>
+<span class="co">#&gt; x1       0.3894789 0.001691791 0.00990099 ** -0.0783007 0.001415176 1.00000000</span>
+<span class="co">#&gt; x2       0.3048369 0.001567644 0.00990099 ** -0.1360794 0.002341530 0.99009901</span>
+<span class="co">#&gt; x3       0.2247566 0.001981922 0.33663366    -0.2156438 0.001952967 0.42574257</span>
+<span class="co">#&gt; negative 0.1131614 0.001826055 1.00000000    -0.3572259 0.001839546 0.01980198</span>
+<span class="co">#&gt;            pItwo.sided  </span>
+<span class="co">#&gt; x1          0.01980198 *</span>
+<span class="co">#&gt; x2          0.01980198 *</span>
+<span class="co">#&gt; x3          0.67326733  </span>
+<span class="co">#&gt; negative *  0.03960396 *</span></code></pre></div>
 <p>Note that the global Moran’s <em>I</em> is the sum of <code>I+</code> and <code>I-</code>:</p>
-<div class="sourceCode" id="cb6"><pre class="downlit">
-<span class="co"># I = 'I+' + 'I-'</span>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># I = 'I+' + 'I-'</span>
 <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span><span class="op">(</span><span class="va">I</span><span class="op">[</span>,<span class="st">"I"</span><span class="op">]</span>, <span class="va">I.dec</span><span class="op">[</span>,<span class="st">"I+"</span><span class="op">]</span> <span class="op">+</span> <span class="va">I.dec</span><span class="op">[</span>,<span class="st">"I-"</span><span class="op">]</span><span class="op">)</span>
 <span class="co">#&gt;                  [,1]         [,2]</span>
 <span class="co">#&gt; x1        0.311178214  0.311178214</span>
 <span class="co">#&gt; x2        0.168757531  0.168757531</span>
 <span class="co">#&gt; x3        0.009112739  0.009112739</span>
-<span class="co">#&gt; negative -0.244064424 -0.244064424</span></pre></div>
+<span class="co">#&gt; negative -0.244064424 -0.244064424</span></code></pre></div>
 </div>
 <div id="unsupervised-spatial-filtering-in-linear-models" class="section level3">
 <h3 class="hasAnchor">
 <a href="#unsupervised-spatial-filtering-in-linear-models" class="anchor"></a>Unsupervised Spatial Filtering in Linear Models</h3>
 <p>Assume that we wish to regress <code>x1</code> on <code>x2</code> and test for residual autocorrelation using the function <code><a href="../reference/MI.resid.html">MI.resid()</a></code>.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit">
-<span class="co"># define variables</span>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># define variables</span>
 <span class="va">y</span> <span class="op">&lt;-</span> <span class="va">fakedataset</span><span class="op">$</span><span class="va">x1</span>
 <span class="va">X</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span><span class="op">(</span><span class="fl">1</span>,<span class="va">fakedataset</span><span class="op">$</span><span class="va">x2</span><span class="op">)</span>
 
@@ -196,10 +196,10 @@
 <span class="co"># Moran test of residual spatial autocorrelation</span>
 <span class="fu"><a href="../reference/MI.resid.html">MI.resid</a></span><span class="op">(</span>resid<span class="op">=</span><span class="va">ols.resid</span>,W<span class="op">=</span><span class="va">W</span>,alternative<span class="op">=</span><span class="st">'greater'</span><span class="op">)</span>
 <span class="co">#&gt;          I          EI        VarI       zI           pI    </span>
-<span class="co">#&gt; 1 0.350568 -0.01010101 0.005344193 4.933643 4.035495e-07 ***</span></pre></div>
+<span class="co">#&gt; 1 0.350568 -0.01010101 0.005344193 4.933643 4.035495e-07 ***</span></code></pre></div>
 <p>The results show that the residuals are significantly autocorrelated which violates the assumption of uncorrelated errors. In order to resolve this problem of spatial autocorrelation in regression residuals, the function <code><a href="../reference/lmFilter.html">lmFilter()</a></code> estimates a spatially filtered linear regression model using an unsupervised stepwise regression to identify relevant eigenvectors derived from the transformed connectivity matrix. Below, the unsupervised eigenvector search algorithm selects eigenvectors based on the reduction in residual autocorrelation. The output is a class <code>spfilter</code> object.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit">
-<span class="co"># ESF model</span>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># ESF model</span>
 <span class="op">(</span><span class="va">lm.esf</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/lmFilter.html">lmFilter</a></span><span class="op">(</span>y<span class="op">=</span><span class="va">y</span>,x<span class="op">=</span><span class="va">X</span>,W<span class="op">=</span><span class="va">W</span>,objfn<span class="op">=</span><span class="st">'MI'</span>,positive<span class="op">=</span><span class="cn">TRUE</span>,ideal.setsize<span class="op">=</span><span class="cn">TRUE</span>,tol<span class="op">=</span><span class="fl">.2</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; 10 out of 22 candidate eigenvectors selected</span>
 
@@ -236,15 +236,15 @@
 <span class="co">#&gt; Moran's I (Residuals):</span>
 <span class="co">#&gt;             Observed    Expected   Variance         z      p-value    </span>
 <span class="co">#&gt; Initial   0.35056797 -0.01192610 0.01207299 3.2990854 0.0004850019 ***</span>
-<span class="co">#&gt; Filtered -0.05727726 -0.09085063 0.05199438 0.1472369 0.4414725071</span></pre></div>
+<span class="co">#&gt; Filtered -0.05727726 -0.09085063 0.05199438 0.1472369 0.4414725071</span></code></pre></div>
 <p>While the <code>print</code> method shows that 8 eigenvectors were selected from the candidate set consisting of 22 eigenvectors, the <code>summary</code> method provides additional information. Besides the ordinary least squares (OLS) parameter estimates, the output shows that the ESF model filters for positive spatial autocorrelation using the minimization of residual autocorrelation as objective function during the eigenvector search. A comparison between the filtered and the nonspatial OLS model with respect to model fit and residual autocorrelation is also provided. Since the option <code>EV</code> is set to <code>TRUE</code>, the <code>summary</code> method also displays information on the selected eigenvectors. As the results show, the ESF model successfully removes the spatial pattern from model residuals.</p>
 <p>The <code>plot</code> method allows for an easy visualization of the results. The graph displays the Moran coefficient associated with each of the eigenvectors. The shaded area signifies the candidate set and selected eigenvectors are illustrated by black dots.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">lm.esf</span><span class="op">)</span></pre></div>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">lm.esf</span><span class="op">)</span></code></pre></div>
 <p><img src="spfilteR_vignette_files/figure-html/fig_out-1.png" width="50%" style="display: block; margin: auto;"></p>
 <p>Moreover, <code><a href="../reference/lmFilter.html">lmFilter()</a></code> also allows users to select eigenvectors based on alternative selection criteria:</p>
-<div class="sourceCode" id="cb10"><pre class="downlit">
-<span class="co">### Alternative selection criteria:</span>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co">### Alternative selection criteria:</span>
 <span class="co"># maximization of model fit</span>
 <span class="fu"><a href="../reference/lmFilter.html">lmFilter</a></span><span class="op">(</span>y<span class="op">=</span><span class="va">y</span>,x<span class="op">=</span><span class="va">X</span>,W<span class="op">=</span><span class="va">W</span>,objfn<span class="op">=</span><span class="st">'R2'</span>,positive<span class="op">=</span><span class="cn">TRUE</span>,ideal.setsize<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>
 <span class="co">#&gt; 11 out of 22 candidate eigenvectors selected</span>
@@ -261,7 +261,7 @@
 
 <span class="co"># all eigenvectors in the candidate set</span>
 <span class="fu"><a href="../reference/lmFilter.html">lmFilter</a></span><span class="op">(</span>y<span class="op">=</span><span class="va">y</span>,x<span class="op">=</span><span class="va">X</span>,W<span class="op">=</span><span class="va">W</span>,objfn<span class="op">=</span><span class="st">'all'</span>,positive<span class="op">=</span><span class="cn">TRUE</span>,ideal.setsize<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>
-<span class="co">#&gt; 22 out of 22 candidate eigenvectors selected</span></pre></div>
+<span class="co">#&gt; 22 out of 22 candidate eigenvectors selected</span></code></pre></div>
 <p>If users wish to select eigenvectors based on individual selection criteria, they can obtain the eigenvectors using the function <code><a href="../reference/getEVs.html">getEVs()</a></code> and perform a supervised selection procedure using the basic <a href="https://www.rdocumentation.org/packages/stats/versions/3.6.2/topics/lm"><code>stats::lm()</code></a> command.</p>
 </div>
 <div id="extension-to-generalized-linear-models" class="section level3">
@@ -269,8 +269,8 @@
 <a href="#extension-to-generalized-linear-models" class="anchor"></a>Extension to Generalized Linear Models</h3>
 <p>The ESF approach outlined above easily extends to generalized linear models (GLMs) as well <span class="citation">(see also Griffith, Chun, and Li 2019)</span>. Therefore, the <code>spfilteR</code> package contains the function <code><a href="../reference/glmFilter.html">glmFilter()</a></code> which uses maximum likelihood estimation (MLE) to fit a spatially filtered GLM and performs an unsupervised eigenvector search based on alternative objective functions.</p>
 <p>Except for minor differences, <code><a href="../reference/glmFilter.html">glmFilter()</a></code> works similar to the <code><a href="../reference/lmFilter.html">lmFilter()</a></code> function discussed above. The option <code>model</code> defines the model that needs to be estimated. Currently, unsupervised spatial filtering is possible for logit, probit, and poisson models. Moreover, the option <code>optim.method</code> specifies the optimization method used to maximize the log-likelihood function. Finally, <code>resid.type</code> allows users to define the type of residuals used to calculate Moran’s <em>I</em> and <code>boot.MI</code> is an integer specifying the number of bootstrap permutations to obtain the variance of Moran’s <em>I</em>.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit">
-<span class="co"># define outcome variables</span>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># define outcome variables</span>
 <span class="va">y.bin</span> <span class="op">&lt;-</span> <span class="va">fakedataset</span><span class="op">$</span><span class="va">indicator</span>
 <span class="va">y.count</span> <span class="op">&lt;-</span> <span class="va">fakedataset</span><span class="op">$</span><span class="va">count</span>
 
@@ -290,7 +290,7 @@
 <span class="op">(</span><span class="va">poisson.esf</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/glmFilter.html">glmFilter</a></span><span class="op">(</span>y<span class="op">=</span><span class="va">y.count</span>,x<span class="op">=</span><span class="cn">NULL</span>,W<span class="op">=</span><span class="va">W</span>,objfn<span class="op">=</span><span class="st">'BIC'</span>,model<span class="op">=</span><span class="st">'poisson'</span>,optim.method<span class="op">=</span><span class="st">'BFGS'</span>
                           ,positive<span class="op">=</span><span class="cn">TRUE</span>,ideal.setsize<span class="op">=</span><span class="cn">FALSE</span>,alpha<span class="op">=</span><span class="fl">.25</span>,resid.type<span class="op">=</span><span class="st">'deviance'</span>
                           ,boot.MI<span class="op">=</span><span class="fl">100</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; 11 out of 31 candidate eigenvectors selected</span></pre></div>
+<span class="co">#&gt; 11 out of 31 candidate eigenvectors selected</span></code></pre></div>
 <p>Again, if users wish to define individual selection criteria or fit a GLM currently not implemented in <code><a href="../reference/glmFilter.html">glmFilter()</a></code>, they can obtain the eigenvectors using the <code><a href="../reference/getEVs.html">getEVs()</a></code> command and perform supervised eigenvector selection using the standard <a href="https://www.rdocumentation.org/packages/stats/versions/3.6.2/topics/glm"><code>stats::glm()</code></a> function.</p>
 </div>
 </div>
