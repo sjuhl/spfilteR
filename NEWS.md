@@ -1,5 +1,8 @@
 # spfilteR 1.0.0.9000
 
+- new vignette name
+- include `MI.local()`
+
 ---
 
 # spfilteR 1.0.0
