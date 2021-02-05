@@ -2,7 +2,7 @@
 #'
 #' @title Local Moran Coefficient
 #'
-#' @description Calculates the local Moran Coefficient for each unit.
+#' @description Reports the local Moran Coefficient for each unit.
 #'
 #' @param x a vector
 #' @param W spatial connectivity matrix
@@ -12,9 +12,9 @@
 #' @return Returns an object of class \code{data.frame} that contains the
 #' following information for each variable:
 #' \describe{
-#' \item{\code{Ii}}{observed value of local Moran coefficients}
+#' \item{\code{Ii}}{observed value of local Moran's I}
 #' \item{\code{EIi}}{expected value of local Moran coefficients}
-#' \item{\code{VarIi}}{variance of local Moran coefficients}
+#' \item{\code{VarIi}}{variance of local Moran's I}
 #' \item{\code{zIi}}{standardized local Moran coefficient}
 #' \item{\code{pIi}}{\emph{p}-value of the test statistic}
 #' }
@@ -38,13 +38,11 @@
 #' @seealso \code{\link{MI.vec}}, \code{\link{MI.ev}}, \code{\link{MI.sf}},
 #' \code{\link{MI.resid}}, \code{\link{MI.decomp}}
 #'
-#' @importFrom stats
-#'
 #' @examples
 #' data(fakedata)
 #' x <- fakedataset$x2
 #'
-#' (MI <- MI.local(x=X,W=W,alternative="greater"))
+#' (MIi <- MI.local(x=x,W=W,alternative="greater"))
 #'
 #' @export
 
@@ -67,10 +65,13 @@ MI.local <- function(x,W,alternative="greater"){
   # save names (if provided)
   if(!is.null(names(x))) nams <- names(x)
 
+  # define variables
   n <- length(x)
   z <- x - mean(x)
   m2 <- sum(z^2)/n
   Wi <- apply(W,1,sum)
+  Wi2 <- apply(W,1, function(x) sum(x^2))
+  b2 <- n*sum(z^4)/sum(z^2)^2
 
   #####
   # Output
@@ -82,14 +83,17 @@ MI.local <- function(x,W,alternative="greater"){
   # expected
   out[,"EIi"] <- -Wi/(n-1)
   # variance
-  out[,"VarIi"] <- NA
+  out[,"VarIi"] <- Wi2*(n-b2)/(n-1) + (Wi^2-Wi2)*(2*b2-n)/((n-1)*(n-2)) - out[,"EIi"]^2
   # test statistic
-  out[i,"zI"] <- NA #(out[i,"I"]-out[i,"EI"])/sqrt(out[i,"VarI"])
+  out[,"zIi"] <- apply(out,1,function(x) (x[1]-x[2])/sqrt(x[3]))
   # pI
-  out[i,"pI"] <- NA #pfunc(z=out[i,"zI"],alternative=alternative)
-  out[i,6] <- NA #star(p=out[i,"pI"])
+  out[,"pIi"] <- vapply(out[,"zIi"], pfunc ,alternative=alternative
+                        ,FUN.VALUE=numeric(1))
+  out[,6] <- vapply(out[,"pIi"], star, FUN.VALUE=character(1))
 
+  # attach names (if provided)
   if(!is.null(colnames(x))) rownames(out) <- nams
 
+  # return
   return(out)
 }
