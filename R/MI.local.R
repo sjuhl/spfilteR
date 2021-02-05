@@ -92,7 +92,7 @@ MI.local <- function(x,W,alternative="greater"){
   out[,6] <- vapply(out[,"pIi"], star, FUN.VALUE=character(1))
 
   # attach names (if provided)
-  if(!is.null(colnames(x))) rownames(out) <- nams
+  if(!is.null(names(x))) rownames(out) <- nams
 
   # return
   return(out)
