@@ -162,14 +162,14 @@
 <code class="sourceCode R"><span class="co"># decompose Moran's I</span>
 <span class="op">(</span><span class="va">I.dec</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/MI.decomp.html">MI.decomp</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">cont</span>,W<span class="op">=</span><span class="va">W</span>,nsim<span class="op">=</span><span class="fl">100</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt;                 I+       VarI+        pI+            I-       VarI-        pI-</span>
-<span class="co">#&gt; x1       0.3894789 0.001776552 0.00990099 ** -0.0783007 0.001822205 1.00000000</span>
-<span class="co">#&gt; x2       0.3048369 0.001955404 0.03960396  * -0.1360794 0.002548772 0.99009901</span>
-<span class="co">#&gt; x3       0.2247566 0.001658773 0.30693069    -0.2156438 0.001843066 0.44554455</span>
-<span class="co">#&gt; negative 0.1131614 0.001301929 0.99009901    -0.3572259 0.001877091 0.00990099</span>
+<span class="co">#&gt; x1       0.3894789 0.001473600 0.00990099 ** -0.0783007 0.002217141 1.00000000</span>
+<span class="co">#&gt; x2       0.3048369 0.001429828 0.02970297  * -0.1360794 0.001646664 0.98019802</span>
+<span class="co">#&gt; x3       0.2247566 0.001596391 0.28712871    -0.2156438 0.002375025 0.46534653</span>
+<span class="co">#&gt; negative 0.1131614 0.001457975 1.00000000    -0.3572259 0.002199548 0.00990099</span>
 <span class="co">#&gt;             pItwo.sided  </span>
 <span class="co">#&gt; x1           0.01980198 *</span>
-<span class="co">#&gt; x2           0.07920792 .</span>
-<span class="co">#&gt; x3           0.61386139  </span>
+<span class="co">#&gt; x2           0.05940594 .</span>
+<span class="co">#&gt; x3           0.57425743  </span>
 <span class="co">#&gt; negative **  0.01980198 *</span></code></pre></div>
 <p>Note that the global Moran’s <em>I</em> is the sum of <code>I+</code> and <code>I-</code>:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
