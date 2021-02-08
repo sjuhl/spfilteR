@@ -76,6 +76,47 @@ test_that("W must be of class 'matrix', 'Matrix', or 'data.frame'", {
 
 
 #####
+# MI.local()
+#####
+test_that("MI.local() works with vector input and returns a data.frame", {
+  x <- fakedataset$x1
+  out <- MI.local(x=x,W=W,alternative="greater")
+  expect_is(out, "data.frame")
+})
+
+test_that("MI.local() stores vector names", {
+  x <- fakedataset$x1
+  names(x) <- paste0("name_",1:length(x))
+  out <- MI.local(x=x,W=W)
+  expect_equal(rownames(out), names(x))
+})
+
+test_that("MI.local() detects NAs and returns an error message", {
+  x <- fakedataset$x1
+  x[1] <- NA
+  expect_error(MI.local(x=x,W=W), "Missing values detected")
+})
+
+test_that("check the permissible attributes for 'alternative'", {
+  x <- fakedataset$x1
+  alternative <- c("greater","lower","two.sided","else")
+  expect <- c(TRUE,TRUE,TRUE,FALSE)
+  out <- NULL
+  for(i in 1:4){
+    res <- try(MI.local(x=x,W=W,alternative=alternative[i])
+               ,silent=TRUE)
+    out[i] <- class(res)!="try-error"
+  }
+  expect_equal(out, expect)
+})
+
+test_that("W must be of class 'matrix', 'Matrix', or 'data.frame'", {
+  W2 <- as.vector(W)
+  expect_error(MI.local(x=fakedataset$x1,W=W2), "W must be of class 'matrix' or 'data.frame'")
+})
+
+
+#####
 # MI.decomp()
 #####
 test_that("MI.decomp() works with matrix input and returns a data frame with
