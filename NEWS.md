@@ -2,6 +2,7 @@
 
 - new vignette name
 - include `MI.local()`
+- update reference to `MI.local()` in documentation files
 
 ---
 

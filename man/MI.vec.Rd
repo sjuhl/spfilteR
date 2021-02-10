@@ -101,7 +101,7 @@ pp. 716 - 748.
 \code{\link{MI.vec}}, \code{\link{MI.ev}}, \code{\link{MI.sf}},
 \code{\link{MI.resid}}, \code{\link{MI.decomp}}
 
-\code{\link{MI.resid}}
+\code{\link{MI.resid}}, \code{\link{MI.local}}
 }
 \author{
 Sebastian Juhl

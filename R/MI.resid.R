@@ -56,7 +56,8 @@
 #' vec <- MI.vec(x=resid2,W=W,alternative="greater")
 #' rbind(intercept,vec)
 #'
-#' @seealso \code{\link{lmFilter}}, \code{\link{glmFilter}}, \code{\link{MI.vec}}
+#' @seealso \code{\link{lmFilter}}, \code{\link{glmFilter}}, \code{\link{MI.vec}},
+#' \code{\link{MI.local}}
 #'
 #' @export
 

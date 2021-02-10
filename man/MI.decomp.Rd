@@ -58,7 +58,7 @@ Geographical Analysis, 43 (2): pp. 127 - 141.
 }
 \seealso{
 \code{\link{MI.vec}}, \code{\link{MI.ev}}, \code{\link{MI.sf}},
-\code{\link{MI.resid}}, \code{\link{getEVs}}
+\code{\link{MI.resid}}, \code{\link{MI.local}}, \code{\link{getEVs}}
 }
 \author{
 Sebastian Juhl

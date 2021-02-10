@@ -68,7 +68,8 @@ Cliff, Andrew D. and John K. Ord (1972): Testing for Spatial Autocorrelation
 Among Regression Residuals. Geographical Analysis, 4 (3): pp. 267 - 284
 }
 \seealso{
-\code{\link{lmFilter}}, \code{\link{glmFilter}}, \code{\link{MI.vec}}
+\code{\link{lmFilter}}, \code{\link{glmFilter}}, \code{\link{MI.vec}},
+\code{\link{MI.local}}
 }
 \author{
 Sebastian Juhl
