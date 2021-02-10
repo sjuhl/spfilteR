@@ -162,14 +162,14 @@
 <code class="sourceCode R"><span class="co"># decompose Moran's I</span>
 <span class="op">(</span><span class="va">I.dec</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/MI.decomp.html">MI.decomp</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">cont</span>,W<span class="op">=</span><span class="va">W</span>,nsim<span class="op">=</span><span class="fl">100</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt;                 I+       VarI+        pI+            I-       VarI-        pI-</span>
-<span class="co">#&gt; x1       0.3894789 0.001678363 0.00990099 ** -0.0783007 0.001595840 1.00000000</span>
-<span class="co">#&gt; x2       0.3048369 0.001450728 0.01980198  * -0.1360794 0.001622050 0.99009901</span>
-<span class="co">#&gt; x3       0.2247566 0.001878060 0.28712871    -0.2156438 0.002385195 0.43564356</span>
-<span class="co">#&gt; negative 0.1131614 0.001929177 0.99009901    -0.3572259 0.001986461 0.00990099</span>
+<span class="co">#&gt; x1       0.3894789 0.001428076 0.00990099 ** -0.0783007 0.001564959 1.00000000</span>
+<span class="co">#&gt; x2       0.3048369 0.001621382 0.01980198  * -0.1360794 0.001739149 0.97029703</span>
+<span class="co">#&gt; x3       0.2247566 0.001472446 0.30693069    -0.2156438 0.002160404 0.40594059</span>
+<span class="co">#&gt; negative 0.1131614 0.001833448 1.00000000    -0.3572259 0.001379383 0.00990099</span>
 <span class="co">#&gt;             pItwo.sided  </span>
 <span class="co">#&gt; x1           0.01980198 *</span>
 <span class="co">#&gt; x2           0.03960396 *</span>
-<span class="co">#&gt; x3           0.57425743  </span>
+<span class="co">#&gt; x3           0.61386139  </span>
 <span class="co">#&gt; negative **  0.01980198 *</span></code></pre></div>
 <p>Note that the global Moran’s <em>I</em> is the sum of <code>I+</code> and <code>I-</code>:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
