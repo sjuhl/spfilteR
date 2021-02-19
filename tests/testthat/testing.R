@@ -669,6 +669,65 @@ test_that("selects EVs if objfn=='pMI' and initial residuals are significant", {
 
 
 #####
+# vp()
+#####
+test_that("If msr<100, vp() gives a warning", {
+  y <- fakedataset$x1
+  msr <- c(100,99,101,1)
+  expect <- c(FALSE,TRUE,FALSE,TRUE)
+  out <- NULL
+  for(i in 1:length(expect)){
+    res <- tryCatch(vp(y=y,evecs=NULL,msr=msr[i]),warning=function(x) TRUE)
+    out[i] <- isTRUE(res)
+  }
+  expect_equal(out,expect)
+})
+
+test_that("If msr<100, vp() sets it to 100", {
+  y <- fakedataset$x1
+  out <- suppressWarnings(vp(y=y,x=NULL,evecs=NULL,msr=1))
+  expect_equal(out$msr,100)
+})
+
+test_that("vp() detects perfect multicollinearity", {
+  X <- cbind(fakedataset$x2,fakedataset$x2*2)
+  expect_error(vp(y=fakedataset$x1,x=X,evecs=NULL,msr=100)
+               ,"Perfect multicollinearity in covariates detected")
+})
+
+test_that("vp() detects NAs", {
+  y <- fakedataset$x2
+  y[1] <- NA
+  expect_error(vp(y=y,x=NULL,evecs=NULL,msr=100)
+               ,"Missing values detected")
+})
+
+test_that("vp() works if a single eigenvalue equals zero", {
+  evecs <- getEVs(W=W)$vectors
+  y <- fakedataset$x3
+  zeroes <- which(!vapply(apply(evecs,2,sum)
+                          ,function(x) isTRUE(all.equal(x,0,tolerance=1e-7))
+                          ,FUN.VALUE = TRUE))
+  part <- vp(y=y,x=NULL,evecs=cbind(evecs[,1:20],evecs[,zeroes[1]]),msr=100)
+  expect_equal(class(part),"vpart")
+})
+
+test_that("vp() works if multiple eigenvalues equal zero", {
+  evecs <- getEVs(W=W)$vectors
+  y <- fakedataset$x3
+  part <- vp(y=y,x=NULL,evecs=evecs[,20:80],msr=100)
+  expect_output(print(part))
+})
+
+test_that("Error if nr of covars >= n", {
+  evecs <- getEVs(W=W)$vectors
+  y <- fakedataset$x3
+  expect_error(vp(y=y,x=NULL,evecs=evecs,msr=100)
+               ,"Nr of covariates equals or exceeds n")
+})
+
+
+#####
 # methods
 #####
 test_that("check the summary function", {
