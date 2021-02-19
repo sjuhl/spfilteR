@@ -38,6 +38,13 @@ E(R2|H0). To this end, the rows in matrix (or column vector) x are randomly
 permuted in order to preserve the correlation structure (see e.g., Clappe et
 al. 2018).
 }
+\examples{
+data(fakedata)
+E <- getEVs(W=W,covars=NULL)$vectors
+
+(partition <- vp(y=fakedataset$x1,evecs=E[,1:10],msr=100))
+
+}
 \references{
 Clappe, Sylvie, Dray Stéphane. and Pedro R. Peres-Neto (2018):
 Beyond neutrality: disentangling the effects of species sorting

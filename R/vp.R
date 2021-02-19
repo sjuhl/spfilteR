@@ -27,6 +27,12 @@
 #' permuted in order to preserve the correlation structure (see e.g., Clappe et
 #' al. 2018).
 #'
+#' @examples
+#' data(fakedata)
+#' E <- getEVs(W=W,covars=NULL)$vectors
+#'
+#' (partition <- vp(y=fakedataset$x1,evecs=E[,1:10],msr=100))
+#'
 #' @author Sebastian Juhl
 #'
 #' @seealso \code{\link{getEVs}}
@@ -52,7 +58,7 @@ vp <- function(y,x=NULL,evecs=NULL,msr=100){
 
   ### checks
   if(anyNA(y) | anyNA(x)) stop("Missing values detected")
-  if(qr(x)$rank!=ncol(x)) stop("Perfect multicollinearity in covariates detected")
+  if(ncol(x)>1 & qr(x)$rank!=ncol(x)) stop("Perfect multicollinearity in covariates detected")
   if(msr<100){
     warning(paste0("Number of permutations (",msr,") too small. Set to 100"))
     msr <- 100
@@ -75,7 +81,7 @@ vp <- function(y,x=NULL,evecs=NULL,msr=100){
       evecs <- evecs[,-null[1]]
     }
   }
-  
+
   # test nr of supplied covars
   if(ncol(cbind(x,evecs))>=n) stop("Nr of covariates equals or exceeds n")
 
