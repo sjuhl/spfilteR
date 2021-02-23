@@ -162,15 +162,15 @@
 <code class="sourceCode R"><span class="co"># decompose Moran's I</span>
 <span class="op">(</span><span class="va">I.dec</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/MI.decomp.html">MI.decomp</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">cont</span>,W<span class="op">=</span><span class="va">W</span>,nsim<span class="op">=</span><span class="fl">100</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt;                 I+       VarI+        pI+            I-       VarI-        pI-</span>
-<span class="co">#&gt; x1       0.3894789 0.001437417 0.00990099 ** -0.0783007 0.001521472 1.00000000</span>
-<span class="co">#&gt; x2       0.3048369 0.001549973 0.02970297  * -0.1360794 0.001597350 0.98019802</span>
-<span class="co">#&gt; x3       0.2247566 0.001548906 0.39603960    -0.2156438 0.001771777 0.44554455</span>
-<span class="co">#&gt; negative 0.1131614 0.001560384 1.00000000    -0.3572259 0.001639679 0.01980198</span>
-<span class="co">#&gt;            pItwo.sided  </span>
-<span class="co">#&gt; x1          0.01980198 *</span>
-<span class="co">#&gt; x2          0.05940594 .</span>
-<span class="co">#&gt; x3          0.79207921  </span>
-<span class="co">#&gt; negative *  0.03960396 *</span></code></pre></div>
+<span class="co">#&gt; x1       0.3894789 0.001185286 0.00990099 ** -0.0783007 0.001449588 1.00000000</span>
+<span class="co">#&gt; x2       0.3048369 0.001466851 0.01980198  * -0.1360794 0.001820159 0.99009901</span>
+<span class="co">#&gt; x3       0.2247566 0.001797316 0.32673267    -0.2156438 0.001804958 0.49504950</span>
+<span class="co">#&gt; negative 0.1131614 0.001717725 0.99009901    -0.3572259 0.001726793 0.00990099</span>
+<span class="co">#&gt;             pItwo.sided  </span>
+<span class="co">#&gt; x1           0.01980198 *</span>
+<span class="co">#&gt; x2           0.03960396 *</span>
+<span class="co">#&gt; x3           0.65346535  </span>
+<span class="co">#&gt; negative **  0.01980198 *</span></code></pre></div>
 <p>Note that the global Moran’s <em>I</em> is the sum of <code>I+</code> and <code>I-</code>:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># I = 'I+' + 'I-'</span>
