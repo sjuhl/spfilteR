@@ -154,7 +154,7 @@ print.vpart <- function(obj){
   res <- data.frame(cbind(format(round(obj$adjR2,7),nsmall=7)
                           ,format(round(obj$R2,7),nsmall=7))
                           ,row.names=c("ab","bc","abc","a","b","c","d"))
-  colnames(res) <- c("adjusted R2", "R2")
+  colnames(res) <- c("Adj. R2", "R2")
   cat("\t - Variation Partitioning -\n\n")
   print(res)
   cat(paste("---\n","Permutations:",obj$msr))
