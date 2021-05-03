@@ -428,10 +428,10 @@ test_that("check ideal candidate set size", {
 })
 
 test_that("check 'tol' in lmFilter()", {
-  tol <- c(.1,.01)
+  tol <- c(.5,.01)
   nev <- NULL
-  for(i in 1:2){
-    sf <- lmFilter(y=fakedataset$x3,objfn="MI",alpha=.05,W=W,tol=tol[i])
+  for(i in seq_along(tol)){
+    sf <- lmFilter(y=fakedataset$x1,objfn="MI",alpha=.05,W=W,tol=tol[i])
     nev[i] <- sf$other$nev
   }
   expect_true(nev[1]<nev[2])
