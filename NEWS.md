@@ -1,9 +1,11 @@
 # spfilteR 1.0.0.9000
 
+- fix minor bug when checking 'tol' in `lmFilter()` function
 - new vignette name
-- include `MI.local()` function to calculate local Moran's I
+- add new functions
+    - `MI.local()` function to calculate local Moran's I
+    - `vp()` function for variation partitioning
 - update reference to `MI.local()` in documentation files
-- include `vp()` function for variation partitioning
 
 ---
 
