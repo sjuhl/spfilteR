@@ -46,7 +46,9 @@ summary.spfilter <- function(object,EV=FALSE,...){
       cat(paste0("\ (significance level=",round(object$other$siglevel,5),")\n"))
       cat(paste0("Bonferroni correction: ",object$other$bonferroni,"\n"))
     }
-  } else cat("\n")
+  } else {
+    cat("\n")
+  }
 
   # optional: information on eigenvectors
   if(EV){

@@ -41,9 +41,13 @@ partialR2 <- function(y,x=NULL,evecs){
   # Extract Information
   # & Formatting
   #####
-  if(is.null(x)) x <- rep(1,length(y))
+  if(is.null(x)){
+    x <- rep(1,length(y))
+  }
   x <- as.matrix(x)
-  if (!all(x[,1]==1)) x <- cbind(1,x)
+  if (!all(x[,1]==1)){
+    x <- cbind(1,x)
+  }
   evecs <- as.matrix(evecs)
   nev <- ncol(evecs)
   # store names
@@ -52,8 +56,12 @@ partialR2 <- function(y,x=NULL,evecs){
   #####
   # Input Checks
   #####
-  if(anyNA(y) | anyNA(x)) stop("Missing values detected")
-  if(qr(x)$rank!=ncol(x)) stop("Perfect multicollinearity in covariates detected")
+  if(anyNA(y) | anyNA(x)){
+    stop("Missing values detected")
+  }
+  if(qr(x)$rank!=ncol(x)){
+    stop("Perfect multicollinearity in covariates detected")
+  }
 
   # R2 reduced model (without eigenvectors)
   fitvals <- x %*% solve(crossprod(x)) %*% crossprod(x,y)

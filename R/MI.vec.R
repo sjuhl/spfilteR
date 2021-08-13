@@ -59,18 +59,26 @@
 MI.vec <- function(x,W,alternative="greater",symmetrize=TRUE){
   # convert x to a matrix and save names (if provided)
   x <- as.matrix(x)
-  if(!is.null(colnames(x))) nams <- colnames(x)
+  if(!is.null(colnames(x))){
+    nams <- colnames(x)
+  }
 
   #####
   # Input
   # Checks
   #####
-  if(0 %in% apply(x,2,sd)) warning("Constant term detected in x")
+  if(0 %in% apply(x,2,sd)){
+    warning("Constant term detected in x")
+  }
   if(!any(class(W) %in% c("matrix","Matrix","data.frame"))){
     stop("W must be of class 'matrix' or 'data.frame'")
   }
-  if(any(class(W)!="matrix")) W <- as.matrix(W)
-  if(anyNA(x) | anyNA(W)) stop("Missing values detected")
+  if(any(class(W)!="matrix")){
+    W <- as.matrix(W)
+  }
+  if(anyNA(x) | anyNA(W)){
+    stop("Missing values detected")
+  }
   if(!(alternative %in% c("greater","lower", "two.sided"))){
     stop("Invalid input: 'alternative' must be either 'greater',
          'lower', or 'two.sided'")
@@ -80,7 +88,9 @@ MI.vec <- function(x,W,alternative="greater",symmetrize=TRUE){
   # Additional
   # Variables
   #####
-  if(symmetrize) W <- .5 * (W + t(W))
+  if(symmetrize){
+    W <- .5 * (W + t(W))
+  }
   nx <- ncol(x)
   n <- nrow(W)
   df <- n-1 # only one variable considered at a time

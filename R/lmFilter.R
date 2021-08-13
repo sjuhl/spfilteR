@@ -140,43 +140,69 @@ lmFilter <- function(y,x=NULL,W,objfn="MI",MX=NULL,sig=.05
                      ,bonferroni=TRUE,positive=TRUE,ideal.setsize=FALSE
                      ,alpha=.25,tol=.1,boot.MI=NULL,na.rm=TRUE){
 
-  if(!is.null(MX)) MX <- as.matrix(MX)
-  if(!is.null(x)) x <- as.matrix(x)
-  if(!is.null(colnames(x))) nams <- colnames(x) else nams <- NULL
+  if(!is.null(MX)){
+    MX <- as.matrix(MX)
+  }
+  if(!is.null(x)){
+    x <- as.matrix(x)
+  }
+  if(!is.null(colnames(x))){
+    nams <- colnames(x)
+  } else {
+    nams <- NULL
+  }
 
   # missing values
   if(na.rm){
     if(!is.null(x)){
       miss <- apply(cbind(y,x),1,anyNA)
       x <- as.matrix(x[!miss,])
-    } else miss <- is.na(y)
+    } else{
+      miss <- is.na(y)
+    }
     y <- y[!miss]
     W <- W[!miss,!miss]
-    if(!is.null(MX)) MX[!miss,]
+    if(!is.null(MX)){
+      MX[!miss,]
+    }
   }
 
   # number of observations
   n <- length(y)
 
   # add intercept if not included in x
-  if(is.null(x)) x <- as.matrix(rep(1,n))
-  if(!all(x[,1]==1)) x <- cbind(1,x)
-  if(!is.null(MX) && any(apply(MX,2,sd)==0)) MX <- as.matrix(MX[,apply(MX,2,sd)!=0])
+  if(is.null(x)){
+    x <- as.matrix(rep(1,n))
+  }
+  if(!all(x[,1]==1)){
+    x <- cbind(1,x)
+  }
+  if(!is.null(MX) && any(apply(MX,2,sd)==0)){
+    MX <- as.matrix(MX[,apply(MX,2,sd)!=0])
+  }
   nx <- ncol(x)
 
   #####
   # Input Checks
   #####
-  if(anyNA(y) | anyNA(x) | anyNA(W)) stop("Missing values detected")
-  if(alpha==0) alpha <- 1e-07
+  if(anyNA(y) | anyNA(x) | anyNA(W)){
+    stop("Missing values detected")
+  }
+  if(alpha==0){
+    alpha <- 1e-07
+  }
   if(alpha<1e-07 | alpha>1){
     stop("Invalid argument: 'alpha' must be in the interval (0,1]")
   }
-  if(qr(x)$rank!=ncol(x)) stop("Perfect multicollinearity in covariates detected")
+  if(qr(x)$rank!=ncol(x)){
+    stop("Perfect multicollinearity in covariates detected")
+  }
   if(!any(class(W) %in% c("matrix","Matrix","data.frame"))){
     stop("W must be of class 'matrix' or 'data.frame'")
   }
-  if(any(class(W)!="matrix")) W <- as.matrix(W)
+  if(any(class(W)!="matrix")){
+    W <- as.matrix(W)
+  }
   if(!(objfn %in% c("R2","p","MI","pMI","all"))){
     stop("Invalid argument: objfn must be one of 'R2', 'p', 'MI', 'pMI', or'all'")
   }
@@ -185,7 +211,9 @@ lmFilter <- function(y,x=NULL,W,objfn="MI",MX=NULL,sig=.05
   }
 
   # no bonferroni adjustment for 'pMI'
-  if(objfn=="pMI" & bonferroni) bonferroni <- FALSE
+  if(objfn=="pMI" & bonferroni){
+    bonferroni <- FALSE
+  }
 
   #####
   # Objective Function
@@ -233,8 +261,12 @@ lmFilter <- function(y,x=NULL,W,objfn="MI",MX=NULL,sig=.05
   R2 <- 1-(sum(crossprod(resid_init))/TSS)
   adjR2_init <- 1-(1-R2)*(n-1)/(n-nx)
   zMI_init <- MI.resid(resid=resid_init,x=x,W=W,boot=boot.MI)$zI
-  if(objfn=="MI") oldZMI <- abs(zMI_init)
-  if(objfn=="R2") adjR2 <- -adjR2_init
+  if(objfn=="MI"){
+    oldZMI <- abs(zMI_init)
+  }
+  if(objfn=="R2"){
+    adjR2 <- -adjR2_init
+  }
 
   #####
   # Eigenvector Selection:
@@ -261,15 +293,19 @@ lmFilter <- function(y,x=NULL,W,objfn="MI",MX=NULL,sig=.05
 
   # Bonferroni adjustment (Griffith/ Chun 2014: 1490)
   if(objfn=="p" | objfn=="pMI"){
-    if(bonferroni & ncandidates>0) sig <- sig/ncandidates
+    if(bonferroni & ncandidates>0){
+      sig <- sig/ncandidates
+    }
   } else {
     sig <- bonferroni <- NULL
   }
 
-  if(objfn=="pMI") oldpMI <- -(MI.resid(resid=resid_init,x=x,W=W,boot=boot.MI
-                                        ,alternative=ifelse(dep=="positive"
-                                                            ,"greater","lower")
-                                        )$pI)
+  if(objfn=="pMI"){
+    oldpMI <- -(MI.resid(resid=resid_init,x=x,W=W,boot=boot.MI
+                         ,alternative=ifelse(dep=="positive"
+                                             ,"greater","lower")
+                         )$pI)
+  }
 
   #####
   # Search Algorithm:
@@ -283,7 +319,11 @@ lmFilter <- function(y,x=NULL,W,objfn="MI",MX=NULL,sig=.05
 
     # start forward search
     for(i in which(sel)){
-      if(objfn=="pMI") if(abs(oldpMI) > sig) break
+      if(objfn=="pMI"){
+        if(abs(oldpMI) > sig){
+          break
+        }
+      }
       ref <- Inf
       sid <- NULL
 
@@ -303,26 +343,36 @@ lmFilter <- function(y,x=NULL,W,objfn="MI",MX=NULL,sig=.05
         if(ref < adjR2){
           adjR2 <- ref
           sel_id <- c(sel_id,sid)
-        } else break
+        } else {
+          break
+        }
       }
       if(objfn=="p"){
         if(ref < sig){
           sel_id <- c(sel_id,sid)
-        } else break
+        } else{
+          break
+        }
       }
       if(objfn=="MI"){
         if(ref < oldZMI){
           oldZMI <- ref
           sel_id <- c(sel_id,sid)
-        } else break
-        if(oldZMI < tol) break
+        } else{
+          break
+        }
+        if(oldZMI < tol){
+          break
+        }
       }
       if(objfn=="pMI"){
         if(abs(ref) > oldpMI){
           oldpMI <- abs(ref)
           sel_id <- c(sel_id,sid)
         }
-        if(abs(ref) > sig)  break
+        if(abs(ref) > sig){
+          break
+        }
       }
 
       # remove selected eigenvectors from search set
@@ -390,7 +440,9 @@ lmFilter <- function(y,x=NULL,W,objfn="MI",MX=NULL,sig=.05
     # construct spatial filter
     sf <- selvecs %*% gammas
     sfMI <- MI.sf(gamma=gammas, evMI=evMI[sel_id])
-  } else selvecs <- EV <- sf <- sfMI <- NULL
+  } else {
+    selvecs <- EV <- sf <- sfMI <- NULL
+  }
 
   # Moran's I
   moran <- rbind(MI_init[,colnames(MI_init)!=""],MI_filtered[,colnames(MI_filtered)!=""])

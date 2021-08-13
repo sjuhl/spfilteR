@@ -10,7 +10,9 @@ pfunc <- function(z,alternative,draws=NULL){
       p <- pnorm(z, lower.tail=FALSE)
     } else if(alternative=="lower"){
       p <- pnorm(z, lower.tail=TRUE)
-    } else p <- 2*pnorm(abs(z), lower.tail=FALSE)
+    } else {
+      p <- 2*pnorm(abs(z), lower.tail=FALSE)
+    }
   } else {
     # simulation-based variance estimate
     # see e.g., North/ Curtis/ Sham (2002) [Am J Hum Genet]
@@ -109,7 +111,9 @@ conditionNumber <- function(evecs=NULL,round=8){
     cormat <- cor(evecs)
     corevals <- eigen(cormat)$values
     res <- round(sqrt(corevals[1]/corevals[length(corevals)]),round)
-  } else res <- NULL
+  } else {
+    res <- NULL
+  }
   return(res)
 }
 

@@ -56,7 +56,9 @@
 MI.decomp <- function(x,W,nsim=100){
   # convert x to a matrix and save names (if provided)
   x <- as.matrix(x)
-  if(!is.null(colnames(x))) nams <- colnames(x)
+  if(!is.null(colnames(x))){
+    nams <- colnames(x)
+  }
 
   #####
   # Input
@@ -66,8 +68,12 @@ MI.decomp <- function(x,W,nsim=100){
   if(!any(class(W) %in% c("matrix","Matrix","data.frame"))){
     stop("W must be of class 'matrix' or 'data.frame'")
   }
-  if(any(class(W)!="matrix")) W <- as.matrix(W)
-  if(anyNA(x) | anyNA(W)) stop("Missing values detected")
+  if(any(class(W)!="matrix")){
+    W <- as.matrix(W)
+  }
+  if(anyNA(x) | anyNA(W)){
+    stop("Missing values detected")
+  }
   if(nsim<100){
     warning(paste0("Number of permutations (",nsim,") too small. Set to 100"))
     nsim <- 100
@@ -119,7 +125,9 @@ MI.decomp <- function(x,W,nsim=100){
     out[i,8] <- star(p=out[i,"pI-"])
     out[i,10] <- star(p=out[i,"pItwo.sided"])
   }
-  if(!is.null(colnames(x))) rownames(out) <- nams
+  if(!is.null(colnames(x))){
+    rownames(out) <- nams
+  }
 
   return(out)
 }

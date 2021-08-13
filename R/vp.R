@@ -52,13 +52,21 @@
 
 vp <- function(y,x=NULL,evecs=NULL,msr=100){
   n <- length(y)
-  if(is.null(x)) x <- rep(1,n)
+  if(is.null(x)){
+    x <- rep(1,n)
+  }
   x <- as.matrix(x)
-  if (!all(x[,1]==1)) x <- cbind(1,x)
+  if (!all(x[,1]==1)){
+    x <- cbind(1,x)
+  }
 
   ### checks
-  if(anyNA(y) | anyNA(x)) stop("Missing values detected")
-  if(ncol(x)>1 & qr(x)$rank!=ncol(x)) stop("Perfect multicollinearity in covariates detected")
+  if(anyNA(y) | anyNA(x)){
+    stop("Missing values detected")
+  }
+  if(ncol(x)>1 & qr(x)$rank!=ncol(x)){
+    stop("Perfect multicollinearity in covariates detected")
+  }
   if(msr<100){
     warning(paste0("Number of permutations (",msr,") too small. Set to 100"))
     msr <- 100
@@ -83,7 +91,9 @@ vp <- function(y,x=NULL,evecs=NULL,msr=100){
   }
 
   # test nr of supplied covars
-  if(ncol(cbind(x,evecs))>=n) stop("Nr of covariates equals or exceeds n")
+  if(ncol(cbind(x,evecs))>=n){
+    stop("Nr of covariates equals or exceeds n")
+  }
 
   ### unadjusted R-squared
   TSS <- sum((y - mean(y))^2)
@@ -98,7 +108,9 @@ vp <- function(y,x=NULL,evecs=NULL,msr=100){
     # bc
     resid.e <- y - cbind(1,evecs) %*% solve(crossprod(cbind(1,evecs))) %*% crossprod(cbind(1,evecs),y)
     R2.bc <- 1-(sum(resid.e^2)/TSS)
-  } else R2.bc <- 0
+  } else {
+    R2.bc <- 0
+  }
   # individual fractions
   R2.a <- R2.abc - R2.bc
   R2.c <- R2.abc - R2.ab

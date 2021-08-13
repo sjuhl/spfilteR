@@ -31,14 +31,20 @@
 
 vif.ev <- function(x=NULL,evecs,na.rm=TRUE){
   evecs <- as.matrix(evecs)
-  if(is.null(x)) x <- rep(1,nrow(evecs))
+  if(is.null(x)){
+    x <- rep(1,nrow(evecs))
+  }
   x <- as.matrix(x)
-  if (!all(x[,1]==1)) x <- cbind(1,x)
+  if (!all(x[,1]==1)){
+    x <- cbind(1,x)
+  }
   if(na.rm){
     evecs <- as.matrix(evecs[complete.cases(x),])
     x <- as.matrix(x[complete.cases(x),])
   }
-  if(anyNA(x)) stop("Missing values detected")
+  if(anyNA(x)){
+    stop("Missing values detected")
+  }
   inflate <- NULL
   for(i in seq_len(ncol(evecs))){
     xi <- evecs[,i]

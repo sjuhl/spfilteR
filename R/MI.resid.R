@@ -68,11 +68,17 @@ MI.resid <- function(resid,x=NULL,W,alternative="greater",boot=NULL){
   if(!any(class(W) %in% c("matrix","Matrix","data.frame"))){
     stop("W must be of class 'matrix' or 'data.frame'")
   }
-  if(any(class(W)!="matrix")) W <- as.matrix(W)
+  if(any(class(W)!="matrix")){
+    W <- as.matrix(W)
+  }
   n <- nrow(W)
-  if(is.null(x)) x <- rep(1,n)
+  if(is.null(x)){
+    x <- rep(1,n)
+  }
   x <- as.matrix(x)
-  if (!all(x[,1]==1)) x <- cbind(1,x)
+  if (!all(x[,1]==1)){
+    x <- cbind(1,x)
+  }
   df <- n - qr(x)$rank
   # step 1
   W <- .5 * (W + t(W))
