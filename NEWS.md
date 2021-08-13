@@ -1,3 +1,10 @@
+# spfilteR 1.1.0.9000
+
+- improve readability of code:
+    - include braces in single-line if/else statements
+
+---
+
 # spfilteR 1.1.0
 
 - CRAN resubmission
