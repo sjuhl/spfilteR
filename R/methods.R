@@ -8,11 +8,8 @@ summary.spfilter <- function(object, EV = FALSE, ...){
   #####
   # head
   cat("\n\t- Spatial Filtering with Eigenvectors"
-      ,paste0("("
-              ,paste0(toupper(substring(object$other$model, 1, 1))
-                      ,substring(object$other$model, 2)
-              )
-              ," Model)")," -\n\n")
+      ,paste0("(", paste0(toupper(substring(object$other$model, 1, 1)),
+                          substring(object$other$model, 2)), " Model)")," -\n\n")
 
   # estimates & model fit
   signif <- star(p = object$estimates[, "p-value"])
