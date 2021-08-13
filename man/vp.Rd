@@ -32,7 +32,7 @@ variation. Moran spectral randomization is applied to obtain the expected
 value of the coefficient of determination adjusted for spurious correlations.
 }
 \note{
-The adjusted R-squared values are obtained by: 1-(1-R2)/(1-E(R2|H0)).
+The adjusted R-squared values are obtained by: 1 - (1 - R2) / (1 - E(R2|H0)).
 For fractions [ab] and [a], Moran spectral randomization is used to derive
 E(R2|H0). To this end, the rows in matrix (or column vector) x are randomly
 permuted in order to preserve the correlation structure (see e.g., Clappe et
@@ -40,9 +40,9 @@ al. 2018).
 }
 \examples{
 data(fakedata)
-E <- getEVs(W=W,covars=NULL)$vectors
+E <- getEVs(W = W, covars = NULL)$vectors
 
-(partition <- vp(y=fakedataset$x1,evecs=E[,1:10],msr=100))
+(partition <- vp(y = fakedataset$x1, evecs = E[, 1:10], msr = 100))
 
 }
 \references{

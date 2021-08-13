@@ -42,18 +42,18 @@
 #'
 #' @examples
 #' data(fakedata)
-#' X <- cbind(fakedataset$x1,fakedataset$x2
-#' ,fakedataset$x3,fakedataset$negative)
+#' X <- cbind(fakedataset$x1, fakedataset$x2,
+#' fakedataset$x3, fakedataset$negative)
 #'
-#' (MI.dec <- MI.decomp(x=X,W=W,nsim=100))
+#' (MI.dec <- MI.decomp(x = X, W = W, nsim = 100))
 #'
 #' # the sum of I+ and I- equals the observed Moran coefficient:
-#' I <- MI.vec(x=X,W=W)[,"I"]
-#' cbind(MI.dec[,"I+"] + MI.dec[,"I-"], I)
+#' I <- MI.vec(x = X, W = W)[, "I"]
+#' cbind(MI.dec[, "I+"] + MI.dec[, "I-"], I)
 #'
 #' @export
 
-MI.decomp <- function(x,W,nsim=100){
+MI.decomp <- function(x, W, nsim = 100){
   # convert x to a matrix and save names (if provided)
   x <- as.matrix(x)
   if(!is.null(colnames(x))){
@@ -64,17 +64,17 @@ MI.decomp <- function(x,W,nsim=100){
   # Input
   # Checks
   #####
-  if(0 %in% apply(x,2,sd)) warning("Constant term detected in x")
-  if(!any(class(W) %in% c("matrix","Matrix","data.frame"))){
+  if(0 %in% apply(x, 2, sd)) warning("Constant term detected in x")
+  if(!any(class(W) %in% c("matrix", "Matrix", "data.frame"))){
     stop("W must be of class 'matrix' or 'data.frame'")
   }
-  if(any(class(W)!="matrix")){
+  if(any(class(W) != "matrix")){
     W <- as.matrix(W)
   }
   if(anyNA(x) | anyNA(W)){
     stop("Missing values detected")
   }
-  if(nsim<100){
+  if(nsim < 100){
     warning(paste0("Number of permutations (",nsim,") too small. Set to 100"))
     nsim <- 100
   }
@@ -88,42 +88,42 @@ MI.decomp <- function(x,W,nsim=100){
 
   # expected value
   n <- nrow(W)
-  EI <- -1/(n-1)
+  EI <- -1 / (n - 1)
 
   # eigendecomposition
   eigen <- getEVs(W=W)
 
   # null distribution
-  Ip <- In <- matrix(NA,nrow=nx,ncol=nsim)
+  Ip <- In <- matrix(NA, nrow = nx, ncol = nsim)
   for(i in seq_len(nsim)){
-    ind <- sample(1:n,replace=TRUE)
-    c2 <- cor(Z[ind,],eigen$vectors, method="pearson")^2
-    Ip[,i] <- c2[,eigen$values>EI] %*% eigen$moran[eigen$values>EI]
-    In[,i] <- c2[,eigen$values<EI] %*% eigen$moran[eigen$values<EI]
+    ind <- sample(1:n, replace = TRUE)
+    c2 <- cor(Z[ind,], eigen$vectors, method = "pearson")^2
+    Ip[, i] <- c2[, eigen$values > EI] %*% eigen$moran[eigen$values > EI]
+    In[, i] <- c2[, eigen$values < EI] %*% eigen$moran[eigen$values < EI]
   }
 
   #####
   # Output
   #####
-  out <- data.frame(matrix(NA,nrow=nx,ncol=10))
-  colnames(out) <- c("I+","VarI+","pI+",""
-                     ,"I-","VarI-","pI-",""
-                     ,"pItwo.sided","")
+  out <- data.frame(matrix(NA, nrow = nx, ncol = 10))
+  colnames(out) <- c("I+", "VarI+", "pI+", "",
+                     "I-", "VarI-", "pI-", "",
+                     "pItwo.sided","")
   # observed
-  cor2 <- cor(Z,eigen$vectors, method="pearson")^2
-  out[,"I+"] <- cor2[,eigen$values>EI] %*% eigen$moran[eigen$values>EI]
-  out[,"I-"] <- cor2[,eigen$values<EI] %*% eigen$moran[eigen$values<EI]
+  cor2 <- cor(Z, eigen$vectors, method = "pearson")^2
+  out[, "I+"] <- cor2[, eigen$values > EI] %*% eigen$moran[eigen$values > EI]
+  out[, "I-"] <- cor2[, eigen$values < EI] %*% eigen$moran[eigen$values < EI]
   # variance
-  out[,"VarI+"] <- apply(Ip,1,var)
-  out[,"VarI-"] <- apply(In,1,var)
+  out[, "VarI+"] <- apply(Ip, 1, var)
+  out[, "VarI-"] <- apply(In, 1, var)
   # significance
   for(i in seq_len(nx)){
-    out[i,"pI+"] <- pfunc(z=out[i,"I+"],alternative="greater",draws=Ip[i,])
-    out[i,"pI-"] <- pfunc(z=out[i,"I-"],alternative="lower",draws=In[i,])
-    out[i,"pItwo.sided"] <- 2*min(out[i,c("pI+","pI-")])
-    out[i,4] <- star(p=out[i,"pI+"])
-    out[i,8] <- star(p=out[i,"pI-"])
-    out[i,10] <- star(p=out[i,"pItwo.sided"])
+    out[i, "pI+"] <- pfunc(z = out[i, "I+"], alternative = "greater", draws = Ip[i,])
+    out[i, "pI-"] <- pfunc(z = out[i, "I-"], alternative = "lower", draws = In[i,])
+    out[i, "pItwo.sided"] <- 2 * min(out[i, c("pI+", "pI-")])
+    out[i, 4] <- star(p = out[i, "pI+"])
+    out[i, 8] <- star(p = out[i, "pI-"])
+    out[i, 10] <- star(p = out[i, "pItwo.sided"])
   }
   if(!is.null(colnames(x))){
     rownames(out) <- nams

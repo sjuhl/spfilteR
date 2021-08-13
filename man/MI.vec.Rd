@@ -66,12 +66,12 @@ For inherently non-symmetric matrices, it is recommended to specify
 data(fakedata)
 x <- fakedataset$x2
 
-(MIi <- MI.local(x=x,W=W,alternative="greater"))
+(MIi <- MI.local(x = x, W = W, alternative = "greater"))
 
 data(fakedata)
-X <- cbind(fakedataset$x1,fakedataset$x2,fakedataset$x3)
+X <- cbind(fakedataset$x1, fakedataset$x2, fakedataset$x3)
 
-(MI <- MI.vec(x=X,W=W,alternative="greater",symmetrize=TRUE))
+(MI <- MI.vec(x = X, W = W, alternative = "greater", symmetrize = TRUE))
 
 }
 \references{

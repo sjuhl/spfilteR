@@ -51,7 +51,7 @@ for more details on the appropriate choice of \emph{\strong{M}}.
 \examples{
 data(fakedata)
 
-E <-getEVs(W=W,covars=NULL)
+E <- getEVs(W = W, covars = NULL)
 
 }
 \references{

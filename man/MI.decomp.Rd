@@ -41,14 +41,14 @@ using a permutation procedure to generate a simulated null distribution.
 }
 \examples{
 data(fakedata)
-X <- cbind(fakedataset$x1,fakedataset$x2
-,fakedataset$x3,fakedataset$negative)
+X <- cbind(fakedataset$x1, fakedataset$x2,
+fakedataset$x3, fakedataset$negative)
 
-(MI.dec <- MI.decomp(x=X,W=W,nsim=100))
+(MI.dec <- MI.decomp(x = X, W = W, nsim = 100))
 
 # the sum of I+ and I- equals the observed Moran coefficient:
-I <- MI.vec(x=X,W=W)[,"I"]
-cbind(MI.dec[,"I+"] + MI.dec[,"I-"], I)
+I <- MI.vec(x = X, W = W)[, "I"]
+cbind(MI.dec[, "I+"] + MI.dec[, "I-"], I)
 
 }
 \references{

@@ -9,7 +9,7 @@ MI.resid(resid, x = NULL, W, alternative = "greater", boot = NULL)
 \arguments{
 \item{resid}{residual vector}
 
-\item{x}{vector/ matrix of regressors (default=NULL)}
+\item{x}{vector/ matrix of regressors (default = NULL)}
 
 \item{W}{spatial connectivity matrix}
 
@@ -35,7 +35,7 @@ autocorrelation present in regression residuals by means of the Moran
 coefficient.
 }
 \details{
-The function assumes an intercept-only model if \code{x=NULL}.
+The function assumes an intercept-only model if \code{x = NULL}.
 Furthermore, \code{MI.resid} automatically symmetrizes the matrix
 \emph{\strong{W}} by: 1/2 * (\emph{\strong{W}} + \emph{\strong{W}}').
 }
@@ -49,15 +49,15 @@ y <- fakedataset$x1
 x <- fakedataset$x2
 
 resid <- y - x \%*\% solve(crossprod(x)) \%*\% crossprod(x,y)
-(Moran <- MI.resid(resid=resid,x=x,W=W,alternative="greater"))
+(Moran <- MI.resid(resid = resid, x = x, W = W, alternative = "greater"))
 
 # intercept-only model
-x <- rep(1,length(y))
+x <- rep(1, length(y))
 resid2 <- y - x \%*\% solve(crossprod(x)) \%*\% crossprod(x,y)
-intercept <- MI.resid(resid=resid2,W=W,alternative="greater")
+intercept <- MI.resid(resid = resid2, W = W, alternative = "greater")
 # same result with MI.vec for the intercept-only model
-vec <- MI.vec(x=resid2,W=W,alternative="greater")
-rbind(intercept,vec)
+vec <- MI.vec(x = resid2, W = W, alternative = "greater")
+rbind(intercept, vec)
 
 }
 \references{

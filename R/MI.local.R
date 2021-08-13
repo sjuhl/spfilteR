@@ -42,26 +42,26 @@
 #' data(fakedata)
 #' x <- fakedataset$x2
 #'
-#' (MIi <- MI.local(x=x,W=W,alternative="greater"))
+#' (MIi <- MI.local(x = x, W = W, alternative = "greater"))
 #'
 #' @export
 
-MI.local <- function(x,W,alternative="greater"){
+MI.local <- function(x, W, alternative = "greater"){
 
   #####
   # Input
   # Checks
   #####
-  if(!any(class(W) %in% c("matrix","Matrix","data.frame"))){
+  if(!any(class(W) %in% c("matrix", "Matrix", "data.frame"))){
     stop("W must be of class 'matrix' or 'data.frame'")
   }
-  if(any(class(W)!="matrix")){
+  if(any(class(W) != "matrix")){
     W <- as.matrix(W)
   }
   if(anyNA(x) | anyNA(W)){
     stop("Missing values detected")
   }
-  if(!(alternative %in% c("greater","lower", "two.sided"))){
+  if(!(alternative %in% c("greater", "lower", "two.sided"))){
     stop("Invalid input: 'alternative' must be either 'greater',
          'lower', or 'two.sided'")
   }
@@ -74,28 +74,28 @@ MI.local <- function(x,W,alternative="greater"){
   # define variables
   n <- length(x)
   z <- x - mean(x)
-  m2 <- sum(z^2)/n
-  Wi <- apply(W,1,sum)
-  Wi2 <- apply(W,1, function(x) sum(x^2))
-  b2 <- n*sum(z^4)/sum(z^2)^2
+  m2 <- sum(z^2) / n
+  Wi <- apply(W, 1, sum)
+  Wi2 <- apply(W, 1, function(x) sum(x^2))
+  b2 <- n * sum(z^4) / sum(z^2)^2
 
   #####
   # Output
   #####
-  out <- data.frame(matrix(NA,nrow=n,ncol=6))
-  colnames(out) <- c("Ii","EIi","VarIi","zIi","pIi","")
+  out <- data.frame(matrix(NA, nrow = n, ncol = 6))
+  colnames(out) <- c("Ii", "EIi", "VarIi", "zIi", "pIi", "")
   # observed local Is
-  out[,"Ii"] <- (z/m2) * W%*%z
+  out[, "Ii"] <- (z / m2) * W %*% z
   # expected
-  out[,"EIi"] <- -Wi/(n-1)
+  out[, "EIi"] <- -Wi / (n - 1)
   # variance
-  out[,"VarIi"] <- Wi2*(n-b2)/(n-1) + (Wi^2-Wi2)*(2*b2-n)/((n-1)*(n-2)) - out[,"EIi"]^2
+  out[, "VarIi"] <- Wi2 * (n - b2) / (n - 1) + (Wi^2 - Wi2) * (2 * b2 - n) / ((n - 1) * (n - 2)) - out[, "EIi"]^2
   # test statistic
-  out[,"zIi"] <- apply(out,1,function(x) (x[1]-x[2])/sqrt(x[3]))
+  out[, "zIi"] <- apply(out, 1, function(x) (x[1] - x[2]) / sqrt(x[3]))
   # pI
-  out[,"pIi"] <- vapply(out[,"zIi"], pfunc ,alternative=alternative
-                        ,FUN.VALUE=numeric(1))
-  out[,6] <- vapply(out[,"pIi"], star, FUN.VALUE=character(1))
+  out[, "pIi"] <- vapply(out[, "zIi"], pfunc ,alternative = alternative
+                        ,FUN.VALUE = numeric(1))
+  out[, 6] <- vapply(out[, "pIi"], star, FUN.VALUE = character(1))
 
   # attach names (if provided)
   if(!is.null(names(x))){

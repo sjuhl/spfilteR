@@ -7,7 +7,7 @@
 vif.ev(x = NULL, evecs, na.rm = TRUE)
 }
 \arguments{
-\item{x}{vector/ matrix of regressors (default=NULL)}
+\item{x}{vector/ matrix of regressors (default = NULL)}
 
 \item{evecs}{(selected) eigenvectors}
 
@@ -28,8 +28,8 @@ this property.
 }
 \examples{
 data(fakedata)
-E <- getEVs(W=W,covars=NULL)$vectors
-(VIF <- vif.ev(x=fakedataset$x1,evecs=E[,1:10]))
+E <- getEVs(W = W, covars = NULL)$vectors
+(VIF <- vif.ev(x = fakedataset$x1, evecs = E[, 1:10]))
 
 }
 \seealso{

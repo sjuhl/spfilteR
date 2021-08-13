@@ -1,7 +1,7 @@
 ---
 title: "spfilteR: Spatial Filtering with Eigenvectors"
 author: "Sebastian Juhl"
-date: "2020-11-18"
+date: "2021-08-13"
 output: rmarkdown::html_vignette
 bibliography: references.bib
 vignette: >
@@ -57,31 +57,31 @@ In a first step, the function `MI.vec()` checks for the presence of spatial auto
 
 ```{r}
 # select continuous variables
-cont <- cbind(fakedataset$x1,fakedataset$x2,fakedataset$x3,fakedataset$negative)
-colnames(cont) <- c("x1","x2","x3","negative")
+cont <- cbind(fakedataset$x1, fakedataset$x2, fakedataset$x3, fakedataset$negative)
+colnames(cont) <- c("x1", "x2", "x3", "negative")
 
 # Moran test of spatial autocorrelation
-(I <- MI.vec(x=cont,W=W,alternative='greater'))
+(I <- MI.vec(x = cont, W = W, alternative = 'greater'))
 ```
 
-The output suggests that the variables `x1` and `x2` are positively autocorrelated at conventional levels of statistical significance. Moreover, the standardized value of Moran's *I* (`zI`) indicates that the variable `negative` is negatively autocorrelated. We can use the function `MI.vec()` and specify `alternative='lower'` to assess the significance of the negative autocorrelation:
+The output suggests that the variables `x1` and `x2` are positively autocorrelated at conventional levels of statistical significance. Moreover, the standardized value of Moran's *I* (`zI`) indicates that the variable `negative` is negatively autocorrelated. We can use the function `MI.vec()` and specify `alternative = 'lower'` to assess the significance of the negative autocorrelation:
 
 ```{r}
-MI.vec(x=fakedataset$negative,W=W,alternative='lower')
+MI.vec(x = fakedataset$negative, W = W, alternative = 'lower')
 ```
 
 Since the Moran coefficient is a global measure of spatial autocorrelation, spatial heterogeneity constitutes a problem for this statistic. More specifically, the simultaneous presence of positive and negative spatial autocorrelation at different scales cannot be revealed by the classical Moran's *I*. To circumvent this problem, the function `MI.decomp()` decomposes the Moran coefficient into a positively and a negatively autocorrelated part and performs a permutation procedure to assess the significance [@dary2011]:
 
 ```{r}
 # decompose Moran's I
-(I.dec <- MI.decomp(x=cont,W=W,nsim=100))
+(I.dec <- MI.decomp(x = cont, W = W, nsim=100))
 ```
 
 Note that the global Moran's *I* is the sum of `I+` and `I-`:
 
 ```{r}
 # I = 'I+' + 'I-'
-cbind(I[,"I"], I.dec[,"I+"] + I.dec[,"I-"])
+cbind(I[, "I"], I.dec[, "I+"] + I.dec[, "I-"])
 ```
 
 ### Unsupervised Spatial Filtering in Linear Models
@@ -90,22 +90,23 @@ Assume that we wish to regress `x1` on `x2` and test for residual autocorrelatio
 ```{r}
 # define variables
 y <- fakedataset$x1
-X <- cbind(1,fakedataset$x2)
+X <- cbind(1, fakedataset$x2)
 
 # OLS regression
-ols.resid <- resid(lm(y~X))
+ols.resid <- resid(lm(y ~ X))
 
 # Moran test of residual spatial autocorrelation
-MI.resid(resid=ols.resid,W=W,alternative='greater')
+MI.resid(resid = ols.resid, W = W, alternative = 'greater')
 ```
 
 The results show that the residuals are significantly autocorrelated which violates the assumption of uncorrelated errors. In order to resolve this problem of spatial autocorrelation in regression residuals, the function `lmFilter()` estimates a spatially filtered linear regression model using an unsupervised stepwise regression to identify relevant eigenvectors derived from the transformed connectivity matrix. Below, the unsupervised eigenvector search algorithm selects eigenvectors based on the reduction in residual autocorrelation. The output is a class `spfilter` object.
 
 ```{r}
 # ESF model
-(lm.esf <- lmFilter(y=y,x=X,W=W,objfn='MI',positive=TRUE,ideal.setsize=TRUE,tol=.2))
+(lm.esf <- lmFilter(y = y, x = X, W = W, objfn = 'MI', positive = TRUE,
+                    ideal.setsize = TRUE, tol = .2))
 
-summary(lm.esf,EV=TRUE)
+summary(lm.esf, EV = TRUE)
 ```
 
 While the `print` method shows that 8 eigenvectors were selected from the candidate set consisting of 22 eigenvectors, the `summary` method provides additional information. Besides the ordinary least squares (OLS) parameter estimates, the output shows that the ESF model filters for positive spatial autocorrelation using the minimization of residual autocorrelation as objective function during the eigenvector search. A comparison between the filtered and the nonspatial OLS model with respect to model fit and residual autocorrelation is also provided. Since the option `EV` is set to `TRUE`, the `summary` method also displays information on the selected eigenvectors. As the results show, the ESF model successfully removes the spatial pattern from model residuals.
@@ -121,18 +122,18 @@ Moreover, `lmFilter()` also allows users to select eigenvectors based on alterna
 ```{r}
 ### Alternative selection criteria:
 # maximization of model fit
-lmFilter(y=y,x=X,W=W,objfn='R2',positive=TRUE,ideal.setsize=TRUE)
+lmFilter(y = y, x = X, W = W, objfn = 'R2', positive = TRUE, ideal.setsize = TRUE)
 
 # significance of residual autocorrelation
-lmFilter(y=y,x=X,W=W,objfn='pMI',sig=.1,bonferroni=FALSE
-         ,positive=TRUE,ideal.setsize=TRUE)
+lmFilter(y = y, x = X, W = W, objfn = 'pMI', sig = .1, bonferroni = FALSE,
+         positive = TRUE, ideal.setsize = TRUE)
 
 # significance of eigenvectors
-lmFilter(y=y,x=X,W=W,objfn='p',sig=.1,bonferroni=TRUE
-         ,positive=TRUE,ideal.setsize=TRUE)
+lmFilter(y = y, x = X, W = W, objfn = 'p', sig = .1, bonferroni = TRUE,
+         positive = TRUE, ideal.setsize = TRUE)
 
 # all eigenvectors in the candidate set
-lmFilter(y=y,x=X,W=W,objfn='all',positive=TRUE,ideal.setsize=TRUE)
+lmFilter(y = y, x = X, W = W, objfn = 'all', positive = TRUE, ideal.setsize = TRUE)
 ```
 
 If users wish to select eigenvectors based on individual selection criteria, they can obtain the eigenvectors using the function `getEVs()` and perform a supervised selection procedure using the basic [`stats::lm()`](https://www.rdocumentation.org/packages/stats/versions/3.6.2/topics/lm) command.
@@ -148,19 +149,21 @@ y.bin <- fakedataset$indicator
 y.count <- fakedataset$count
 
 # ESF logit model
-(logit.esf <- glmFilter(y=y.bin,x=NULL,W=W,objfn='p',model='logit',optim.method='BFGS'
-                        ,sig=.1,bonferroni=FALSE,positive=TRUE,ideal.setsize=FALSE
-                        ,alpha=.25,resid.type='deviance',boot.MI=100))
+(logit.esf <- glmFilter(y = y.bin, x = NULL, W = W, objfn = 'p', model = 'logit',
+                        optim.method = 'BFGS', sig = .1, bonferroni = FALSE,
+                        positive = TRUE, ideal.setsize = FALSE, alpha = .25,
+                        resid.type = 'deviance', boot.MI = 100))
 
 # ESF probit model
-(probit.esf <- glmFilter(y=y.bin,x=NULL,W=W,objfn='p',model='probit',optim.method='BFGS'
-                         ,sig=.1,bonferroni=FALSE,positive=TRUE,ideal.setsize=FALSE
-                         ,alpha=.25,resid.type='deviance',boot.MI=100))
+(probit.esf <- glmFilter(y = y.bin, x = NULL, W = W, objfn = 'p', model = 'probit',
+                         optim.method = 'BFGS', sig = .1, bonferroni = FALSE,
+                         positive = TRUE, ideal.setsize = FALSE, alpha = .25,
+                         resid.type = 'deviance', boot.MI = 100))
 
 # ESF poisson model
-(poisson.esf <- glmFilter(y=y.count,x=NULL,W=W,objfn='BIC',model='poisson',optim.method='BFGS'
-                          ,positive=TRUE,ideal.setsize=FALSE,alpha=.25,resid.type='deviance'
-                          ,boot.MI=100))
+(poisson.esf <- glmFilter(y = y.count, x = NULL, W = W, objfn = 'BIC', model = 'poisson',
+                          optim.method = 'BFGS', positive = TRUE, ideal.setsize = FALSE,
+                          alpha = .25, resid.type = 'deviance', boot.MI = 100))
 ```
 
 Again, if users wish to define individual selection criteria or fit a GLM currently not implemented in `glmFilter()`, they can obtain the eigenvectors using the `getEVs()` command and perform supervised eigenvector selection using the standard [```stats::glm()```](https://www.rdocumentation.org/packages/stats/versions/3.6.2/topics/glm) function.

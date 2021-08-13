@@ -28,7 +28,7 @@ glmFilter(
 \arguments{
 \item{y}{response variable}
 
-\item{x}{vector/ matrix of regressors (default=NULL)}
+\item{x}{vector/ matrix of regressors (default = NULL)}
 
 \item{W}{spatial connectivity matrix}
 
@@ -38,7 +38,7 @@ selection. Possible criteria are: the maximization of model fit
 significance level of candidate eigenvectors ('p'), significance of residual spatial
 autocorrelation ('pMI'), or all eigenvectors in the candidate set ('all')}
 
-\item{MX}{covariates used to construct the projection matrix (default=NULL) - see
+\item{MX}{covariates used to construct the projection matrix (default = NULL) - see
 Details}
 
 \item{model}{a character string indicating the type of model to be estimated.
@@ -48,16 +48,16 @@ Currently, 'probit', 'logit', and 'poisson' are valid inputs}
 the \code{optim} function}
 
 \item{sig}{significance level to be used for eigenvector selection
-if \code{objfn='p'} or \code{objfn='pMI'}}
+if \code{objfn = 'p'} or \code{objfn = 'pMI'}}
 
 \item{bonferroni}{Bonferroni adjustment for the significance level
-(TRUE/ FALSE) if \code{objfn='p'}. Set to FALSE if \code{objfn='pMI'} -
+(TRUE/ FALSE) if \code{objfn = 'p'}. Set to FALSE if \code{objfn = 'pMI'} -
 see Details}
 
 \item{positive}{restrict search to eigenvectors associated with positive
 levels of spatial autocorrelation (TRUE/ FALSE)}
 
-\item{ideal.setsize}{if \code{positive=TRUE}, uses the formula proposed by
+\item{ideal.setsize}{if \code{positive = TRUE}, uses the formula proposed by
 Chun et al. (2016) to determine the ideal size of the candidate set
 (TRUE/ FALSE)}
 
@@ -66,7 +66,7 @@ interval [0,1) that determines the minimum reduction in AIC/ BIC (relative to th
 current AIC/ BIC) a candidate eigenvector need to achieve in order to be selected}
 
 \item{boot.MI}{number of iterations used to estimate the variance of Moran's I
-(default=100). Alternatively, if \code{boot.MI=NULL}, analytical results will
+(default = 100). Alternatively, if \code{boot.MI = NULL}, analytical results will
 be used}
 
 \item{resid.type}{character string specifying the residual type to be used.
@@ -76,7 +76,7 @@ Options are 'raw', 'deviance', and 'pearson' (default)}
 according to their associated level of spatial autocorrelation, see e.g.,
 Griffith (2003)}
 
-\item{tol}{if \code{objfn='MI'}, determines the amount of remaining residual
+\item{tol}{if \code{objfn = 'MI'}, determines the amount of remaining residual
 autocorrelation at which the eigenvector selection terminates}
 
 \item{na.rm}{remove observations with missing values (TRUE/ FALSE)}
@@ -110,7 +110,7 @@ among the eigenvectors induced by the link function, see e.g., Griffith/ Amrhein
 the stepwise regression procedure}
 \item{\code{bonferroni}}{TRUE/ FALSE: Bonferroni-adjusted significance level
 (if \code{objfn='p'})}
-\item{\code{siglevel}}{if \code{objfn='p'} or \code{objfn='pMI'}: actual
+\item{\code{siglevel}}{if \code{objfn = 'p'} or \code{objfn = 'pMI'}: actual
 (unadjusted/ adjusted) significance level}
 \item{\code{resid.type}}{residual type ('raw', 'deviance', or 'pearson')}
 \item{\code{pseudoR2}}{McFadden's pseudo R-squared (filtered vs. unfiltered model)}
@@ -138,7 +138,7 @@ to construct the following projection matrix:
 
 Eigenvectors from \emph{\strong{MWM}} using this specification of
 \emph{\strong{M}} are not only mutually uncorrelated but also orthogonal
-to the regressors specified in \code{MX}. Alternatively, if \code{MX=NULL}, the
+to the regressors specified in \code{MX}. Alternatively, if \code{MX = NULL}, the
 projection matrix becomes \emph{\strong{M} = \strong{I} - \strong{11}'/\emph{n}},
 where \emph{\strong{1}} is a vector of ones and \emph{n} represents the number of
 observations. Griffith and Tiefelsdorf (2007) show how the choice of the appropriate
@@ -146,9 +146,9 @@ observations. Griffith and Tiefelsdorf (2007) show how the choice of the appropr
 dependence.
 
 The Bonferroni correction is only possible if eigenvector selection is based on
-the significance level of the eigenvectors (\code{objfn='p'}). It is set to
+the significance level of the eigenvectors (\code{objfn = 'p'}). It is set to
 FALSE if eigenvectors are added to the model until the residuals exhibit no
-significant level of spatial autocorrelation (\code{objfn='pMI'}).
+significant level of spatial autocorrelation (\code{objfn = 'pMI'}).
 }
 \note{
 If the condition number (\code{condnum}) suggests high levels of
@@ -171,24 +171,24 @@ data(fakedata)
 
 # poisson model
 y_pois <- fakedataset$count
-poisson <- glmFilter(y=y_pois,x=NULL,W=W,objfn="MI",positive=FALSE
-,model="poisson",boot.MI=100)
+poisson <- glmFilter(y = y_pois, x = NULL, W = W, objfn = "MI", positive = FALSE,
+model = "poisson", boot.MI = 100)
 print(poisson)
-summary(poisson,EV=FALSE)
+summary(poisson, EV = FALSE)
 
 # probit model - summarize EVs
 y_prob <- fakedataset$indicator
-probit <- glmFilter(y=y_prob,x=NULL,W=W,objfn="p",positive=FALSE
-,model="probit",boot.MI=100)
+probit <- glmFilter(y = y_prob, x = NULL, W = W, objfn = "p", positive = FALSE,
+model = "probit", boot.MI = 100)
 print(probit)
-summary(probit,EV=TRUE)
+summary(probit, EV = TRUE)
 
 # logit model - AIC objective function
 y_logit <- fakedataset$indicator
-logit <- glmFilter(y=y_logit,x=NULL,W=W,objfn="AIC",positive=FALSE
-,model="logit",min.reduction=.05)
+logit <- glmFilter(y = y_logit, x = NULL, W = W, objfn = "AIC", positive = FALSE,
+model = "logit", min.reduction = .05)
 print(logit)
-summary(logit,EV=FALSE)
+summary(logit, EV = FALSE)
 
 }
 \references{

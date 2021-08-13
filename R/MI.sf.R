@@ -21,7 +21,7 @@
 #'
 #' @export
 
-MI.sf <- function(gamma,evMI){
-  sfMI <- 1/sum(gamma^2) * sum(gamma^2 * evMI)
+MI.sf <- function(gamma, evMI){
+  sfMI <- 1 / sum(gamma^2) * sum(gamma^2 * evMI)
   return(sfMI)
 }

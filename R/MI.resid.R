@@ -7,7 +7,7 @@
 #' coefficient.
 #'
 #' @param resid residual vector
-#' @param x vector/ matrix of regressors (default=NULL)
+#' @param x vector/ matrix of regressors (default = NULL)
 #' @param W spatial connectivity matrix
 #' @param alternative specification of alternative hypothesis as 'greater' (default),
 #' 'lower', or 'two.sided'
@@ -23,7 +23,7 @@
 #' \item{\code{pI}}{\emph{p}-value of the test statistic}
 #' }
 #'
-#' @details The function assumes an intercept-only model if \code{x=NULL}.
+#' @details The function assumes an intercept-only model if \code{x = NULL}.
 #' Furthermore, \code{MI.resid} automatically symmetrizes the matrix
 #' \emph{\strong{W}} by: 1/2 * (\emph{\strong{W}} + \emph{\strong{W}}').
 #'
@@ -46,81 +46,81 @@
 #' x <- fakedataset$x2
 #'
 #' resid <- y - x %*% solve(crossprod(x)) %*% crossprod(x,y)
-#' (Moran <- MI.resid(resid=resid,x=x,W=W,alternative="greater"))
+#' (Moran <- MI.resid(resid = resid, x = x, W = W, alternative = "greater"))
 #'
 #' # intercept-only model
-#' x <- rep(1,length(y))
+#' x <- rep(1, length(y))
 #' resid2 <- y - x %*% solve(crossprod(x)) %*% crossprod(x,y)
-#' intercept <- MI.resid(resid=resid2,W=W,alternative="greater")
+#' intercept <- MI.resid(resid = resid2, W = W, alternative = "greater")
 #' # same result with MI.vec for the intercept-only model
-#' vec <- MI.vec(x=resid2,W=W,alternative="greater")
-#' rbind(intercept,vec)
+#' vec <- MI.vec(x = resid2, W = W, alternative = "greater")
+#' rbind(intercept, vec)
 #'
 #' @seealso \code{\link{lmFilter}}, \code{\link{glmFilter}}, \code{\link{MI.vec}},
 #' \code{\link{MI.local}}
 #'
 #' @export
 
-MI.resid <- function(resid,x=NULL,W,alternative="greater",boot=NULL){
-  if(!(alternative %in% c("greater","lower", "two.sided"))){
+MI.resid <- function(resid, x = NULL, W, alternative = "greater", boot = NULL){
+  if(!(alternative %in% c("greater", "lower", "two.sided"))){
     stop("Invalid input: 'alternative' must be either 'greater', 'lower', or 'two.sided'")
   }
-  if(!any(class(W) %in% c("matrix","Matrix","data.frame"))){
+  if(!any(class(W) %in% c("matrix", "Matrix", "data.frame"))){
     stop("W must be of class 'matrix' or 'data.frame'")
   }
-  if(any(class(W)!="matrix")){
+  if(any(class(W) != "matrix")){
     W <- as.matrix(W)
   }
   n <- nrow(W)
   if(is.null(x)){
-    x <- rep(1,n)
+    x <- rep(1, n)
   }
   x <- as.matrix(x)
-  if (!all(x[,1]==1)){
-    x <- cbind(1,x)
+  if (!all(x[, 1] == 1)){
+    x <- cbind(1, x)
   }
   df <- n - qr(x)$rank
   # step 1
   W <- .5 * (W + t(W))
-  S0 <- crossprod(rep(1,n),W%*%rep(1,n))
-  S1 <- .5 * sum((W+t(W))^2)
+  S0 <- crossprod(rep(1, n), W %*% rep(1, n))
+  S1 <- .5 * sum((W + t(W))^2)
   # step 2
-  Z <- crossprod(W,x)
+  Z <- crossprod(W, x)
   # step 3
-  C1 <- crossprod(x,Z)
+  C1 <- crossprod(x, Z)
   C2 <- crossprod(Z)
   # step 4 & 5
   G <- qr.solve(crossprod(x))
-  traceA <- sum(diag(crossprod(G,C1)))
-  traceB <- sum(diag(crossprod(4*G,C2)))
-  traceA2 <- sum(diag(crossprod(G%*%C1)))
-  I <- n/S0 * crossprod(resid,W%*%resid) / crossprod(resid)
-  EI <- -(n*traceA)/(df*S0)
+  traceA <- sum(diag(crossprod(G, C1)))
+  traceB <- sum(diag(crossprod(4 * G, C2)))
+  traceA2 <- sum(diag(crossprod(G %*% C1)))
+  I <- n / S0 * crossprod(resid, W %*% resid) / crossprod(resid)
+  EI <- -(n * traceA) / (df * S0)
   if(!is.null(boot)){
     boot <- round(boot)
-    if(boot<100){
+    if(boot < 100){
       warning(paste0("Number of bootstrap iterations (",boot,") too small. Set to 100"))
       boot <- 100
     }
     boot.I <- NULL
     for(i in 1:boot){
-      ind <- sample(1:n,replace=TRUE)
-      boot.I[i] <- n/S0 * crossprod(resid[ind],W%*%resid[ind]) / crossprod(resid[ind])
+      ind <- sample(1:n, replace = TRUE)
+      boot.I[i] <- n / S0 * crossprod(resid[ind], W %*% resid[ind]) / crossprod(resid[ind])
     }
     VarI <- var(boot.I)
-    zI <- (I-EI)/sqrt(VarI)
-    pI <- pfunc(z=I,alternative=alternative,draws=boot.I)
+    zI <- (I - EI) / sqrt(VarI)
+    pI <- pfunc(z = I, alternative = alternative, draws = boot.I)
   } else {
-    VarI <- (n^2/(S0^2*df*(df+2))) * (S1+2*traceA2-traceB-((2*traceA^2)/df))
-    zI <- (I-EI)/sqrt(VarI)
-    pI <- pfunc(z=zI,alternative=alternative)
+    VarI <- (n^2 / (S0^2 * df * (df + 2))) * (S1 + 2 * traceA2 - traceB - ((2 * traceA^2) / df))
+    zI <- (I - EI) / sqrt(VarI)
+    pI <- pfunc(z = zI, alternative = alternative)
   }
 
   #####
   # Output
   #####
-  out <- data.frame(I,EI,VarI,zI,pI,NA)
-  colnames(out) <- c("I","EI","VarI","zI","pI","")
-  out[1,6] <- star(p=out[1,"pI"])
+  out <- data.frame(I, EI, VarI, zI, pI, NA)
+  colnames(out) <- c("I", "EI", "VarI", "zI", "pI", "")
+  out[1, 6] <- star(p = out[1, "pI"])
   return(out)
 }
