@@ -175,9 +175,9 @@ function can corrupt the uncorrelatedness of the eigenvectors.</p>
 <span class='va'>x</span> <span class='op'>&lt;-</span> <span class='va'>fakedataset</span><span class='op'>$</span><span class='va'>x2</span>
 
 <span class='co'># get eigenvectors</span>
-<span class='va'>E</span> <span class='op'>&lt;-</span><span class='fu'><a href='getEVs.html'>getEVs</a></span><span class='op'>(</span>W<span class='op'>=</span><span class='va'>W</span>,covars<span class='op'>=</span><span class='cn'>NULL</span><span class='op'>)</span><span class='op'>$</span><span class='va'>vectors</span>
+<span class='va'>E</span> <span class='op'>&lt;-</span><span class='fu'><a href='getEVs.html'>getEVs</a></span><span class='op'>(</span>W <span class='op'>=</span> <span class='va'>W</span>, covars <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span><span class='op'>$</span><span class='va'>vectors</span>
 
-<span class='op'>(</span><span class='va'>out</span> <span class='op'>&lt;-</span> <span class='fu'>partialR2</span><span class='op'>(</span>y<span class='op'>=</span><span class='va'>y</span>,x<span class='op'>=</span><span class='va'>x</span>,evecs<span class='op'>=</span><span class='va'>E</span><span class='op'>[</span>,<span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span><span class='op'>]</span><span class='op'>)</span><span class='op'>)</span>
+<span class='op'>(</span><span class='va'>out</span> <span class='op'>&lt;-</span> <span class='fu'>partialR2</span><span class='op'>(</span>y <span class='op'>=</span> <span class='va'>y</span>, x <span class='op'>=</span> <span class='va'>x</span>, evecs <span class='op'>=</span> <span class='va'>E</span><span class='op'>[</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span><span class='op'>]</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] 0.0007329944 0.0602190741 0.0010038680 0.0287335991 0.0205537163</div><div class='input'>
 
 </div></pre>

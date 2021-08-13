@@ -175,7 +175,7 @@ information:</p><dl>
 
     <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
 
-    <p>The adjusted R-squared values are obtained by: 1-(1-R2)/(1-E(R2|H0)).
+    <p>The adjusted R-squared values are obtained by: 1 - (1 - R2) / (1 - E(R2|H0)).
 For fractions [ab] and [a], Moran spectral randomization is used to derive
 E(R2|H0). To this end, the rows in matrix (or column vector) x are randomly
 permuted in order to preserve the correlation structure (see e.g., Clappe et
@@ -199,9 +199,9 @@ pp. 1169 - 1178.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>fakedata</span><span class='op'>)</span>
-<span class='va'>E</span> <span class='op'>&lt;-</span> <span class='fu'><a href='getEVs.html'>getEVs</a></span><span class='op'>(</span>W<span class='op'>=</span><span class='va'>W</span>,covars<span class='op'>=</span><span class='cn'>NULL</span><span class='op'>)</span><span class='op'>$</span><span class='va'>vectors</span>
+<span class='va'>E</span> <span class='op'>&lt;-</span> <span class='fu'><a href='getEVs.html'>getEVs</a></span><span class='op'>(</span>W <span class='op'>=</span> <span class='va'>W</span>, covars <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span><span class='op'>$</span><span class='va'>vectors</span>
 
-<span class='op'>(</span><span class='va'>partition</span> <span class='op'>&lt;-</span> <span class='fu'>vp</span><span class='op'>(</span>y<span class='op'>=</span><span class='va'>fakedataset</span><span class='op'>$</span><span class='va'>x1</span>,evecs<span class='op'>=</span><span class='va'>E</span><span class='op'>[</span>,<span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span><span class='op'>]</span>,msr<span class='op'>=</span><span class='fl'>100</span><span class='op'>)</span><span class='op'>)</span>
+<span class='op'>(</span><span class='va'>partition</span> <span class='op'>&lt;-</span> <span class='fu'>vp</span><span class='op'>(</span>y <span class='op'>=</span> <span class='va'>fakedataset</span><span class='op'>$</span><span class='va'>x1</span>, evecs <span class='op'>=</span> <span class='va'>E</span><span class='op'>[</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span><span class='op'>]</span>, msr <span class='op'>=</span> <span class='fl'>100</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; $R2
 #&gt;        ab        bc       abc         a         b         c         d 
 #&gt; 0.0000000 0.2467182 0.2467182 0.0000000 0.0000000 0.2467182 0.7532818 

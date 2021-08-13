@@ -141,7 +141,7 @@ the eigenvectors in the spatial filter.</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>vector/ matrix of regressors (default=NULL)</p></td>
+      <td><p>vector/ matrix of regressors (default = NULL)</p></td>
     </tr>
     <tr>
       <th>evecs</th>
@@ -171,8 +171,8 @@ this property.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>fakedata</span><span class='op'>)</span>
-<span class='va'>E</span> <span class='op'>&lt;-</span> <span class='fu'><a href='getEVs.html'>getEVs</a></span><span class='op'>(</span>W<span class='op'>=</span><span class='va'>W</span>,covars<span class='op'>=</span><span class='cn'>NULL</span><span class='op'>)</span><span class='op'>$</span><span class='va'>vectors</span>
-<span class='op'>(</span><span class='va'>VIF</span> <span class='op'>&lt;-</span> <span class='fu'>vif.ev</span><span class='op'>(</span>x<span class='op'>=</span><span class='va'>fakedataset</span><span class='op'>$</span><span class='va'>x1</span>,evecs<span class='op'>=</span><span class='va'>E</span><span class='op'>[</span>,<span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span><span class='op'>]</span><span class='op'>)</span><span class='op'>)</span>
+<span class='va'>E</span> <span class='op'>&lt;-</span> <span class='fu'><a href='getEVs.html'>getEVs</a></span><span class='op'>(</span>W <span class='op'>=</span> <span class='va'>W</span>, covars <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span><span class='op'>$</span><span class='va'>vectors</span>
+<span class='op'>(</span><span class='va'>VIF</span> <span class='op'>&lt;-</span> <span class='fu'>vif.ev</span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>fakedataset</span><span class='op'>$</span><span class='va'>x1</span>, evecs <span class='op'>=</span> <span class='va'>E</span><span class='op'>[</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span><span class='op'>]</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt;  [1] 1.004385 1.043694 1.030879 1.078498 1.000837 1.010944 1.000053 1.006641
 #&gt;  [9] 1.000079 1.086198</div><div class='input'>
 </div></pre>

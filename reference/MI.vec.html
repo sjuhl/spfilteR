@@ -231,7 +231,7 @@ pp. 716 - 748.</p>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>fakedata</span><span class='op'>)</span>
 <span class='va'>x</span> <span class='op'>&lt;-</span> <span class='va'>fakedataset</span><span class='op'>$</span><span class='va'>x2</span>
 
-<span class='op'>(</span><span class='va'>MIi</span> <span class='op'>&lt;-</span> <span class='fu'>MI.local</span><span class='op'>(</span>x<span class='op'>=</span><span class='va'>x</span>,W<span class='op'>=</span><span class='va'>W</span>,alternative<span class='op'>=</span><span class='st'>"greater"</span><span class='op'>)</span><span class='op'>)</span>
+<span class='op'>(</span><span class='va'>MIi</span> <span class='op'>&lt;-</span> <span class='fu'>MI.local</span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>x</span>, W <span class='op'>=</span> <span class='va'>W</span>, alternative <span class='op'>=</span> <span class='st'>"greater"</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt;                Ii         EIi    VarIi           zIi          pIi    
 #&gt; 1   -0.1605244807 -0.02020202 1.943397 -0.1006575573 5.400888e-01    
 #&gt; 2   -0.2045168571 -0.03030303 2.885612 -0.1025566146 5.408426e-01    
@@ -334,9 +334,9 @@ pp. 716 - 748.</p>
 #&gt; 99   0.3915644846 -0.03030303 2.885612  0.2483459835 4.019334e-01    
 #&gt; 100  0.1000864726 -0.02020202 1.943397  0.0862865845 4.656193e-01    </div><div class='input'>
 <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>fakedata</span><span class='op'>)</span>
-<span class='va'>X</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>cbind</a></span><span class='op'>(</span><span class='va'>fakedataset</span><span class='op'>$</span><span class='va'>x1</span>,<span class='va'>fakedataset</span><span class='op'>$</span><span class='va'>x2</span>,<span class='va'>fakedataset</span><span class='op'>$</span><span class='va'>x3</span><span class='op'>)</span>
+<span class='va'>X</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>cbind</a></span><span class='op'>(</span><span class='va'>fakedataset</span><span class='op'>$</span><span class='va'>x1</span>, <span class='va'>fakedataset</span><span class='op'>$</span><span class='va'>x2</span>, <span class='va'>fakedataset</span><span class='op'>$</span><span class='va'>x3</span><span class='op'>)</span>
 
-<span class='op'>(</span><span class='va'>MI</span> <span class='op'>&lt;-</span> <span class='fu'>MI.vec</span><span class='op'>(</span>x<span class='op'>=</span><span class='va'>X</span>,W<span class='op'>=</span><span class='va'>W</span>,alternative<span class='op'>=</span><span class='st'>"greater"</span>,symmetrize<span class='op'>=</span><span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span>
+<span class='op'>(</span><span class='va'>MI</span> <span class='op'>&lt;-</span> <span class='fu'>MI.vec</span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>X</span>, W <span class='op'>=</span> <span class='va'>W</span>, alternative <span class='op'>=</span> <span class='st'>"greater"</span>, symmetrize <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt;             I          EI        VarI        zI           pI    
 #&gt; 1 0.311178214 -0.01010101 0.005344193 4.3948248 5.543107e-06 ***
 #&gt; 2 0.168757531 -0.01010101 0.005344193 2.4466317 7.209904e-03  **

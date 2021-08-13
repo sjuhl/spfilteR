@@ -147,7 +147,7 @@ coefficient.</p>
     </tr>
     <tr>
       <th>x</th>
-      <td><p>vector/ matrix of regressors (default=NULL)</p></td>
+      <td><p>vector/ matrix of regressors (default = NULL)</p></td>
     </tr>
     <tr>
       <th>W</th>
@@ -178,7 +178,7 @@ compute the variance. If NULL (default), variance calculated under assumed norma
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>The function assumes an intercept-only model if <code>x=NULL</code>.
+    <p>The function assumes an intercept-only model if <code>x = NULL</code>.
 Furthermore, <code>MI.resid</code> automatically symmetrizes the matrix
 <em><strong>W</strong></em> by: 1/2 * (<em><strong>W</strong></em> + <em><strong>W</strong></em>').</p>
     <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
@@ -205,16 +205,16 @@ Among Regression Residuals. Geographical Analysis, 4 (3): pp. 267 - 284</p>
 <span class='va'>x</span> <span class='op'>&lt;-</span> <span class='va'>fakedataset</span><span class='op'>$</span><span class='va'>x2</span>
 
 <span class='va'>resid</span> <span class='op'>&lt;-</span> <span class='va'>y</span> <span class='op'>-</span> <span class='va'>x</span> <span class='op'>%*%</span> <span class='fu'><a href='https://rdrr.io/r/base/solve.html'>solve</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/crossprod.html'>crossprod</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%*%</span> <span class='fu'><a href='https://rdrr.io/r/base/crossprod.html'>crossprod</a></span><span class='op'>(</span><span class='va'>x</span>,<span class='va'>y</span><span class='op'>)</span>
-<span class='op'>(</span><span class='va'>Moran</span> <span class='op'>&lt;-</span> <span class='fu'>MI.resid</span><span class='op'>(</span>resid<span class='op'>=</span><span class='va'>resid</span>,x<span class='op'>=</span><span class='va'>x</span>,W<span class='op'>=</span><span class='va'>W</span>,alternative<span class='op'>=</span><span class='st'>"greater"</span><span class='op'>)</span><span class='op'>)</span>
+<span class='op'>(</span><span class='va'>Moran</span> <span class='op'>&lt;-</span> <span class='fu'>MI.resid</span><span class='op'>(</span>resid <span class='op'>=</span> <span class='va'>resid</span>, x <span class='op'>=</span> <span class='va'>x</span>, W <span class='op'>=</span> <span class='va'>W</span>, alternative <span class='op'>=</span> <span class='st'>"greater"</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt;          I         EI       VarI       zI          pI   
 #&gt; 1 0.245404 -0.0119261 0.01207299 2.341981 0.009590855 **</div><div class='input'>
 <span class='co'># intercept-only model</span>
-<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span><span class='op'>(</span><span class='va'>y</span><span class='op'>)</span><span class='op'>)</span>
+<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span><span class='op'>(</span><span class='va'>y</span><span class='op'>)</span><span class='op'>)</span>
 <span class='va'>resid2</span> <span class='op'>&lt;-</span> <span class='va'>y</span> <span class='op'>-</span> <span class='va'>x</span> <span class='op'>%*%</span> <span class='fu'><a href='https://rdrr.io/r/base/solve.html'>solve</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/crossprod.html'>crossprod</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%*%</span> <span class='fu'><a href='https://rdrr.io/r/base/crossprod.html'>crossprod</a></span><span class='op'>(</span><span class='va'>x</span>,<span class='va'>y</span><span class='op'>)</span>
-<span class='va'>intercept</span> <span class='op'>&lt;-</span> <span class='fu'>MI.resid</span><span class='op'>(</span>resid<span class='op'>=</span><span class='va'>resid2</span>,W<span class='op'>=</span><span class='va'>W</span>,alternative<span class='op'>=</span><span class='st'>"greater"</span><span class='op'>)</span>
+<span class='va'>intercept</span> <span class='op'>&lt;-</span> <span class='fu'>MI.resid</span><span class='op'>(</span>resid <span class='op'>=</span> <span class='va'>resid2</span>, W <span class='op'>=</span> <span class='va'>W</span>, alternative <span class='op'>=</span> <span class='st'>"greater"</span><span class='op'>)</span>
 <span class='co'># same result with MI.vec for the intercept-only model</span>
-<span class='va'>vec</span> <span class='op'>&lt;-</span> <span class='fu'><a href='MI.vec.html'>MI.vec</a></span><span class='op'>(</span>x<span class='op'>=</span><span class='va'>resid2</span>,W<span class='op'>=</span><span class='va'>W</span>,alternative<span class='op'>=</span><span class='st'>"greater"</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>rbind</a></span><span class='op'>(</span><span class='va'>intercept</span>,<span class='va'>vec</span><span class='op'>)</span>
+<span class='va'>vec</span> <span class='op'>&lt;-</span> <span class='fu'><a href='MI.vec.html'>MI.vec</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>resid2</span>, W <span class='op'>=</span> <span class='va'>W</span>, alternative <span class='op'>=</span> <span class='st'>"greater"</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>rbind</a></span><span class='op'>(</span><span class='va'>intercept</span>, <span class='va'>vec</span><span class='op'>)</span>
 </div><div class='output co'>#&gt;           I          EI        VarI       zI           pI    
 #&gt; 1 0.3111782 -0.01010101 0.005344193 4.394825 5.543107e-06 ***
 #&gt; 2 0.3111782 -0.01010101 0.005344193 4.394825 5.543107e-06 ***</div><div class='input'>

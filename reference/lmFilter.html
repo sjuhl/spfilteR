@@ -172,7 +172,7 @@ the candidate set can be included as well.</p>
     </tr>
     <tr>
       <th>x</th>
-      <td><p>vector/ matrix of regressors (default=NULL)</p></td>
+      <td><p>vector/ matrix of regressors (default = NULL)</p></td>
     </tr>
     <tr>
       <th>W</th>
@@ -188,18 +188,18 @@ autocorrelation ('pMI') or all eigenvectors in the candidate set ('all')</p></td
     </tr>
     <tr>
       <th>MX</th>
-      <td><p>covariates used to construct the projection matrix (default=NULL) - see
+      <td><p>covariates used to construct the projection matrix (default = NULL) - see
 Details</p></td>
     </tr>
     <tr>
       <th>sig</th>
       <td><p>significance level to be used for eigenvector selection
-if <code>objfn='p'</code> or <code>objfn='pMI'</code></p></td>
+if <code>objfn = 'p'</code> or <code>objfn = 'pMI'</code></p></td>
     </tr>
     <tr>
       <th>bonferroni</th>
       <td><p>Bonferroni adjustment for the significance level
-(TRUE/ FALSE) if <code>objfn='p'</code>. Set to FALSE if <code>objfn='pMI'</code> -
+(TRUE/ FALSE) if <code>objfn = 'p'</code>. Set to FALSE if <code>objfn = 'pMI'</code> -
 see Details</p></td>
     </tr>
     <tr>
@@ -209,7 +209,7 @@ levels of spatial autocorrelation (TRUE/ FALSE)</p></td>
     </tr>
     <tr>
       <th>ideal.setsize</th>
-      <td><p>if <code>positive=TRUE</code>, uses the formula proposed by
+      <td><p>if <code>positive = TRUE</code>, uses the formula proposed by
 Chun et al. (2016) to determine the ideal size of the candidate set
 (TRUE/ FALSE)</p></td>
     </tr>
@@ -221,13 +221,13 @@ Griffith (2003)</p></td>
     </tr>
     <tr>
       <th>tol</th>
-      <td><p>if <code>objfn='MI'</code>, determines the amount of remaining residual
+      <td><p>if <code>objfn = 'MI'</code>, determines the amount of remaining residual
 autocorrelation at which the eigenvector selection terminates</p></td>
     </tr>
     <tr>
       <th>boot.MI</th>
       <td><p>number of iterations used to estimate the variance of Moran's I.
-If <code>boot.MI=NULL</code> (default), analytical results will be used</p></td>
+If <code>boot.MI = NULL</code> (default), analytical results will be used</p></td>
     </tr>
     <tr>
       <th>na.rm</th>
@@ -272,8 +272,8 @@ filtered model</p></dd>
 <dt><code>objfn</code></dt><dd><p>selection criterion specified in the objective function of
 the stepwise regression procedure</p></dd>
 <dt><code>bonferroni</code></dt><dd><p>TRUE/ FALSE: Bonferroni-adjusted significance level
-(if <code>objfn='p'</code>)</p></dd>
-<dt><code>siglevel</code></dt><dd><p>if <code>objfn='p'</code> or <code>objfn='pMI'</code>: actual
+(if <code>objfn = 'p'</code>)</p></dd>
+<dt><code>siglevel</code></dt><dd><p>if <code>objfn = 'p'</code> or <code>objfn = 'pMI'</code>: actual
 (unadjusted/ adjusted) significance level</p></dd></dl></p></dd>
 
 </dl>
@@ -287,16 +287,16 @@ to construct the following projection matrix:</p>
 <p><em><strong>M</strong> = <strong>I</strong> - <strong>X</strong> (<strong>X</strong>'<strong>X</strong>)^-1<strong>X</strong>'</em></p>
 <p>Eigenvectors from <em><strong>MWM</strong></em> using this specification of
 <em><strong>M</strong></em> are not only mutually uncorrelated but also orthogonal
-to the regressors specified in <code>MX</code>. Alternatively, if <code>MX=NULL</code>, the
+to the regressors specified in <code>MX</code>. Alternatively, if <code>MX = NULL</code>, the
 projection matrix becomes <em><strong>M</strong> = <strong>I</strong> - <strong>11</strong>'/<em>n</em></em>,
 where <em><strong>1</strong></em> is a vector of ones and <em>n</em> represents the number of
 observations. Griffith and Tiefelsdorf (2007) show how the choice of the appropriate
 <em><strong>M</strong></em> depends on the underlying process that generates the spatial
 dependence.</p>
 <p>The Bonferroni correction is only possible if eigenvector selection is based on
-the significance level of the eigenvectors (<code>objfn='p'</code>). It is set to
+the significance level of the eigenvectors (<code>objfn = 'p'</code>). It is set to
 FALSE if eigenvectors are added to the model until the residuals exhibit no
-significant level of spatial autocorrelation (<code>objfn='pMI'</code>).</p>
+significant level of spatial autocorrelation (<code>objfn = 'pMI'</code>).</p>
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     <p>Tiefelsdorf, Michael and Daniel A. Griffith (2007):
@@ -323,11 +323,11 @@ pp. 985 - 999.</p>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>fakedata</span><span class='op'>)</span>
 <span class='va'>y</span> <span class='op'>&lt;-</span> <span class='va'>fakedataset</span><span class='op'>$</span><span class='va'>x1</span>
-<span class='va'>X</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>cbind</a></span><span class='op'>(</span><span class='va'>fakedataset</span><span class='op'>$</span><span class='va'>x2</span>,<span class='va'>fakedataset</span><span class='op'>$</span><span class='va'>x3</span>,<span class='va'>fakedataset</span><span class='op'>$</span><span class='va'>x4</span><span class='op'>)</span>
+<span class='va'>X</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>cbind</a></span><span class='op'>(</span><span class='va'>fakedataset</span><span class='op'>$</span><span class='va'>x2</span>, <span class='va'>fakedataset</span><span class='op'>$</span><span class='va'>x3</span>, <span class='va'>fakedataset</span><span class='op'>$</span><span class='va'>x4</span><span class='op'>)</span>
 
-<span class='va'>res</span> <span class='op'>&lt;-</span> <span class='fu'>lmFilter</span><span class='op'>(</span>y<span class='op'>=</span><span class='va'>y</span>,x<span class='op'>=</span><span class='va'>X</span>,W<span class='op'>=</span><span class='va'>W</span>,objfn<span class='op'>=</span><span class='st'>'MI'</span>,positive<span class='op'>=</span><span class='cn'>FALSE</span><span class='op'>)</span>
+<span class='va'>res</span> <span class='op'>&lt;-</span> <span class='fu'>lmFilter</span><span class='op'>(</span>y <span class='op'>=</span> <span class='va'>y</span>, x <span class='op'>=</span> <span class='va'>X</span>, W <span class='op'>=</span> <span class='va'>W</span>, objfn <span class='op'>=</span> <span class='st'>'MI'</span>, positive <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>res</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; 10 out of 31 candidate eigenvectors selected</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>res</span>,EV<span class='op'>=</span><span class='cn'>TRUE</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; 10 out of 31 candidate eigenvectors selected</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>res</span>, EV <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; 
 #&gt; 	- Spatial Filtering with Eigenvectors (Linear Model)  -
 #&gt; 
@@ -363,7 +363,7 @@ pp. 985 - 999.</p>
 #&gt; Initial   0.35062455 -0.01222386 0.01219947 3.28514585 0.000509648 ***
 #&gt; Filtered -0.06296148 -0.08768656 0.07854341 0.08822323 0.464849627    </div><div class='input'>
 <span class='va'>E</span> <span class='op'>&lt;-</span> <span class='va'>res</span><span class='op'>$</span><span class='va'>selvecs</span>
-<span class='op'>(</span><span class='va'>ols</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/coef.html'>coef</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span><span class='op'>(</span><span class='va'>y</span><span class='op'>~</span><span class='va'>X</span><span class='op'>+</span><span class='va'>E</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
+<span class='op'>(</span><span class='va'>ols</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/coef.html'>coef</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span><span class='op'>(</span><span class='va'>y</span> <span class='op'>~</span> <span class='va'>X</span> <span class='op'>+</span> <span class='va'>E</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt;  (Intercept)           X1           X2     Eevec_13     Eevec_10      Eevec_2 
 #&gt;  9.124104289  1.005931015  0.004370487 -9.603638643 -5.530370597  4.846595193 
 #&gt;      Eevec_4      Eevec_5      Eevec_9     Eevec_21     Eevec_19     Eevec_26 

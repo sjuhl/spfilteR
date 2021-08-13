@@ -191,10 +191,10 @@ Geographical Analysis, 43 (2): pp. 127 - 141.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>fakedata</span><span class='op'>)</span>
-<span class='va'>X</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>cbind</a></span><span class='op'>(</span><span class='va'>fakedataset</span><span class='op'>$</span><span class='va'>x1</span>,<span class='va'>fakedataset</span><span class='op'>$</span><span class='va'>x2</span>
-,<span class='va'>fakedataset</span><span class='op'>$</span><span class='va'>x3</span>,<span class='va'>fakedataset</span><span class='op'>$</span><span class='va'>negative</span><span class='op'>)</span>
+<span class='va'>X</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>cbind</a></span><span class='op'>(</span><span class='va'>fakedataset</span><span class='op'>$</span><span class='va'>x1</span>, <span class='va'>fakedataset</span><span class='op'>$</span><span class='va'>x2</span>,
+<span class='va'>fakedataset</span><span class='op'>$</span><span class='va'>x3</span>, <span class='va'>fakedataset</span><span class='op'>$</span><span class='va'>negative</span><span class='op'>)</span>
 
-<span class='op'>(</span><span class='va'>MI.dec</span> <span class='op'>&lt;-</span> <span class='fu'>MI.decomp</span><span class='op'>(</span>x<span class='op'>=</span><span class='va'>X</span>,W<span class='op'>=</span><span class='va'>W</span>,nsim<span class='op'>=</span><span class='fl'>100</span><span class='op'>)</span><span class='op'>)</span>
+<span class='op'>(</span><span class='va'>MI.dec</span> <span class='op'>&lt;-</span> <span class='fu'>MI.decomp</span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>X</span>, W <span class='op'>=</span> <span class='va'>W</span>, nsim <span class='op'>=</span> <span class='fl'>100</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt;          I+       VarI+        pI+            I-       VarI-        pI-   
 #&gt; 1 0.3894789 0.001510352 0.00990099 ** -0.0783007 0.001816847 1.00000000   
 #&gt; 2 0.3048369 0.001797690 0.01980198  * -0.1360794 0.001513453 0.98019802   
@@ -206,8 +206,8 @@ Geographical Analysis, 43 (2): pp. 127 - 141.</p>
 #&gt; 3  0.79207921  
 #&gt; 4  0.01980198 *</div><div class='input'>
 <span class='co'># the sum of I+ and I- equals the observed Moran coefficient:</span>
-<span class='va'>I</span> <span class='op'>&lt;-</span> <span class='fu'><a href='MI.vec.html'>MI.vec</a></span><span class='op'>(</span>x<span class='op'>=</span><span class='va'>X</span>,W<span class='op'>=</span><span class='va'>W</span><span class='op'>)</span><span class='op'>[</span>,<span class='st'>"I"</span><span class='op'>]</span>
-<span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>cbind</a></span><span class='op'>(</span><span class='va'>MI.dec</span><span class='op'>[</span>,<span class='st'>"I+"</span><span class='op'>]</span> <span class='op'>+</span> <span class='va'>MI.dec</span><span class='op'>[</span>,<span class='st'>"I-"</span><span class='op'>]</span>, <span class='va'>I</span><span class='op'>)</span>
+<span class='va'>I</span> <span class='op'>&lt;-</span> <span class='fu'><a href='MI.vec.html'>MI.vec</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>X</span>, W <span class='op'>=</span> <span class='va'>W</span><span class='op'>)</span><span class='op'>[</span>, <span class='st'>"I"</span><span class='op'>]</span>
+<span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>cbind</a></span><span class='op'>(</span><span class='va'>MI.dec</span><span class='op'>[</span>, <span class='st'>"I+"</span><span class='op'>]</span> <span class='op'>+</span> <span class='va'>MI.dec</span><span class='op'>[</span>, <span class='st'>"I-"</span><span class='op'>]</span>, <span class='va'>I</span><span class='op'>)</span>
 </div><div class='output co'>#&gt;                              I
 #&gt; [1,]  0.311178214  0.311178214
 #&gt; [2,]  0.168757531  0.168757531
