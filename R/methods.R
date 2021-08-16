@@ -37,7 +37,7 @@ summary.spfilter <- function(object, EV = FALSE, ...){
   cat(paste0("Objective Function: \"", object$other$objfn, "\""))
   if(object$other$objfn == "p"){
     if(object$other$bonferroni){
-      cat(paste0("\ (significance level=", round(object$other$siglevel * object$other$ncandidates, 5),
+      cat(paste0("\ (significance level = ", round(object$other$siglevel * object$other$ncandidates, 5),
                  ")\n"))
       cat(paste0("Bonferroni correction: ", object$other$bonferroni,""))
       cat(paste0("\ (adjusted significance level = ", round(object$other$siglevel, 5), ")\n"))
