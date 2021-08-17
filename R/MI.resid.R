@@ -61,49 +61,58 @@
 #'
 #' @export
 
-MI.resid <- function(resid, x = NULL, W, alternative = "greater", boot = NULL){
-  if(!(alternative %in% c("greater", "lower", "two.sided"))){
+MI.resid <- function(resid, x = NULL, W, alternative = "greater", boot = NULL) {
+
+  if (!(alternative %in% c("greater", "lower", "two.sided"))) {
     stop("Invalid input: 'alternative' must be either 'greater', 'lower', or 'two.sided'")
   }
-  if(!any(class(W) %in% c("matrix", "Matrix", "data.frame"))){
+  if (!any(class(W) %in% c("matrix", "Matrix", "data.frame"))) {
     stop("W must be of class 'matrix' or 'data.frame'")
   }
-  if(any(class(W) != "matrix")){
+  if (any(class(W) != "matrix")) {
     W <- as.matrix(W)
   }
+
   n <- nrow(W)
-  if(is.null(x)){
+
+  if (is.null(x)) {
     x <- rep(1, n)
   }
   x <- as.matrix(x)
-  if (!all(x[, 1] == 1)){
+  if (!all(x[, 1] == 1)) {
     x <- cbind(1, x)
   }
+
   df <- n - qr(x)$rank
+
   # step 1
   W <- .5 * (W + t(W))
   S0 <- crossprod(rep(1, n), W %*% rep(1, n))
   S1 <- .5 * sum((W + t(W))^2)
+
   # step 2
   Z <- crossprod(W, x)
+
   # step 3
   C1 <- crossprod(x, Z)
   C2 <- crossprod(Z)
-  # step 4 & 5
+
+  # steps 4 & 5
   G <- qr.solve(crossprod(x))
   traceA <- sum(diag(crossprod(G, C1)))
   traceB <- sum(diag(crossprod(4 * G, C2)))
   traceA2 <- sum(diag(crossprod(G %*% C1)))
   I <- n / S0 * crossprod(resid, W %*% resid) / crossprod(resid)
   EI <- -(n * traceA) / (df * S0)
-  if(!is.null(boot)){
+  if (!is.null(boot)) {
     boot <- round(boot)
-    if(boot < 100){
+    if (boot < 100) {
       warning(paste0("Number of bootstrap iterations (",boot,") too small. Set to 100"))
       boot <- 100
     }
+
     boot.I <- NULL
-    for(i in 1:boot){
+    for (i in 1:boot) {
       ind <- sample(1:n, replace = TRUE)
       boot.I[i] <- n / S0 * crossprod(resid[ind], W %*% resid[ind]) / crossprod(resid[ind])
     }

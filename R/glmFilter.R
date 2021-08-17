@@ -173,23 +173,23 @@
 glmFilter <- function(y, x = NULL, W, objfn = "AIC", MX = NULL, model, optim.method = "BFGS",
                       sig = .05, bonferroni = TRUE, positive = TRUE, ideal.setsize = FALSE,
                       min.reduction = .05, boot.MI = 100, resid.type = "pearson",
-                      alpha = .25, tol = .1, na.rm = TRUE){
+                      alpha = .25, tol = .1, na.rm = TRUE) {
 
-  if(!is.null(MX)){
+  if (!is.null(MX)) {
     MX <- as.matrix(MX)
   }
-  if(!is.null(x)){
+  if (!is.null(x)) {
     x <- as.matrix(x)
   }
-  if(!is.null(colnames(x))){
+  if (!is.null(colnames(x))) {
     nams <- colnames(x)
   } else {
     nams <- NULL
   }
 
   # missing values
-  if(na.rm){
-    if(!is.null(x)){
+  if (na.rm) {
+    if (!is.null(x)) {
       miss <- apply(cbind(y, x), 1, anyNA)
       x <- as.matrix(x[!miss,])
     } else {
@@ -197,7 +197,7 @@ glmFilter <- function(y, x = NULL, W, objfn = "AIC", MX = NULL, model, optim.met
     }
     y <- y[!miss]
     W <- W[!miss, !miss]
-    if(!is.null(MX)){
+    if (!is.null(MX)) {
       MX[!miss,]
     }
   }
@@ -206,13 +206,13 @@ glmFilter <- function(y, x = NULL, W, objfn = "AIC", MX = NULL, model, optim.met
   n <- length(y)
 
   # add intercept if not included in x
-  if(is.null(x)){
+  if (is.null(x)) {
     x <- as.matrix(rep(1, n))
   }
-  if(!all(x[, 1] == 1)){
+  if (!all(x[, 1] == 1)) {
     x <- cbind(1, x)
   }
-  if(!is.null(MX) && any(apply(MX, 2, sd) == 0)){
+  if (!is.null(MX) && any(apply(MX, 2, sd) == 0)) {
     MX <- as.matrix(MX[, apply(MX, 2, sd) != 0])
   }
   nx <- ncol(x)
@@ -220,42 +220,42 @@ glmFilter <- function(y, x = NULL, W, objfn = "AIC", MX = NULL, model, optim.met
   #####
   # Input Checks
   #####
-  if(anyNA(y) | anyNA(x) | anyNA(W)){
+  if (anyNA(y) | anyNA(x) | anyNA(W)) {
     stop("Missing values detected")
   }
-  if(alpha == 0){
+  if (alpha == 0) {
     alpha <- 1e-07
   }
-  if(alpha < 1e-07 | alpha > 1){
+  if (alpha < 1e-07 | alpha > 1) {
     stop("Invalid argument: 'alpha' must be in the interval (0,1]")
   }
-  if(min.reduction < 0 | min.reduction >= 1){
+  if (min.reduction < 0 | min.reduction >= 1) {
     stop("Invalid argument: 'min.reduction' must be in the interval [0,1)")
   }
-  if(qr(x)$rank != ncol(x)){
+  if (qr(x)$rank != ncol(x)) {
     stop("Perfect multicollinearity in covariates detected")
   }
-  if(!any(class(W) %in% c("matrix", "Matrix", "data.frame"))){
+  if (!any(class(W) %in% c("matrix", "Matrix", "data.frame"))) {
     stop("W must be of class 'matrix' or 'data.frame'")
   }
-  if(any(class(W) != "matrix")){
+  if (any(class(W) != "matrix")) {
     W <- as.matrix(W)
   }
-  if(!(model %in% c("probit", "logit", "poisson"))){
+  if (!(model %in% c("probit", "logit", "poisson"))) {
     stop("'model' must be either 'probit', 'logit', or 'poisson'")
   }
-  if(!(objfn %in% c("p", "MI", "pMI", "AIC", "BIC", "all"))){
+  if (!(objfn %in% c("p", "MI", "pMI", "AIC", "BIC", "all"))) {
     stop("Invalid argument: objfn must be one of 'p', 'MI','pMI, 'AIC', 'BIC', or 'all'")
   }
-  if(!(resid.type %in% c("raw", "pearson", "deviance"))){
+  if (!(resid.type %in% c("raw", "pearson", "deviance"))) {
     stop("Invalid argument: resid.type must be one of 'raw', 'pearson', or 'deviance'")
   }
-  if(positive == FALSE & ideal.setsize == TRUE){
+  if (positive == FALSE & ideal.setsize == TRUE) {
     stop("Estimating the ideal set size is only valid for positive spatial autocorrelation")
   }
 
   # no bonferroni adjustment for 'pMI'
-  if(objfn == "pMI" & bonferroni){
+  if (objfn == "pMI" & bonferroni) {
     bonferroni <- FALSE
   }
 
@@ -263,16 +263,14 @@ glmFilter <- function(y, x = NULL, W, objfn = "AIC", MX = NULL, model, optim.met
   # Log-Likelihood Functions
   #####
   # loglik function
-  loglik <- function(theta, y, x, model){
-    if(model == "probit"){
+  loglik <- function(theta, y, x, model) {
+    if (model == "probit") {
       p <- pnorm(x %*% theta)
       ll <- sum(y * log(p) + (1 - y) * log(1 - p))
-    }
-    if(model == "logit"){
+    } else if (model == "logit") {
       p <- exp(x %*% theta) / (1 + exp(x %*% theta))
       ll <- sum(y * log(p) + (1 - y) * log(1 - p))
-    }
-    if(model == "poisson"){
+    } else if (model == "poisson") {
       mu <- exp(x %*% theta)
       #ll <- sum(y*log(mu) - mu)
       ll <- sum(dpois(y, lambda = mu, log = TRUE))
@@ -283,27 +281,23 @@ glmFilter <- function(y, x = NULL, W, objfn = "AIC", MX = NULL, model, optim.met
 
   # objective function to evaluate
   objfunc <- function(y, xe, n, W, objfn, model, optim.method, boot.MI,
-                      resid.type, alternative){
+                      resid.type, alternative) {
     inits <- rep(0, ncol(xe))
     o <- optim(par = inits, fn = loglik, x = xe, y = y, model = model,
                method = optim.method, hessian = TRUE)
-    if(objfn == "p"){
+    if (objfn == "p") {
       est <- o$par[ncol(xe)]
       se <- sqrt(diag(solve(o$hessian)))[ncol(xe)]
       test <- 2 * pt(abs(est / se), df = (n - ncol(xe)), lower.tail = FALSE) # p-value
-    }
-    if(objfn == "AIC"){
+    } else if (objfn == "AIC") {
       test <- getICs(negloglik = o$value, n = n, df = ncol(xe))$AIC
-    }
-    if(objfn == "BIC"){
+    } else if (objfn == "BIC") {
       test <- getICs(negloglik = o$value, n = n, df = ncol(xe))$BIC
-    }
-    if(objfn == "MI"){
+    } else if (objfn == "MI") {
       fitvals <- fittedval(x = xe, params = o$par, model = model)
       resid <- residfun(y = y, fitvals = fitvals, model = model)[, resid.type]
       test <- abs(MI.resid(resid = resid, x = xe, W = W, boot = boot.MI)$zI)
-    }
-    if(objfn == "pMI"){
+    } else if (objfn == "pMI") {
       fitvals <- fittedval(x = xe, params = o$par, model = model)
       resid <- residfun(y = y, fitvals = fitvals, model = model)[, resid.type]
       test <- -(MI.resid(resid = resid, x = xe, W = W, boot = boot.MI,
@@ -336,10 +330,9 @@ glmFilter <- function(y, x = NULL, W, objfn = "AIC", MX = NULL, model, optim.met
   yhat_init <- fittedval(x = x, params = coefs_init, model = model)
   resid_init <- residfun(y = y, fitvals = yhat_init, model = model)[, resid.type]
   zMI_init <- MI.resid(resid = resid_init, x = x, W = W, boot = boot.MI)$zI
-  if(objfn == "MI"){
+  if (objfn == "MI") {
     oldZMI <- abs(zMI_init)
-  }
-  if(objfn %in% c("AIC", "BIC")){
+  } else if (objfn %in% c("AIC", "BIC")) {
     IC <- ICs_init[, objfn]
     mindiff <- abs(IC * min.reduction)
   } else {
@@ -350,8 +343,8 @@ glmFilter <- function(y, x = NULL, W, objfn = "AIC", MX = NULL, model, optim.met
   # Eigenvector Selection:
   # Candidate Set
   #####
-  if(positive | zMI_init >= 0){
-    if(ideal.setsize){
+  if (positive | zMI_init >= 0) {
+    if (ideal.setsize) {
       # avoids problems of NaN if positive=TRUE but zMI < 0:
       csize <- candsetsize(npos = length(evals[evals > 1e-07]),
                            zMI=ifelse(zMI_init < 0, 0, zMI_init))
@@ -370,15 +363,15 @@ glmFilter <- function(y, x = NULL, W, objfn = "AIC", MX = NULL, model, optim.met
   ncandidates <- sum(sel)
 
   # Bonferroni adjustment
-  if(objfn == "p" | objfn == "pMI"){
-    if(bonferroni & ncandidates > 0){
+  if (objfn == "p" | objfn == "pMI") {
+    if (bonferroni & ncandidates > 0) {
       sig <- sig / ncandidates
     }
   } else {
     sig <- bonferroni <- NULL
   }
 
-  if(objfn == "pMI"){
+  if (objfn == "pMI") {
     oldpMI <- -(MI.resid(resid = resid_init, x = x, W = W, boot = boot.MI,
                          alternative = ifelse(dep == "positive", "greater", "lower")
                          )$pI)
@@ -388,16 +381,16 @@ glmFilter <- function(y, x = NULL, W, objfn = "AIC", MX = NULL, model, optim.met
   # Search Algorithm:
   # Stepwise Regression
   #####
-  if(objfn == "all"){
+  if (objfn == "all") {
     sel_id <- which(sel)
   } else {
     sel_id <- NULL
     selset <- which(sel)
 
     # start forward selection
-    for(i in which(sel)){
-      if(objfn == "pMI"){
-        if(abs(oldpMI) > sig){
+    for (i in which(sel)) {
+      if (objfn == "pMI") {
+        if (abs(oldpMI) > sig) {
           break
         }
       }
@@ -405,52 +398,49 @@ glmFilter <- function(y, x = NULL, W, objfn = "AIC", MX = NULL, model, optim.met
       sid <- NULL
 
       # identify next test eigenvector
-      for(j in selset){
+      for (j in selset) {
         xe <- cbind(x, evecs[, sel_id], evecs[, j])
         test <- objfunc(y = y, xe = xe, n = n, W = W, objfn = objfn, model = model,
                         optim.method = optim.method, boot.MI = boot.MI,
                         resid.type = resid.type, alternative = ifelse(dep == "positive",
                                                                       "greater", "lower"))
-        if(test < ref){
+        if (test < ref) {
           sid <- j
           ref <- test
         }
       }
 
       # stopping rules
-      if(objfn %in% c("AIC", "BIC")){
-        if(ref < IC & abs(IC - ref) >= mindiff){
+      if (objfn %in% c("AIC", "BIC")) {
+        if (ref < IC & abs(IC - ref) >= mindiff) {
           IC <- ref
           sel_id <- c(sel_id, sid)
           mindiff <- abs(IC * min.reduction)
         } else {
           break
         }
-      }
-      if(objfn == "p"){
-        if(ref < sig){
+      } else if (objfn == "p") {
+        if (ref < sig) {
           sel_id <- c(sel_id, sid)
         } else {
           break
         }
-      }
-      if(objfn == "MI"){
+      } else if (objfn == "MI") {
         if(ref < oldZMI){
           oldZMI <- ref
           sel_id <- c(sel_id, sid)
         } else {
           break
         }
-        if(oldZMI < tol){
+        if (oldZMI < tol) {
           break
         }
-      }
-      if(objfn == "pMI"){
-        if(abs(ref) > oldpMI){
+      } else if (objfn == "pMI") {
+        if (abs(ref) > oldpMI) {
           oldpMI <- abs(ref)
           sel_id <- c(sel_id, sid)
         }
-        if(abs(ref) > sig){
+        if (abs(ref) > sig) {
           break
         }
       }
@@ -487,10 +477,10 @@ glmFilter <- function(y, x = NULL, W, objfn = "AIC", MX = NULL, model, optim.met
   est <- cbind(coefs_out[1:nx], se_out[1:nx], p.val[1:nx])
   colnames(est) <- c("Estimate", "SE", "p-value")
   varcovar <- solve(opt$hessian)[1:nx, 1:nx]
-  if(nx == 1){
+  if (nx == 1) {
     rownames(est) <- names(varcovar) <- "(Intercept)"
   } else {
-    if(!is.null(nams)){
+    if (!is.null(nams)) {
       rownames(est) <- rownames(varcovar) <- colnames(varcovar) <- c("(Intercept)", nams)
     } else {
       rownames(est) <- c("(Intercept)", paste0("beta_", 1:(nx - 1)))
@@ -499,7 +489,7 @@ glmFilter <- function(y, x = NULL, W, objfn = "AIC", MX = NULL, model, optim.met
   }
 
   # selected eigenvectors & eigenvalues
-  if(count != 0){
+  if (count != 0) {
     # selected eigenvectors
     selvecs <- as.matrix(evecs[, sel_id])
     colnames(selvecs) <- paste0("evec_", sel_id)

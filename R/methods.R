@@ -2,7 +2,7 @@
 #' @importFrom stats filter
 #' @export
 
-summary.spfilter <- function(object, EV = FALSE, ...){
+summary.spfilter <- function(object, EV = FALSE, ...) {
   #####
   # Print Output
   #####
@@ -19,7 +19,7 @@ summary.spfilter <- function(object, EV = FALSE, ...){
                                    & !("condnum" %in% names(object$other)),
                                    "(OLS)", "(ML)"), ":\n"))
   print(estimates)
-  if(object$other$model == "linear"){
+  if (object$other$model == "linear") {
     cat("\nAdjusted R-squared:\n")
     print(object$fit)
   } else {
@@ -31,12 +31,12 @@ summary.spfilter <- function(object, EV = FALSE, ...){
   cat(paste("\nFiltered for", object$other$dependence, "spatial autocorrelation\n"))
   cat(paste(object$other$nev, "out of", object$other$ncandidates,
             "candidate eigenvectors selected\n"))
-  if(object$other$model!="linear" & object$other$nev>0){
+  if (object$other$model!="linear" & object$other$nev>0) {
     cat(paste0("Condition Number (Multicollinearity): ", object$other$condnum, "\n"))
   }
   cat(paste0("Objective Function: \"", object$other$objfn, "\""))
-  if(object$other$objfn == "p"){
-    if(object$other$bonferroni){
+  if (object$other$objfn == "p") {
+    if (object$other$bonferroni) {
       cat(paste0("\ (significance level = ", round(object$other$siglevel * object$other$ncandidates, 5),
                  ")\n"))
       cat(paste0("Bonferroni correction: ", object$other$bonferroni,""))
@@ -50,8 +50,8 @@ summary.spfilter <- function(object, EV = FALSE, ...){
   }
 
   # optional: information on eigenvectors
-  if(EV){
-    if(object$other$nev == 0){
+  if (EV) {
+    if (object$other$nev == 0) {
       cat("\nNo eigenvectors selected\n")
     } else {
       sigev <- star(p = object$EV[, "p-value"])
@@ -75,18 +75,18 @@ summary.spfilter <- function(object, EV = FALSE, ...){
 
 
 #' @export
-print.spfilter <- function(x, ...){
+print.spfilter <- function(x, ...) {
   cat(paste(x$other$nev, "out of", x$other$ncandidates, "candidate eigenvectors selected"))
 }
 
 
 #' @export
-coef.spfilter <- function(object, ...){
+coef.spfilter <- function(object, ...) {
   object$estimates[, "Estimate"]
 }
 
 #' @export
-vcov.spfilter <- function(object, ...){
+vcov.spfilter <- function(object, ...) {
   object$varcovar
 }
 
@@ -95,7 +95,7 @@ vcov.spfilter <- function(object, ...){
 #' @importFrom grDevices rgb
 #' @export
 
-plot.spfilter <- function(x, ...){
+plot.spfilter <- function(x, ...) {
   plot(0, ylim = c(min(x$evMI), max(x$evMI)), xlim = c(1, length(x$evMI)),
        main = "Moran Coefficients for\n all Eigenvectors",
        ylab = "Moran Coefficient", xlab = "Eigenvector", type = "n",las = 1, ...)

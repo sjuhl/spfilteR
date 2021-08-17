@@ -2,13 +2,13 @@
 #' @importFrom stats pnorm
 #' @noRd
 
-pfunc <- function(z, alternative, draws = NULL){
+pfunc <- function(z, alternative, draws = NULL) {
   z <- as.numeric(z)
   # analytical variance estimate
-  if(is.null(draws)){
-    if(alternative == "greater"){
+  if (is.null(draws)) {
+    if (alternative == "greater") {
       p <- pnorm(z, lower.tail = FALSE)
-    } else if(alternative == "lower"){
+    } else if (alternative == "lower") {
       p <- pnorm(z, lower.tail = TRUE)
     } else {
       p <- 2 * pnorm(abs(z), lower.tail = FALSE)
@@ -17,9 +17,9 @@ pfunc <- function(z, alternative, draws = NULL){
     # simulation-based variance estimate
     # see e.g., North/ Curtis/ Sham (2002) [Am J Hum Genet]
     # or Dary (2011) [Geogr. An.] for the '+1'
-    if(alternative == "greater"){
+    if (alternative == "greater") {
       p <- (sum(draws >= z) + 1) / (length(draws) + 1)
-    } else if(alternative == "lower"){
+    } else if (alternative == "lower") {
       p <- (sum(draws <= z) + 1) / (length(draws) + 1)
     } else {
       p <- (sum(abs(draws) >= abs(z)) + 1) / (length(draws) + 1)
@@ -33,7 +33,7 @@ pfunc <- function(z, alternative, draws = NULL){
 #' @name star
 #' @noRd
 
-star <- function(p){
+star <- function(p) {
   out <- NULL
   out[p <= .001] <- "***"
   out[p <= .01 & p > .001] <- "**"
@@ -47,7 +47,7 @@ star <- function(p){
 #' @name candsetsize
 #' @noRd
 
-candsetsize <- function(npos, zMI){
+candsetsize <- function(npos, zMI) {
   denominator <- 1 + exp(2.1480 - (6.1808 * (zMI+.6)^.1742) / npos^.1298 + 3.3534 / (zMI + .6)^.1742)
   nc <- npos / denominator
   return(round(nc, 0))
@@ -57,23 +57,23 @@ candsetsize <- function(npos, zMI){
 #' @name residfun
 #' @noRd
 
-residfun <- function(y, fitvals, model){
-  if(!(model %in% c("linear", "probit", "logit", "poisson"))){
+residfun <- function(y, fitvals, model) {
+  if (!(model %in% c("linear", "probit", "logit", "poisson"))) {
     stop("'model' must be either 'linear', 'probit', 'logit', or 'poisson'")
   }
   # raw residuals
   raw <- y - fitvals
   # pearson & deviance residuals
-  if(model %in% c("probit", "logit")){
+  if (model %in% c("probit", "logit")) {
     pearson <- (y - fitvals) / sqrt(fitvals * (1 - fitvals))
     sign <- ifelse(y == 1, 1, -1)
     deviance <- sign * sqrt(-2 * (y * log(fitvals) + (1 - y) * log(1 - fitvals)))
-  } else if(model == "poisson"){
+  } else if (model == "poisson") {
     pearson <- (y - fitvals) / sqrt(fitvals)
     sign <- ifelse(y > fitvals, 1, -1)
     ratio <- ifelse(y == 0, 1, y / fitvals)
     deviance <- sign * sqrt(2 * (y * log(ratio) - (y - fitvals)))
-  } else if(model == "linear"){
+  } else if (model == "linear") {
     pearson <- deviance <- raw
   }
   # output
@@ -86,15 +86,15 @@ residfun <- function(y, fitvals, model){
 #' #' @importFrom stats pnorm
 #' @noRd
 
-fittedval <- function(x, params, model){
+fittedval <- function(x, params, model) {
   mu <- x %*% params
-  if(model == "linear"){
+  if (model == "linear") {
     yhat <- mu
-  } else if(model == "probit"){
+  } else if (model == "probit") {
     yhat <- pnorm(mu)
-  } else if(model == "logit"){
+  } else if (model == "logit") {
     yhat <- exp(mu) / (1 + exp(mu))
-  } else if(model == "poisson"){
+  } else if (model == "poisson") {
     yhat <- exp(mu)
   }
   return(yhat)
@@ -107,8 +107,8 @@ fittedval <- function(x, params, model){
 
 # function to calculate the condition number - degree of EV multicollinearity
 # (see Griffith 2004b, p. 1797 and Griffith/ Amrhein 1997, p. 98)
-conditionNumber <- function(evecs = NULL, round = 8){
-  if(!is.null(evecs)){
+conditionNumber <- function(evecs = NULL, round = 8) {
+  if (!is.null(evecs)) {
     cormat <- cor(evecs)
     corevals <- eigen(cormat)$values
     res <- round(sqrt(corevals[1] / corevals[length(corevals)]), round)
@@ -122,7 +122,7 @@ conditionNumber <- function(evecs = NULL, round = 8){
 #' @name getICs
 #' @noRd
 
-getICs <- function(negloglik, n, df){
+getICs <- function(negloglik, n, df) {
   AIC <- 2 * negloglik + 2 * df
   BIC <- 2 * negloglik + log(n) * df
   out <- data.frame(AIC, BIC)
@@ -134,7 +134,7 @@ getICs <- function(negloglik, n, df){
 #' @noRd
 
 # McFadden's (adjusted) pseudo-R2 (filtered vs unfiltered model)
-pseudoR2 <- function(negloglik_n, negloglik_f, nev){
+pseudoR2 <- function(negloglik_n, negloglik_f, nev) {
   R2 <- 1 - (-negloglik_n / -negloglik_f)
   adjR2 <- 1 - ((-negloglik_n - nev) / -negloglik_f)
   return(R2)
@@ -145,7 +145,7 @@ pseudoR2 <- function(negloglik_n, negloglik_f, nev){
 #' @importFrom stats sd
 #' @noRd
 
-Zscore <- function(x){
+Zscore <- function(x) {
   x <- as.matrix(x)
   Z <- apply(x, 2, function(v) (v - mean(v)) / sd(v))
   return(Z)

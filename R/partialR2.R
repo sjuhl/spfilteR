@@ -33,9 +33,9 @@
 #'
 #' @export
 
-partialR2 <- function(y, x = NULL, evecs){
+partialR2 <- function(y, x = NULL, evecs) {
   # if no evecs are supplied
-  if(is.null(evecs)){
+  if (is.null(evecs)) {
     warning("No eigenvectors supplied"); return(pR2 <- NULL)
   }
 
@@ -43,11 +43,11 @@ partialR2 <- function(y, x = NULL, evecs){
   # Extract Information
   # & Formatting
   #####
-  if(is.null(x)){
+  if (is.null(x)) {
     x <- rep(1, length(y))
   }
   x <- as.matrix(x)
-  if (!all(x[, 1] == 1)){
+  if (!all(x[, 1] == 1)) {
     x <- cbind(1, x)
   }
   evecs <- as.matrix(evecs)
@@ -58,10 +58,10 @@ partialR2 <- function(y, x = NULL, evecs){
   #####
   # Input Checks
   #####
-  if(anyNA(y) | anyNA(x)){
+  if (anyNA(y) | anyNA(x)) {
     stop("Missing values detected")
   }
-  if(qr(x)$rank != ncol(x)){
+  if (qr(x)$rank != ncol(x)) {
     stop("Perfect multicollinearity in covariates detected")
   }
 
@@ -71,7 +71,7 @@ partialR2 <- function(y, x = NULL, evecs){
   pR2 <- rep(NA, nev)
   names(pR2) <- names_evecs
   # loop over all eigenvectors
-  for(i in 1:nev){
+  for (i in 1:nev) {
     xev <- cbind(x, evecs[, i])
     fitvals_ev <- xev %*% solve(crossprod(xev)) %*% crossprod(xev, y)
     resid_ev <- residfun(y = y, fitvals = fitvals_ev, model = "linear")$raw

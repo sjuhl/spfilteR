@@ -44,7 +44,7 @@ If \code{covars} are supplied, the function uses the covariates to construct
 projection matrix: \emph{\strong{M} = \strong{I} - \strong{X} (\strong{X}'
 \strong{X})^-1\strong{X}'}. Using this matrix results in a set of
 eigenvectors that are uncorrelated to each other as well as to the
-covariates. If \code{covars=NULL}, only the intercept term is used
+covariates. If \code{covars = NULL}, only the intercept term is used
 to construct \emph{\strong{M}}. See e.g., Griffith and Tiefelsdorf (2007)
 for more details on the appropriate choice of \emph{\strong{M}}.
 }

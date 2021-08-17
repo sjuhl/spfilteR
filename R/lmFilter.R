@@ -138,23 +138,23 @@
 
 lmFilter <- function(y, x = NULL, W, objfn = "MI", MX = NULL, sig = .05,
                      bonferroni = TRUE, positive = TRUE, ideal.setsize = FALSE,
-                     alpha = .25, tol = .1, boot.MI = NULL, na.rm = TRUE){
+                     alpha = .25, tol = .1, boot.MI = NULL, na.rm = TRUE) {
 
-  if(!is.null(MX)){
+  if (!is.null(MX)) {
     MX <- as.matrix(MX)
   }
-  if(!is.null(x)){
+  if (!is.null(x)) {
     x <- as.matrix(x)
   }
-  if(!is.null(colnames(x))){
+  if (!is.null(colnames(x))) {
     nams <- colnames(x)
   } else {
     nams <- NULL
   }
 
   # missing values
-  if(na.rm){
-    if(!is.null(x)){
+  if (na.rm) {
+    if (!is.null(x)) {
       miss <- apply(cbind(y, x), 1, anyNA)
       x <- as.matrix(x[!miss,])
     } else {
@@ -162,7 +162,7 @@ lmFilter <- function(y, x = NULL, W, objfn = "MI", MX = NULL, sig = .05,
     }
     y <- y[!miss]
     W <- W[!miss, !miss]
-    if(!is.null(MX)){
+    if (!is.null(MX)) {
       MX[!miss,]
     }
   }
@@ -171,13 +171,13 @@ lmFilter <- function(y, x = NULL, W, objfn = "MI", MX = NULL, sig = .05,
   n <- length(y)
 
   # add intercept if not included in x
-  if(is.null(x)){
+  if (is.null(x)) {
     x <- as.matrix(rep(1, n))
   }
-  if(!all(x[, 1] == 1)){
+  if (!all(x[, 1] == 1)) {
     x <- cbind(1, x)
   }
-  if(!is.null(MX) && any(apply(MX, 2, sd) == 0)){
+  if (!is.null(MX) && any(apply(MX, 2, sd) == 0)) {
     MX <- as.matrix(MX[, apply(MX, 2, sd) != 0])
   }
   nx <- ncol(x)
@@ -185,55 +185,52 @@ lmFilter <- function(y, x = NULL, W, objfn = "MI", MX = NULL, sig = .05,
   #####
   # Input Checks
   #####
-  if(anyNA(y) | anyNA(x) | anyNA(W)){
+  if (anyNA(y) | anyNA(x) | anyNA(W)) {
     stop("Missing values detected")
   }
-  if(alpha == 0){
+  if (alpha == 0) {
     alpha <- 1e-07
   }
-  if(alpha < 1e-07 | alpha > 1){
+  if (alpha < 1e-07 | alpha > 1) {
     stop("Invalid argument: 'alpha' must be in the interval (0,1]")
   }
-  if(qr(x)$rank != ncol(x)){
+  if (qr(x)$rank != ncol(x)) {
     stop("Perfect multicollinearity in covariates detected")
   }
-  if(!any(class(W) %in% c("matrix", "Matrix", "data.frame"))){
+  if (!any(class(W) %in% c("matrix", "Matrix", "data.frame"))) {
     stop("W must be of class 'matrix' or 'data.frame'")
   }
-  if(any(class(W) != "matrix")){
+  if (any(class(W) != "matrix")) {
     W <- as.matrix(W)
   }
-  if(!(objfn %in% c("R2", "p", "MI", "pMI", "all"))){
+  if (!(objfn %in% c("R2", "p", "MI", "pMI", "all"))) {
     stop("Invalid argument: objfn must be one of 'R2', 'p', 'MI', 'pMI', or'all'")
   }
-  if(positive == FALSE & ideal.setsize == TRUE){
+  if (positive == FALSE & ideal.setsize == TRUE) {
     stop("Estimating the ideal set size is only valid for positive spatial autocorrelation")
   }
 
   # no bonferroni adjustment for 'pMI'
-  if(objfn == "pMI" & bonferroni){
+  if (objfn == "pMI" & bonferroni) {
     bonferroni <- FALSE
   }
 
   #####
   # Objective Function
   #####
-  objfunc <- function(y, xe, n, W, objfn, boot.MI, alternative){
+  objfunc <- function(y, xe, n, W, objfn, boot.MI, alternative) {
     resid <- y - xe %*% solve(crossprod(xe)) %*% crossprod(xe, y)
-    if(objfn == "R2"){
+    if (objfn == "R2") {
       TSS <- sum((y - mean(y))^2)
       R2 <- 1 - (sum(resid^2) / TSS)
       test <- -(1 - (1 - R2) * (n - 1) / (n - (ncol(xe))) ) # negative adjusted R-squared
-    }
-    if(objfn == "p"){
+    } else if (objfn == "p") {
       est <- (solve(crossprod(xe)) %*% crossprod(xe, y))[ncol(xe),]
       se <- sqrt((solve(t(xe) %*% xe)[ncol(xe), ncol(xe)] * sum(resid^2)) / (nrow(W) - ncol(xe)))
       test <- 2 * pt(abs(est / se), df = (n - ncol(xe)), lower.tail = FALSE) # p-value
-    }
-    if(objfn == "MI"){
+    } else if (objfn == "MI") {
       test <- abs(MI.resid(resid = resid, x = xe, W = W, boot = boot.MI)$zI) # (absolute) standardized Moran's I
-    }
-    if(objfn == "pMI"){
+    } else if (objfn == "pMI") {
       test <- -(MI.resid(resid = resid, x = xe, W = W, boot = boot.MI,
                          alternative = alternative)$pI)
     }
@@ -262,10 +259,10 @@ lmFilter <- function(y, x = NULL, W, objfn = "MI", MX = NULL, sig = .05,
   R2 <- 1 - (sum(crossprod(resid_init)) / TSS)
   adjR2_init <- 1 - (1 - R2) * (n - 1) / (n - nx)
   zMI_init <- MI.resid(resid = resid_init, x = x, W = W, boot = boot.MI)$zI
-  if(objfn == "MI"){
+  if (objfn == "MI") {
     oldZMI <- abs(zMI_init)
   }
-  if(objfn == "R2"){
+  if (objfn == "R2") {
     adjR2 <- -adjR2_init
   }
 
@@ -273,8 +270,8 @@ lmFilter <- function(y, x = NULL, W, objfn = "MI", MX = NULL, sig = .05,
   # Eigenvector Selection:
   # Candidate Set
   #####
-  if(positive | zMI_init >= 0){
-    if(ideal.setsize){
+  if (positive | zMI_init >= 0) {
+    if (ideal.setsize) {
       # avoids problems of NaN if positive=TRUE but zMI < 0:
       csize <- candsetsize(npos = length(evals[evals > 1e-07]),
                            zMI = ifelse(zMI_init < 0, 0, zMI_init))
@@ -293,15 +290,15 @@ lmFilter <- function(y, x = NULL, W, objfn = "MI", MX = NULL, sig = .05,
   ncandidates <- sum(sel)
 
   # Bonferroni adjustment (Griffith/ Chun 2014: 1490)
-  if(objfn == "p" | objfn == "pMI"){
-    if(bonferroni & ncandidates > 0){
+  if (objfn == "p" | objfn == "pMI") {
+    if (bonferroni & ncandidates > 0) {
       sig <- sig / ncandidates
     }
   } else {
     sig <- bonferroni <- NULL
   }
 
-  if(objfn == "pMI"){
+  if (objfn == "pMI") {
     oldpMI <- -(MI.resid(resid = resid_init, x = x, W = W, boot = boot.MI,
                          alternative = ifelse(dep == "positive", "greater", "lower")
                          )$pI)
@@ -311,16 +308,16 @@ lmFilter <- function(y, x = NULL, W, objfn = "MI", MX = NULL, sig = .05,
   # Search Algorithm:
   # Stepwise Regression
   #####
-  if(objfn == "all"){
+  if (objfn == "all") {
     sel_id <- which(sel)
   } else {
     sel_id <- NULL
     selset <- which(sel)
 
     # start forward search
-    for(i in which(sel)){
-      if(objfn == "pMI"){
-        if(abs(oldpMI) > sig){
+    for (i in which(sel)) {
+      if (objfn == "pMI") {
+        if (abs(oldpMI) > sig) {
           break
         }
       }
@@ -328,49 +325,46 @@ lmFilter <- function(y, x = NULL, W, objfn = "MI", MX = NULL, sig = .05,
       sid <- NULL
 
       # select candidate eigenvector
-      for(j in selset){
+      for (j in selset) {
         xe <- cbind(x, evecs[, sel_id], evecs[, j])
         test <- objfunc(y = y, xe = xe, n = n, W = W, objfn = objfn, boot.MI = boot.MI,
                         alternative = ifelse(dep == "positive", "greater", "lower"))
-        if(test < ref){
+        if (test < ref) {
           sid <- j
           ref <- test
         }
       }
 
       # stopping rules
-      if(objfn == "R2"){
-        if(ref < adjR2){
+      if (objfn == "R2") {
+        if (ref < adjR2) {
           adjR2 <- ref
           sel_id <- c(sel_id, sid)
         } else {
           break
         }
-      }
-      if(objfn == "p"){
-        if(ref < sig){
+      } else if (objfn == "p") {
+        if (ref < sig) {
           sel_id <- c(sel_id, sid)
         } else {
           break
         }
-      }
-      if(objfn == "MI"){
-        if(ref < oldZMI){
+      } else if (objfn == "MI") {
+        if (ref < oldZMI) {
           oldZMI <- ref
           sel_id <- c(sel_id, sid)
         } else {
           break
         }
-        if(oldZMI < tol){
+        if (oldZMI < tol) {
           break
         }
-      }
-      if(objfn == "pMI"){
-        if(abs(ref) > oldpMI){
+      } else if (objfn == "pMI") {
+        if (abs(ref) > oldpMI) {
           oldpMI <- abs(ref)
           sel_id <- c(sel_id, sid)
         }
-        if(abs(ref) > sig){
+        if (abs(ref) > sig) {
           break
         }
       }
@@ -412,10 +406,10 @@ lmFilter <- function(y, x = NULL, W, objfn = "MI", MX = NULL, sig = .05,
   est <- cbind(coefs[1:nx], se[1:nx], p.val[1:nx])
   colnames(est) <- c("Estimate", "SE", "p-value")
   varcovar <- vcov[1:nx, 1:nx]
-  if(nx == 1){
+  if (nx == 1) {
     rownames(est) <- names(varcovar) <- "(Intercept)"
   } else {
-    if(!is.null(nams)){
+    if (!is.null(nams)) {
       rownames(est) <- rownames(varcovar) <- colnames(varcovar) <- c("(Intercept)", nams)
     } else {
       rownames(est) <- c("(Intercept)", paste0("beta_", 1:(nx - 1)))
@@ -424,7 +418,7 @@ lmFilter <- function(y, x = NULL, W, objfn = "MI", MX = NULL, sig = .05,
   }
 
   # selected eigenvectors & eigenvalues
-  if(count != 0){
+  if (count != 0) {
     # selected eigenvectors
     selvecs <- as.matrix(evecs[, sel_id])
     colnames(selvecs) <- paste0("evec_", sel_id)

@@ -50,29 +50,29 @@
 #'
 #' @export
 
-vp <- function(y, x = NULL, evecs = NULL, msr = 100){
+vp <- function(y, x = NULL, evecs = NULL, msr = 100) {
   n <- length(y)
-  if(is.null(x)){
+  if (is.null(x)) {
     x <- rep(1, n)
   }
   x <- as.matrix(x)
-  if (!all(x[, 1] == 1)){
+  if (!all(x[, 1] == 1)) {
     x <- cbind(1, x)
   }
 
   ### checks
-  if(anyNA(y) | anyNA(x)){
+  if (anyNA(y) | anyNA(x)) {
     stop("Missing values detected")
   }
-  if(ncol(x) > 1 & qr(x)$rank != ncol(x)){
+  if (ncol(x) > 1 & qr(x)$rank != ncol(x)) {
     stop("Perfect multicollinearity in covariates detected")
   }
-  if(msr < 100){
+  if (msr < 100) {
     warning(paste0("Number of permutations (",msr,") too small. Set to 100"))
     msr <- 100
   }
 
-  if(!is.null(evecs)){
+  if (!is.null(evecs)) {
     evecs <- as.matrix(evecs)
     # drop eigenvector with zero eigenvalue. If W is not of full-rank,
     # multiple eigenvectors with zero eigenvalues exist
@@ -80,9 +80,9 @@ vp <- function(y, x = NULL, evecs = NULL, msr = 100){
     null <- which(!vapply(apply(evecs, 2, sum),
                           function(x) isTRUE(all.equal(x, 0, tolerance = 1e-7)),
                           FUN.VALUE = TRUE))
-    if(length(null) == 1){
+    if (length(null) == 1) {
       evecs <- evecs[, -null]
-    } else if(length(null) > 1){
+    } else if (length(null) > 1) {
       sub <- cbind(1, evecs[, null])
       sub <- qr.Q(qr(sub))
       evecs[,null] <- sub[,-ncol(sub)]
@@ -91,7 +91,7 @@ vp <- function(y, x = NULL, evecs = NULL, msr = 100){
   }
 
   # test nr of supplied covars
-  if(ncol(cbind(x, evecs)) >= n){
+  if (ncol(cbind(x, evecs)) >= n) {
     stop("Nr of covariates equals or exceeds n")
   }
 
@@ -104,7 +104,7 @@ vp <- function(y, x = NULL, evecs = NULL, msr = 100){
   xe <- cbind(x, evecs)
   resid.xe <- y - xe %*% solve(crossprod(xe)) %*% crossprod(xe, y)
   R2.abc <- 1 - (sum(resid.xe^2) / TSS)
-  if(!is.null(evecs)){
+  if (!is.null(evecs)) {
     # bc
     resid.e <- y - cbind(1, evecs) %*% solve(crossprod(cbind(1, evecs))) %*% crossprod(cbind(1, evecs), y)
     R2.bc <- 1 - (sum(resid.e^2) / TSS)
@@ -120,7 +120,7 @@ vp <- function(y, x = NULL, evecs = NULL, msr = 100){
   # E(H0) - Moran Spectral Randomization
   msr <- round(msr)
   r2.ab <- r2.a <- NULL
-  for(i in seq_len(msr)){
+  for (i in seq_len(msr)) {
     ind <- sample(1:n, replace = TRUE)
     x.msr <- x[ind,]
     resid.msr <- y - x.msr %*% solve(crossprod(x.msr)) %*% crossprod(x.msr, y)
@@ -162,7 +162,7 @@ vp <- function(y, x = NULL, evecs = NULL, msr = 100){
   return(out)
 }
 
-print.vpart <- function(obj){
+print.vpart <- function(obj) {
   res <- data.frame(cbind(format(round(obj$adjR2, 7), nsmall = 7),
                           format(round(obj$R2, 7), nsmall = 7)),
                           row.names = c("ab", "bc", "abc", "a", "b", "c", "d"))

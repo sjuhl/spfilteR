@@ -46,28 +46,28 @@
 #'
 #' @export
 
-MI.local <- function(x, W, alternative = "greater"){
+MI.local <- function(x, W, alternative = "greater") {
 
   #####
   # Input
   # Checks
   #####
-  if(!any(class(W) %in% c("matrix", "Matrix", "data.frame"))){
+  if (!any(class(W) %in% c("matrix", "Matrix", "data.frame"))) {
     stop("W must be of class 'matrix' or 'data.frame'")
   }
-  if(any(class(W) != "matrix")){
+  if (any(class(W) != "matrix")) {
     W <- as.matrix(W)
   }
-  if(anyNA(x) | anyNA(W)){
+  if (anyNA(x) | anyNA(W)) {
     stop("Missing values detected")
   }
-  if(!(alternative %in% c("greater", "lower", "two.sided"))){
+  if (!(alternative %in% c("greater", "lower", "two.sided"))) {
     stop("Invalid input: 'alternative' must be either 'greater',
          'lower', or 'two.sided'")
   }
 
   # save names (if provided)
-  if(!is.null(names(x))){
+  if (!is.null(names(x))) {
     nams <- names(x)
   }
 
@@ -98,7 +98,7 @@ MI.local <- function(x, W, alternative = "greater"){
   out[, 6] <- vapply(out[, "pIi"], star, FUN.VALUE = character(1))
 
   # attach names (if provided)
-  if(!is.null(names(x))){
+  if (!is.null(names(x))) {
     rownames(out) <- nams
   }
 

@@ -56,10 +56,10 @@
 #'
 #' @export
 
-MI.vec <- function(x, W, alternative = "greater", symmetrize = TRUE){
+MI.vec <- function(x, W, alternative = "greater", symmetrize = TRUE) {
   # convert x to a matrix and save names (if provided)
   x <- as.matrix(x)
-  if(!is.null(colnames(x))){
+  if (!is.null(colnames(x))) {
     nams <- colnames(x)
   }
 
@@ -67,19 +67,19 @@ MI.vec <- function(x, W, alternative = "greater", symmetrize = TRUE){
   # Input
   # Checks
   #####
-  if(0 %in% apply(x, 2, sd)){
+  if (0 %in% apply(x, 2, sd)) {
     warning("Constant term detected in x")
   }
-  if(!any(class(W) %in% c("matrix", "Matrix", "data.frame"))){
+  if (!any(class(W) %in% c("matrix", "Matrix", "data.frame"))) {
     stop("W must be of class 'matrix' or 'data.frame'")
   }
-  if(any(class(W) != "matrix")){
+  if (any(class(W) != "matrix")) {
     W <- as.matrix(W)
   }
-  if(anyNA(x) | anyNA(W)){
+  if (anyNA(x) | anyNA(W)) {
     stop("Missing values detected")
   }
-  if(!(alternative %in% c("greater", "lower", "two.sided"))){
+  if (!(alternative %in% c("greater", "lower", "two.sided"))) {
     stop("Invalid input: 'alternative' must be either 'greater',
          'lower', or 'two.sided'")
   }
@@ -88,7 +88,7 @@ MI.vec <- function(x, W, alternative = "greater", symmetrize = TRUE){
   # Additional
   # Variables
   #####
-  if(symmetrize){
+  if (symmetrize) {
     W <- .5 * (W + t(W))
   }
   nx <- ncol(x)
@@ -107,7 +107,7 @@ MI.vec <- function(x, W, alternative = "greater", symmetrize = TRUE){
   #####
   out <- data.frame(matrix(NA, nrow = nx, ncol = 6))
   colnames(out) <- c("I", "EI", "VarI", "zI", "pI", "")
-  for(i in 1:nx){
+  for (i in 1:nx) {
     # observed
     out[i, "I"] <- (n / S0) * t(x[, i]) %*% MWM %*% x[, i] / crossprod(x[, i], M) %*% x[, i]
     # expected
@@ -120,7 +120,7 @@ MI.vec <- function(x, W, alternative = "greater", symmetrize = TRUE){
     out[i, "pI"] <- pfunc(z = out[i, "zI"], alternative = alternative)
     out[i, 6] <- star(p = out[i, "pI"])
   }
-  if(!is.null(colnames(x))){
+  if (!is.null(colnames(x))) {
     rownames(out) <- nams
   }
 

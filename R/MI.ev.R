@@ -25,7 +25,7 @@
 #'
 #' @export
 
-MI.ev <- function(W, evals){
+MI.ev <- function(W, evals) {
   n <- nrow(W)
   evMI <- vapply(evals, function(evals) n / crossprod(rep(1, n), W %*% rep(1, n)) * evals,
                  FUN.VALUE = numeric(1))
