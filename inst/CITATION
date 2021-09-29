@@ -1,0 +1,17 @@
+citHeader("To cite spfilteR in publications use:")
+
+citEntry(
+  entry    = "Article",
+  title    = "spfilteR: An R Package for Semiparametric Spatial Filtering with Eigenvectors in (Generalized) Linear Models",
+  author   = as.person("Sebastian Juhl"),
+  journal  = "The R Journal",
+  year     = "2021",
+  pages    = "1-10",
+  url      = "https://journal.r-project.org/archive/2021/RJ-2021-085/index.html",
+  doi      = "10.32614/RJ-2021-085",
+  textVersion = paste("Juhl, Sebastian (2021).",
+        "spfilteR: An R Package for Semiparametric Spatial Filtering with Eigenvectors in (Generalized) Linear Models.",
+        "The R Journal, FirstView, 1-10.",
+        "URL: https://journal.r-project.org/archive/2021/RJ-2021-085/index.html."
+  )
+)
