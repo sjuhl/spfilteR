@@ -1,14 +1,11 @@
 # NEWS.md:
 
-## spfilteR 1.1.0
+# spfilteR 1.1.1
 
 - CRAN resubmission
-- fix minor bug when checking 'tol' in `lmFilter()` function
-- new vignette name
-- add new functions
-    - `MI.local()` function to calculate local Moran's I
-    - `vp()` function for variation partitioning
-- update reference to `MI.local()` in documentation files
+- improve readability of code
+- update author mail address
+- include citation
 
 
 # Test Results:
