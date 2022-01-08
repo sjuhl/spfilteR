@@ -1,11 +1,9 @@
 # NEWS.md:
 
-# spfilteR 1.1.1
+# spfilteR 1.1.2
 
-- CRAN resubmission
-- improve readability of code
-- update author mail address
-- include citation
+- fix broken links
+- update citation informations
 
 
 # Test Results:
