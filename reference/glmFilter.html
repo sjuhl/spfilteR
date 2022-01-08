@@ -308,12 +308,12 @@ Analysis for Geographers. Englewood Cliffs, Prentice Hall.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Coefficients (ML):</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             Estimate         SE      p-value    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> (Intercept) 2.517451 0.02860782 4.484091e-95 ***</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> (Intercept) 2.531793 0.02820309 6.512548e-96 ***</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Model Fit:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          logL      AIC      BIC     </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Initial  -1688.207 3378.415 3381.02 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Filtered -1669.869 3343.739 3348.949</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Filtered -1687.81  3379.621 3384.831</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Filtered for positive spatial autocorrelation</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 out of 31 candidate eigenvectors selected</span>
@@ -321,9 +321,9 @@ Analysis for Geographers. Englewood Cliffs, Prentice Hall.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Objective Function: "MI"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Moran's I (PearsonResiduals):</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           Observed    Expected    Variance        z   p-value  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Initial  0.1144870 -0.01010101 0.009447305 1.281805 0.1485149  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Filtered 0.1212156 -0.01310967 0.009086803 1.409133 0.1089109  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          Observed    Expected    Variance        z   p-value  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Initial  0.114487 -0.01010101 0.007563568 1.432560 0.1188119  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Filtered 0.114217 -0.01868546 0.008178088 1.469627 0.1881188  </span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># probit model - summarize EVs</span></span>
 <span class="r-in"><span class="va">y_prob</span> <span class="op">&lt;-</span> <span class="va">fakedataset</span><span class="op">$</span><span class="va">indicator</span></span>
@@ -353,8 +353,8 @@ Analysis for Geographers. Englewood Cliffs, Prentice Hall.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Moran's I (PearsonResiduals):</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>              Observed    Expected    Variance         z   p-value  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Initial  -0.001603494 -0.01010101 0.005120965 0.1187452 0.4851485  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Filtered -0.001603494 -0.01010101 0.005844756 0.1111498 0.5049505  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Initial  -0.001603494 -0.01010101 0.005264195 0.1171186 0.4950495  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Filtered -0.001603494 -0.01010101 0.004407458 0.1279964 0.4356436  </span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># logit model - AIC objective function</span></span>
 <span class="r-in"><span class="va">y_logit</span> <span class="op">&lt;-</span> <span class="va">fakedataset</span><span class="op">$</span><span class="va">indicator</span></span>
@@ -381,8 +381,8 @@ Analysis for Geographers. Englewood Cliffs, Prentice Hall.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Moran's I (PearsonResiduals):</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>              Observed    Expected    Variance         z   p-value  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Initial  -0.001603471 -0.01010101 0.005185189 0.1180078 0.4455446  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Filtered -0.001603471 -0.01010101 0.005643517 0.1131145 0.5247525  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Initial  -0.001603471 -0.01010101 0.005431088 0.1153054 0.5445545  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Filtered -0.001603471 -0.01010101 0.006253459 0.1074566 0.4752475  </span>
 <span class="r-in"></span>
 </code></pre></div>
     </div>
