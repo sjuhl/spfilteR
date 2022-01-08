@@ -1,3 +1,10 @@
+# spfilteR 1.1.2
+
+- fix broken links
+- update citation information
+
+---
+
 # spfilteR 1.1.1
 
 - CRAN resubmission
