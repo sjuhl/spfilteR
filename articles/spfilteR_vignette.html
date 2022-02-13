@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">spfilteR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.3</span>
       </span>
     </div>
 
@@ -158,14 +158,14 @@
 <code class="sourceCode R"><span class="co"># decompose Moran's I</span>
 <span class="op">(</span><span class="va">I.dec</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/MI.decomp.html">MI.decomp</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">cont</span>, W <span class="op">=</span> <span class="va">W</span>, nsim<span class="op">=</span><span class="fl">100</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt;                 I+       VarI+        pI+            I-       VarI-        pI-</span>
-<span class="co">#&gt; x1       0.3894789 0.001947311 0.00990099 ** -0.0783007 0.001937916 1.00000000</span>
-<span class="co">#&gt; x2       0.3048369 0.001793448 0.02970297  * -0.1360794 0.001848110 0.99009901</span>
-<span class="co">#&gt; x3       0.2247566 0.001701512 0.30693069    -0.2156438 0.002008073 0.44554455</span>
-<span class="co">#&gt; negative 0.1131614 0.001774171 0.99009901    -0.3572259 0.001906053 0.00990099</span>
+<span class="co">#&gt; x1       0.3894789 0.001474028 0.00990099 ** -0.0783007 0.001544664 1.00000000</span>
+<span class="co">#&gt; x2       0.3048369 0.001896648 0.01980198  * -0.1360794 0.001617216 1.00000000</span>
+<span class="co">#&gt; x3       0.2247566 0.001768200 0.34653465    -0.2156438 0.002108992 0.43564356</span>
+<span class="co">#&gt; negative 0.1131614 0.001734763 1.00000000    -0.3572259 0.001751369 0.00990099</span>
 <span class="co">#&gt;             pItwo.sided  </span>
 <span class="co">#&gt; x1           0.01980198 *</span>
-<span class="co">#&gt; x2           0.05940594 .</span>
-<span class="co">#&gt; x3           0.61386139  </span>
+<span class="co">#&gt; x2           0.03960396 *</span>
+<span class="co">#&gt; x3           0.69306931  </span>
 <span class="co">#&gt; negative **  0.01980198 *</span></code></pre></div>
 <p>Note that the global Moran’s <em>I</em> is the sum of <code>I+</code> and <code>I-</code>:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
@@ -336,7 +336,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
 </div>
 
       </footer>
