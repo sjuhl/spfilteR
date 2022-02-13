@@ -1,3 +1,9 @@
+# spfilteR 1.1.3
+
+- update tests
+
+---
+
 # spfilteR 1.1.2
 
 - fix broken links

@@ -14,11 +14,10 @@ test_that("getEVs() returns a list", {
 
 test_that("getEVs() adds an intercept term", {
   covars <- fakedataset$x3
-  EVs1 <- getEVs(W=W,covars=covars)$vectors
+  EVs1 <- getEVs(W=W,covars=covars)$vectors[,1]
   covars2 <- cbind(1,fakedataset$x3)
-  EVs2 <- getEVs(W=W,covars=covars2)$vectors
-  out <- all(EVs1==EVs2)
-  expect_true(out)
+  EVs2 <- getEVs(W=W,covars=covars2)$vectors[,1]
+  expect_equal(EVs1, EVs2)
 })
 
 
