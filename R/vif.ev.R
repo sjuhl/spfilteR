@@ -35,7 +35,7 @@ vif.ev <- function(x = NULL, evecs, na.rm = TRUE) {
     x <- rep(1, nrow(evecs))
   }
   x <- as.matrix(x)
-  if (!all(x[, 1] == 1)) {
+  if (!isTRUE(all.equal(x[, 1], rep(1, nrow(evecs))))) {
     x <- cbind(1, x)
   }
   if (na.rm) {
