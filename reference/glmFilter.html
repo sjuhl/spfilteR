@@ -25,7 +25,7 @@ all eigenvectors in the candidate set can be included as well."><!-- mathjax -->
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">spfilteR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.4</span>
       </span>
     </div>
 
@@ -34,7 +34,7 @@ all eigenvectors in the candidate set can be included as well."><!-- mathjax -->
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -301,29 +301,29 @@ Analysis for Geographers. Englewood Cliffs, Prentice Hall.</p>
 <span class="r-in"><span class="va">poisson</span> <span class="op">&lt;-</span> <span class="fu">glmFilter</span><span class="op">(</span>y <span class="op">=</span> <span class="va">y_pois</span>, x <span class="op">=</span> <span class="cn">NULL</span>, W <span class="op">=</span> <span class="va">W</span>, objfn <span class="op">=</span> <span class="st">"MI"</span>, positive <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span class="r-in">model <span class="op">=</span> <span class="st">"poisson"</span>, boot.MI <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span>
 <span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">poisson</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 out of 31 candidate eigenvectors selected</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 out of 31 candidate eigenvectors selected</span>
 <span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">poisson</span>, EV <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 	- Spatial Filtering with Eigenvectors (Poisson Model)  -</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Coefficients (ML):</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             Estimate         SE      p-value    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> (Intercept) 2.525461 0.02837992 1.520122e-95 ***</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> (Intercept)  2.46657 0.03000037 8.529436e-91 ***</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Model Fit:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          logL      AIC      BIC     </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Initial  -1688.207 3378.415 3381.02 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Filtered -1679.789 3363.577 3368.788</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Filtered -1605.543 3219.087 3229.508</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Filtered for positive spatial autocorrelation</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 out of 31 candidate eigenvectors selected</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 out of 31 candidate eigenvectors selected</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Condition Number (Multicollinearity): 1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Objective Function: "MI"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Moran's I (PearsonResiduals):</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           Observed    Expected    Variance        z   p-value  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Initial  0.1144870 -0.01010101 0.007918232 1.400109 0.1584158  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Filtered 0.1171037 -0.01474769 0.005441310 1.787446 0.1287129  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>            Observed    Expected    Variance        z   p-value  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Initial  0.11448695 -0.01010101 0.004781153 1.801813 0.1089109  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Filtered 0.09363222 -0.03059417 0.007677581 1.417757 0.2079208  </span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># probit model - summarize EVs</span></span>
 <span class="r-in"><span class="va">y_prob</span> <span class="op">&lt;-</span> <span class="va">fakedataset</span><span class="op">$</span><span class="va">indicator</span></span>
@@ -353,8 +353,8 @@ Analysis for Geographers. Englewood Cliffs, Prentice Hall.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Moran's I (PearsonResiduals):</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>              Observed    Expected    Variance         z   p-value  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Initial  -0.001603494 -0.01010101 0.005996931 0.1097305 0.4950495  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Filtered -0.001603494 -0.01010101 0.005991461 0.1097806 0.5643564  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Initial  -0.001603494 -0.01010101 0.005767134 0.1118953 0.4455446  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Filtered -0.001603494 -0.01010101 0.006171530 0.1081672 0.5643564  </span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># logit model - AIC objective function</span></span>
 <span class="r-in"><span class="va">y_logit</span> <span class="op">&lt;-</span> <span class="va">fakedataset</span><span class="op">$</span><span class="va">indicator</span></span>
@@ -381,8 +381,8 @@ Analysis for Geographers. Englewood Cliffs, Prentice Hall.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Moran's I (PearsonResiduals):</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>              Observed    Expected    Variance         z   p-value  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Initial  -0.001603471 -0.01010101 0.006095103 0.1088435 0.5445545  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Filtered -0.001603471 -0.01010101 0.005914747 0.1104905 0.5445545  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Initial  -0.001603471 -0.01010101 0.004937895 0.1209267 0.5148515  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Filtered -0.001603471 -0.01010101 0.005309422 0.1166191 0.4851485  </span>
 <span class="r-in"></span>
 </code></pre></div>
     </div>
