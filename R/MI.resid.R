@@ -79,7 +79,7 @@ MI.resid <- function(resid, x = NULL, W, alternative = "greater", boot = NULL) {
     x <- rep(1, n)
   }
   x <- as.matrix(x)
-  if (!all(x[, 1] == 1)) {
+  if (!isTRUE(all.equal(x[, 1], rep(1, n)))) {
     x <- cbind(1, x)
   }
 

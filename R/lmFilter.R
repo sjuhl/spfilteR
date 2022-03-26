@@ -174,7 +174,7 @@ lmFilter <- function(y, x = NULL, W, objfn = "MI", MX = NULL, sig = .05,
   if (is.null(x)) {
     x <- as.matrix(rep(1, n))
   }
-  if (!all(x[, 1] == 1)) {
+  if (!isTRUE(all.equal(x[, 1], rep(1, n)))) {
     x <- cbind(1, x)
   }
   if (!is.null(MX) && any(apply(MX, 2, sd) == 0)) {

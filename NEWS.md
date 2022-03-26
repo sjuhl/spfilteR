@@ -1,3 +1,10 @@
+# spfilteR 1.1.4
+
+- update citation information
+- fix: use isTRUE(all.equal()) instead of "==" on numeric vectors
+
+---
+
 # spfilteR 1.1.3
 
 - update tests

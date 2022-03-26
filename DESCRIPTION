@@ -1,7 +1,7 @@
 Package: spfilteR
 Type: Package
 Title: Semiparametric Spatial Filtering with Eigenvectors in (Generalized) Linear Models
-Version: 1.1.3
+Version: 1.1.4
 Authors@R: person("Sebastian", "Juhl",email = "sebastian.juhl@t-online.de",
   role = c("aut", "cre"), comment = c(ORCID = "0000-0002-7123-5398"))
 Description: Tools to decompose (transformed) spatial connectivity matrices and perform supervised or unsupervised semiparametric spatial filtering in a regression framework. The package supports unsupervised spatial filtering in standard linear as well as some generalized linear regression models.

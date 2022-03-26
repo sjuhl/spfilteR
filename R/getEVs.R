@@ -67,7 +67,7 @@ getEVs <- function(W, covars = NULL) {
     covars <- rep(1, n)
   }
   covars <- as.matrix(covars)
-  if (!all(covars[, 1] == 1)) {
+  if (!isTRUE(all.equal(covars[, 1], rep(1, n)))) {
     covars <- cbind(1, covars)
   }
 

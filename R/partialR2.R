@@ -47,7 +47,7 @@ partialR2 <- function(y, x = NULL, evecs) {
     x <- rep(1, length(y))
   }
   x <- as.matrix(x)
-  if (!all(x[, 1] == 1)) {
+  if (!isTRUE(all.equal(x[, 1], rep(1, length(y))))) {
     x <- cbind(1, x)
   }
   evecs <- as.matrix(evecs)

@@ -1,18 +1,19 @@
 # NEWS.md:
 
-# spfilteR 1.1.3
+# spfilteR 1.1.4
 
-- update tests
+- update citation information
+- fix: use isTRUE(all.equal()) instead of "==" on numeric vectors
 
 
 # Test Results:
 
-── spfilteR 1.1.3: NOTE
+── spfilteR 1.1.4: NOTE
 
-  Build ID:   spfilteR_1.1.3.tar.gz-86a2fb59f9a545c5821f124a83c6f1d6
+  Build ID:   spfilteR_1.1.4.tar.gz-eddabeb4b81b48129da83068cb32e78b
   Platform:   Windows Server 2022, R-devel, 64 bit
-  Submitted:  15m 33.7s ago
-  Build time: 6m 7.7s
+  Submitted:  7m 34.2s ago
+  Build time: 6m 20.7s
 
 > checking for detritus in the temp directory ... NOTE
   Found the following files/directories:
@@ -20,20 +21,20 @@
 
 0 errors ✓ | 0 warnings ✓ | 1 note x
 
-── spfilteR 1.1.3: OK
+── spfilteR 1.1.4: OK
 
-  Build ID:   spfilteR_1.1.3.tar.gz-71c219c530434f23a1cb040f7e731616
+  Build ID:   spfilteR_1.1.4.tar.gz-2b5012419524469ba76ce98c440d36db
   Platform:   Ubuntu Linux 20.04.1 LTS, R-release, GCC
-  Submitted:  15m 33.7s ago
-  Build time: 6m 38.9s
+  Submitted:  7m 34.2s ago
+  Build time: 6m 23.2s
 
 0 errors ✓ | 0 warnings ✓ | 0 notes ✓
 
-── spfilteR 1.1.3: OK
+── spfilteR 1.1.4: OK
 
-  Build ID:   spfilteR_1.1.3.tar.gz-9032a5b52de44426a7ca72af2e24c1a0
+  Build ID:   spfilteR_1.1.4.tar.gz-2a2f81b92baf4e779d1d1b70c4d08509
   Platform:   Fedora Linux, R-devel, clang, gfortran
-  Submitted:  15m 33.7s ago
-  Build time: 7m 38.8s
+  Submitted:  7m 34.2s ago
+  Build time: 7m 13.7s
 
 0 errors ✓ | 0 warnings ✓ | 0 notes ✓

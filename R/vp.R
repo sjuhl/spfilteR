@@ -56,7 +56,7 @@ vp <- function(y, x = NULL, evecs = NULL, msr = 100) {
     x <- rep(1, n)
   }
   x <- as.matrix(x)
-  if (!all(x[, 1] == 1)) {
+  if (!isTRUE(all.equal(x[, 1], rep(1, n)))) {
     x <- cbind(1, x)
   }
 
