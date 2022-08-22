@@ -1,3 +1,9 @@
+# spfilteR 1.1.5
+
+- fix minor bug in help pages
+
+---
+
 # spfilteR 1.1.4
 
 - update citation information
