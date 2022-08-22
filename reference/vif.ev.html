@@ -18,7 +18,7 @@ the eigenvectors in the spatial filter."><!-- mathjax --><script src="https://cd
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">spfilteR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.5</span>
       </span>
     </div>
 
@@ -65,21 +65,28 @@ the eigenvectors in the spatial filter.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">vif.ev</span><span class="op">(</span>x <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">evecs</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">vif.ev</span><span class="op">(</span>x <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">evecs</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>x</dt>
 <dd><p>vector/ matrix of regressors (default = NULL)</p></dd>
+
+
 <dt>evecs</dt>
 <dd><p>(selected) eigenvectors</p></dd>
+
+
 <dt>na.rm</dt>
 <dd><p>remove missing values in covariates (TRUE/ FALSE)</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>Returns a vector containing the VIF for each eigenvector.</p>
+    
+
+<p>Returns a vector containing the VIF for each eigenvector.</p>
     </div>
     <div id="note">
     <h2>Note</h2>
@@ -99,12 +106,12 @@ this property.</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">fakedata</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">E</span> <span class="op">&lt;-</span> <span class="fu"><a href="getEVs.html">getEVs</a></span><span class="op">(</span>W <span class="op">=</span> <span class="va">W</span>, covars <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span><span class="op">$</span><span class="va">vectors</span></span>
-<span class="r-in"><span class="op">(</span><span class="va">VIF</span> <span class="op">&lt;-</span> <span class="fu">vif.ev</span><span class="op">(</span>x <span class="op">=</span> <span class="va">fakedataset</span><span class="op">$</span><span class="va">x1</span>, evecs <span class="op">=</span> <span class="va">E</span><span class="op">[</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">fakedata</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">E</span> <span class="op">&lt;-</span> <span class="fu"><a href="getEVs.html">getEVs</a></span><span class="op">(</span>W <span class="op">=</span> <span class="va">W</span>, covars <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span><span class="op">$</span><span class="va">vectors</span></span></span>
+<span class="r-in"><span><span class="op">(</span><span class="va">VIF</span> <span class="op">&lt;-</span> <span class="fu">vif.ev</span><span class="op">(</span>x <span class="op">=</span> <span class="va">fakedataset</span><span class="op">$</span><span class="va">x1</span>, evecs <span class="op">=</span> <span class="va">E</span><span class="op">[</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1] 1.004385 1.043694 1.030879 1.078498 1.000837 1.010944 1.000053 1.006641</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [9] 1.000079 1.086198</span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -119,7 +126,7 @@ this property.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

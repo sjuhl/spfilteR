@@ -19,7 +19,7 @@ coefficient."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/lib
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">spfilteR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.5</span>
       </span>
     </div>
 
@@ -67,27 +67,38 @@ coefficient.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">MI.resid</span><span class="op">(</span><span class="va">resid</span>, x <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">W</span>, alternative <span class="op">=</span> <span class="st">"greater"</span>, boot <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">MI.resid</span><span class="op">(</span><span class="va">resid</span>, x <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">W</span>, alternative <span class="op">=</span> <span class="st">"greater"</span>, boot <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>resid</dt>
 <dd><p>residual vector</p></dd>
+
+
 <dt>x</dt>
 <dd><p>vector/ matrix of regressors (default = NULL)</p></dd>
+
+
 <dt>W</dt>
 <dd><p>spatial connectivity matrix</p></dd>
+
+
 <dt>alternative</dt>
 <dd><p>specification of alternative hypothesis as 'greater' (default),
 'lower', or 'two.sided'</p></dd>
+
+
 <dt>boot</dt>
 <dd><p>optional integer specifying the number of simulation iterations to
 compute the variance. If NULL (default), variance calculated under assumed normality</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A <code>data.frame</code> object with the following elements:</p><dl><dt><code>I</code></dt>
+    
+
+<p>A <code>data.frame</code> object with the following elements:</p><dl><dt><code>I</code></dt>
 <dd><p>observed value of the Moran coefficient</p></dd>
 
 <dt><code>EI</code></dt>
@@ -134,26 +145,26 @@ Among Regression Residuals. Geographical Analysis, 4 (3): pp. 267 - 284</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">fakedata</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">y</span> <span class="op">&lt;-</span> <span class="va">fakedataset</span><span class="op">$</span><span class="va">x1</span></span>
-<span class="r-in"><span class="va">x</span> <span class="op">&lt;-</span> <span class="va">fakedataset</span><span class="op">$</span><span class="va">x2</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">resid</span> <span class="op">&lt;-</span> <span class="va">y</span> <span class="op">-</span> <span class="va">x</span> <span class="op"><a href="https://rdrr.io/r/base/matmult.html" class="external-link">%*%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/solve.html" class="external-link">solve</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/crossprod.html" class="external-link">crossprod</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://rdrr.io/r/base/matmult.html" class="external-link">%*%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/crossprod.html" class="external-link">crossprod</a></span><span class="op">(</span><span class="va">x</span>,<span class="va">y</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">(</span><span class="va">Moran</span> <span class="op">&lt;-</span> <span class="fu">MI.resid</span><span class="op">(</span>resid <span class="op">=</span> <span class="va">resid</span>, x <span class="op">=</span> <span class="va">x</span>, W <span class="op">=</span> <span class="va">W</span>, alternative <span class="op">=</span> <span class="st">"greater"</span><span class="op">)</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">fakedata</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">y</span> <span class="op">&lt;-</span> <span class="va">fakedataset</span><span class="op">$</span><span class="va">x1</span></span></span>
+<span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="va">fakedataset</span><span class="op">$</span><span class="va">x2</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">resid</span> <span class="op">&lt;-</span> <span class="va">y</span> <span class="op">-</span> <span class="va">x</span> <span class="op"><a href="https://rdrr.io/r/base/matmult.html" class="external-link">%*%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/solve.html" class="external-link">solve</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/crossprod.html" class="external-link">crossprod</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://rdrr.io/r/base/matmult.html" class="external-link">%*%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/crossprod.html" class="external-link">crossprod</a></span><span class="op">(</span><span class="va">x</span>,<span class="va">y</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">(</span><span class="va">Moran</span> <span class="op">&lt;-</span> <span class="fu">MI.resid</span><span class="op">(</span>resid <span class="op">=</span> <span class="va">resid</span>, x <span class="op">=</span> <span class="va">x</span>, W <span class="op">=</span> <span class="va">W</span>, alternative <span class="op">=</span> <span class="st">"greater"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          I         EI       VarI       zI          pI   </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 0.245404 -0.0119261 0.01207299 2.341981 0.009590855 **</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># intercept-only model</span></span>
-<span class="r-in"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">resid2</span> <span class="op">&lt;-</span> <span class="va">y</span> <span class="op">-</span> <span class="va">x</span> <span class="op"><a href="https://rdrr.io/r/base/matmult.html" class="external-link">%*%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/solve.html" class="external-link">solve</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/crossprod.html" class="external-link">crossprod</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://rdrr.io/r/base/matmult.html" class="external-link">%*%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/crossprod.html" class="external-link">crossprod</a></span><span class="op">(</span><span class="va">x</span>,<span class="va">y</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">intercept</span> <span class="op">&lt;-</span> <span class="fu">MI.resid</span><span class="op">(</span>resid <span class="op">=</span> <span class="va">resid2</span>, W <span class="op">=</span> <span class="va">W</span>, alternative <span class="op">=</span> <span class="st">"greater"</span><span class="op">)</span></span>
-<span class="r-in"><span class="co"># same result with MI.vec for the intercept-only model</span></span>
-<span class="r-in"><span class="va">vec</span> <span class="op">&lt;-</span> <span class="fu"><a href="MI.vec.html">MI.vec</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">resid2</span>, W <span class="op">=</span> <span class="va">W</span>, alternative <span class="op">=</span> <span class="st">"greater"</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span><span class="va">intercept</span>, <span class="va">vec</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># intercept-only model</span></span></span>
+<span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">resid2</span> <span class="op">&lt;-</span> <span class="va">y</span> <span class="op">-</span> <span class="va">x</span> <span class="op"><a href="https://rdrr.io/r/base/matmult.html" class="external-link">%*%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/solve.html" class="external-link">solve</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/crossprod.html" class="external-link">crossprod</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://rdrr.io/r/base/matmult.html" class="external-link">%*%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/crossprod.html" class="external-link">crossprod</a></span><span class="op">(</span><span class="va">x</span>,<span class="va">y</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">intercept</span> <span class="op">&lt;-</span> <span class="fu">MI.resid</span><span class="op">(</span>resid <span class="op">=</span> <span class="va">resid2</span>, W <span class="op">=</span> <span class="va">W</span>, alternative <span class="op">=</span> <span class="st">"greater"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># same result with MI.vec for the intercept-only model</span></span></span>
+<span class="r-in"><span><span class="va">vec</span> <span class="op">&lt;-</span> <span class="fu"><a href="MI.vec.html">MI.vec</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">resid2</span>, W <span class="op">=</span> <span class="va">W</span>, alternative <span class="op">=</span> <span class="st">"greater"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span><span class="va">intercept</span>, <span class="va">vec</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           I          EI        VarI       zI           pI    </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 0.3111782 -0.01010101 0.005344193 4.394825 5.543107e-06 ***</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2 0.3111782 -0.01010101 0.005344193 4.394825 5.543107e-06 ***</span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -168,7 +179,7 @@ Among Regression Residuals. Geographical Analysis, 4 (3): pp. 267 - 284</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

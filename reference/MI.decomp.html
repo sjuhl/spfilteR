@@ -19,7 +19,7 @@ in a variable."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/l
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">spfilteR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.5</span>
       </span>
     </div>
 
@@ -67,21 +67,28 @@ in a variable.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">MI.decomp</span><span class="op">(</span><span class="va">x</span>, <span class="va">W</span>, nsim <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">MI.decomp</span><span class="op">(</span><span class="va">x</span>, <span class="va">W</span>, nsim <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>x</dt>
 <dd><p>a vector or matrix</p></dd>
+
+
 <dt>W</dt>
 <dd><p>spatial connectivity matrix</p></dd>
+
+
 <dt>nsim</dt>
 <dd><p>number of iterations to simulate the null distribution</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>Returns a <code>data.frame</code> that contains the following information
+    
+
+<p>Returns a <code>data.frame</code> that contains the following information
 for each variable:</p><dl><dt><code>I+</code></dt>
 <dd><p>observed value of Moran's I (positive part)</p></dd>
 
@@ -131,31 +138,31 @@ Geographical Analysis, 43 (2): pp. 127 - 141.</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">fakedata</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">X</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="va">fakedataset</span><span class="op">$</span><span class="va">x1</span>, <span class="va">fakedataset</span><span class="op">$</span><span class="va">x2</span>,</span>
-<span class="r-in"><span class="va">fakedataset</span><span class="op">$</span><span class="va">x3</span>, <span class="va">fakedataset</span><span class="op">$</span><span class="va">negative</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="op">(</span><span class="va">MI.dec</span> <span class="op">&lt;-</span> <span class="fu">MI.decomp</span><span class="op">(</span>x <span class="op">=</span> <span class="va">X</span>, W <span class="op">=</span> <span class="va">W</span>, nsim <span class="op">=</span> <span class="fl">100</span><span class="op">)</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">fakedata</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">X</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="va">fakedataset</span><span class="op">$</span><span class="va">x1</span>, <span class="va">fakedataset</span><span class="op">$</span><span class="va">x2</span>,</span></span>
+<span class="r-in"><span><span class="va">fakedataset</span><span class="op">$</span><span class="va">x3</span>, <span class="va">fakedataset</span><span class="op">$</span><span class="va">negative</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="op">(</span><span class="va">MI.dec</span> <span class="op">&lt;-</span> <span class="fu">MI.decomp</span><span class="op">(</span>x <span class="op">=</span> <span class="va">X</span>, W <span class="op">=</span> <span class="va">W</span>, nsim <span class="op">=</span> <span class="fl">100</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          I+       VarI+        pI+            I-       VarI-        pI-   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 0.3894789 0.002073551 0.00990099 ** -0.0783007 0.002245175 1.00000000   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 0.3048369 0.001790733 0.03960396  * -0.1360794 0.001710386 0.96039604   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3 0.2247566 0.001681143 0.34653465    -0.2156438 0.001910045 0.41584158   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4 0.1131614 0.001180475 1.00000000    -0.3572259 0.001822705 0.00990099 **</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 0.3894789 0.002064278 0.00990099 ** -0.0783007 0.001798007 1.00000000   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 0.3048369 0.001790553 0.00990099 ** -0.1360794 0.002070329 0.97029703   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 0.2247566 0.001963019 0.29702970    -0.2156438 0.002326726 0.47524752   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4 0.1131614 0.002086170 1.00000000    -0.3572259 0.002051660 0.00990099 **</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   pItwo.sided  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1  0.01980198 *</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2  0.07920792 .</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3  0.69306931  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2  0.01980198 *</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3  0.59405941  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 4  0.01980198 *</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># the sum of I+ and I- equals the observed Moran coefficient:</span></span>
-<span class="r-in"><span class="va">I</span> <span class="op">&lt;-</span> <span class="fu"><a href="MI.vec.html">MI.vec</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">X</span>, W <span class="op">=</span> <span class="va">W</span><span class="op">)</span><span class="op">[</span>, <span class="st">"I"</span><span class="op">]</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="va">MI.dec</span><span class="op">[</span>, <span class="st">"I+"</span><span class="op">]</span> <span class="op">+</span> <span class="va">MI.dec</span><span class="op">[</span>, <span class="st">"I-"</span><span class="op">]</span>, <span class="va">I</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># the sum of I+ and I- equals the observed Moran coefficient:</span></span></span>
+<span class="r-in"><span><span class="va">I</span> <span class="op">&lt;-</span> <span class="fu"><a href="MI.vec.html">MI.vec</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">X</span>, W <span class="op">=</span> <span class="va">W</span><span class="op">)</span><span class="op">[</span>, <span class="st">"I"</span><span class="op">]</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="va">MI.dec</span><span class="op">[</span>, <span class="st">"I+"</span><span class="op">]</span> <span class="op">+</span> <span class="va">MI.dec</span><span class="op">[</span>, <span class="st">"I-"</span><span class="op">]</span>, <span class="va">I</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                              I</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1,]  0.311178214  0.311178214</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [2,]  0.168757531  0.168757531</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [3,]  0.009112739  0.009112739</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [4,] -0.244064424 -0.244064424</span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -170,7 +177,7 @@ Geographical Analysis, 43 (2): pp. 127 - 141.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

@@ -20,7 +20,7 @@ is calculated under the normality assumption."><!-- mathjax --><script src="http
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">spfilteR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.5</span>
       </span>
     </div>
 
@@ -69,27 +69,36 @@ is calculated under the normality assumption.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">MI.local</span><span class="op">(</span><span class="va">x</span>, <span class="va">W</span>, alternative <span class="op">=</span> <span class="st">"greater"</span><span class="op">)</span>
-
-<span class="fu">MI.vec</span><span class="op">(</span><span class="va">x</span>, <span class="va">W</span>, alternative <span class="op">=</span> <span class="st">"greater"</span>, symmetrize <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">MI.local</span><span class="op">(</span><span class="va">x</span>, <span class="va">W</span>, alternative <span class="op">=</span> <span class="st">"greater"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">MI.vec</span><span class="op">(</span><span class="va">x</span>, <span class="va">W</span>, alternative <span class="op">=</span> <span class="st">"greater"</span>, symmetrize <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>x</dt>
 <dd><p>a vector or matrix</p></dd>
+
+
 <dt>W</dt>
 <dd><p>spatial connectivity matrix</p></dd>
+
+
 <dt>alternative</dt>
 <dd><p>specification of alternative hypothesis as 'greater' (default),
 'lower', or 'two.sided'</p></dd>
+
+
 <dt>symmetrize</dt>
 <dd><p>symmetrizes the connectivity matrix <em><strong>W</strong></em>
 by: 1/2 * (<em><strong>W</strong></em> + <em><strong>W</strong></em>') (TRUE/ FALSE).</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>Returns an object of class <code>data.frame</code> that contains the
+    
+
+<p>Returns an object of class <code>data.frame</code> that contains the
 following information for each variable:</p><dl><dt><code>Ii</code></dt>
 <dd><p>observed value of local Moran's I</p></dd>
 
@@ -166,15 +175,14 @@ pp. 716 - 748.</p>
     <div id="author">
     <h2>Author</h2>
     <p>Sebastian Juhl</p>
-<p>Sebastian Juhl</p>
     </div>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">fakedata</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">x</span> <span class="op">&lt;-</span> <span class="va">fakedataset</span><span class="op">$</span><span class="va">x2</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="op">(</span><span class="va">MIi</span> <span class="op">&lt;-</span> <span class="fu">MI.local</span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>, W <span class="op">=</span> <span class="va">W</span>, alternative <span class="op">=</span> <span class="st">"greater"</span><span class="op">)</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">fakedata</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="va">fakedataset</span><span class="op">$</span><span class="va">x2</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="op">(</span><span class="va">MIi</span> <span class="op">&lt;-</span> <span class="fu">MI.local</span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>, W <span class="op">=</span> <span class="va">W</span>, alternative <span class="op">=</span> <span class="st">"greater"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                Ii         EIi    VarIi           zIi          pIi    </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1   -0.1605244807 -0.02020202 1.943397 -0.1006575573 5.400888e-01    </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2   -0.2045168571 -0.03030303 2.885612 -0.1025566146 5.408426e-01    </span>
@@ -276,16 +284,16 @@ pp. 716 - 748.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 98   3.1803457100 -0.03030303 2.885612  1.8900524236 2.937547e-02   *</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 99   0.3915644846 -0.03030303 2.885612  0.2483459835 4.019334e-01    </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 100  0.1000864726 -0.02020202 1.943397  0.0862865845 4.656193e-01    </span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">fakedata</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">X</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="va">fakedataset</span><span class="op">$</span><span class="va">x1</span>, <span class="va">fakedataset</span><span class="op">$</span><span class="va">x2</span>, <span class="va">fakedataset</span><span class="op">$</span><span class="va">x3</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="op">(</span><span class="va">MI</span> <span class="op">&lt;-</span> <span class="fu">MI.vec</span><span class="op">(</span>x <span class="op">=</span> <span class="va">X</span>, W <span class="op">=</span> <span class="va">W</span>, alternative <span class="op">=</span> <span class="st">"greater"</span>, symmetrize <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">fakedata</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">X</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="va">fakedataset</span><span class="op">$</span><span class="va">x1</span>, <span class="va">fakedataset</span><span class="op">$</span><span class="va">x2</span>, <span class="va">fakedataset</span><span class="op">$</span><span class="va">x3</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="op">(</span><span class="va">MI</span> <span class="op">&lt;-</span> <span class="fu">MI.vec</span><span class="op">(</span>x <span class="op">=</span> <span class="va">X</span>, W <span class="op">=</span> <span class="va">W</span>, alternative <span class="op">=</span> <span class="st">"greater"</span>, symmetrize <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             I          EI        VarI        zI           pI    </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 0.311178214 -0.01010101 0.005344193 4.3948248 5.543107e-06 ***</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2 0.168757531 -0.01010101 0.005344193 2.4466317 7.209904e-03  **</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3 0.009112739 -0.01010101 0.005344193 0.2628276 3.963417e-01    </span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -300,7 +308,7 @@ pp. 716 - 748.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>
