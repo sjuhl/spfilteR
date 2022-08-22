@@ -86,21 +86,21 @@
 #' }
 #' }
 #'
-#' @details If \emph{\strong{W}} is not symmetric, it gets symmetrized by
-#' 1/2 * (\emph{\strong{W}} + \emph{\strong{W}}') before the decomposition.
+#' @details If \strong{W} is not symmetric, it gets symmetrized by
+#' 1/2 * (\strong{W} + \strong{W}') before the decomposition.
 #'
 #' If covariates are supplied to \code{MX}, the function uses these regressors
 #' to construct the following projection matrix:
 #'
-#' \emph{\strong{M} = \strong{I} - \strong{X} (\strong{X}'\strong{X})^-1\strong{X}'}
+#' \strong{M} = \strong{I} - \strong{X} (\strong{X}'\strong{X})^-1\strong{X}'
 #'
-#' Eigenvectors from \emph{\strong{MWM}} using this specification of
-#' \emph{\strong{M}} are not only mutually uncorrelated but also orthogonal
+#' Eigenvectors from \strong{MWM} using this specification of
+#' \strong{M} are not only mutually uncorrelated but also orthogonal
 #' to the regressors specified in \code{MX}. Alternatively, if \code{MX = NULL}, the
-#' projection matrix becomes \emph{\strong{M} = \strong{I} - \strong{11}'/\emph{n}},
-#' where \emph{\strong{1}} is a vector of ones and \emph{n} represents the number of
+#' projection matrix becomes \strong{M} = \strong{I} - \strong{11}'/ *n*,
+#' where \strong{1} is a vector of ones and *n* represents the number of
 #' observations. Griffith and Tiefelsdorf (2007) show how the choice of the appropriate
-#' \emph{\strong{M}} depends on the underlying process that generates the spatial
+#' \strong{M} depends on the underlying process that generates the spatial
 #' dependence.
 #'
 #' The Bonferroni correction is only possible if eigenvector selection is based on

@@ -104,6 +104,4 @@ pp. 716 - 748.
 }
 \author{
 Sebastian Juhl
-
-Sebastian Juhl
 }
