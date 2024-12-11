@@ -484,6 +484,13 @@ test_that("glmFilter() estimates logit models", {
   expect_is(out, "spfilter")
 })
 
+test_that("glmFilter() estimates negative binomial models", {
+  y <- fakedataset$count
+  X <- cbind(fakedataset$x1,fakedataset$x2,fakedataset$x3)
+  out <- glmFilter(y=y,x=X,W=W,objfn="MI",model="nb")
+  expect_is(out, "spfilter")
+})
+
 test_that("check ideal candidate set size", {
   y <- fakedataset$indicator
   sf <- glmFilter(y=y,W=W,objfn="p",model="logit",positive=TRUE
@@ -585,11 +592,11 @@ test_that("W must be of class 'matrix', 'Matrix', or 'data.frame'", {
                ,"W must be of class 'matrix' or 'data.frame'")
 })
 
-test_that("'model' must be one of 'poisson', 'probit', or 'logit'", {
-  model <- c("probit","logit","poisson","else")
-  expect <- c(TRUE,TRUE,TRUE,FALSE)
+test_that("'model' must be one of 'poisson', 'probit', 'logit', or 'nb'", {
+  model <- c("probit","logit","poisson","nb","else")
+  expect <- c(TRUE,TRUE,TRUE,TRUE,FALSE)
   out <- NULL
-  for(i in 1:4){
+  for(i in seq_len(length(expect))){
     if(model[i] %in% c("probit","logit")) y <- fakedataset$indicator
     else y <- fakedataset$count
     res <- try(glmFilter(y=y,W=W,model=model[i],objfn="BIC")
@@ -624,6 +631,12 @@ test_that("The argument 'resid.type' must be 'raw','pearson', or 'deviance'", {
   expect_equal(out,expected)
 })
 
+test_that("If resid.type == 'deviance' and model == 'nb', still calculates pearson residuals", {
+  y <- fakedataset$count
+  out <- glmFilter(y=y,W=W,model="nb",objfn="BIC",resid.type="deviance")
+  expect_equal(out$other$resid.type,"pearson")
+})
+
 test_that("eigenvectors are orthogonal to covariates specified in MX", {
   y <- fakedataset$indicator
   X <- cbind(1,fakedataset$x2)
@@ -646,13 +659,13 @@ test_that("check 'pMI' with positive autocorrelation in glmFilter()", {
   expect_is(sf, "spfilter")
 })
 
-test_that("lmFilter sets 'bonferroni=FALSE' for 'pMI'", {
+test_that("glmFilter sets 'bonferroni=FALSE' for 'pMI'", {
   sf <- glmFilter(y=fakedataset$count,W=W,objfn="pMI",model="poisson"
                   ,positive=TRUE,bonferroni=TRUE)
   expect_false(sf$other$bonferroni)
 })
 
-test_that("check 'pMI' with negative autocorrelation in lmFilter()", {
+test_that("check 'pMI' with negative autocorrelation in glmFilter()", {
   sf <- glmFilter(y=fakedataset$negcount,W=W,objfn="pMI",model="poisson"
                  ,positive=FALSE)
   expect_equal(sf$other$dependence, "negative")
