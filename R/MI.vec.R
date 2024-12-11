@@ -30,7 +30,7 @@
 #' follows Cliff and Ord (1981), see also Upton and Fingleton (1985).
 #' It assumes the connectivity matrix \emph{\strong{W}} to be symmetric.
 #' For inherently non-symmetric matrices, it is recommended to specify
-#' \code{symmetrize=TRUE}.
+#' \code{symmetrize = TRUE}.
 #'
 #' @author Sebastian Juhl
 #'
