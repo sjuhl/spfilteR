@@ -1,4 +1,4 @@
-#' @name MI.vec
+#' @name MI.local
 #'
 #' @title Local Moran Coefficient
 #'
