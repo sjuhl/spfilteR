@@ -42,7 +42,8 @@ autocorrelation ('pMI'), or all eigenvectors in the candidate set ('all')}
 Details}
 
 \item{model}{a character string indicating the type of model to be estimated.
-Currently, 'probit', 'logit', and 'poisson' are valid inputs}
+Currently, 'probit', 'logit', 'poisson', and 'nb' (for negative binomial model)
+are valid inputs}
 
 \item{optim.method}{a character specifying the optimization method used by
 the \code{optim} function}
@@ -63,10 +64,10 @@ Chun et al. (2016) to determine the ideal size of the candidate set
 
 \item{min.reduction}{if \code{objfn} is either 'AIC' or 'BIC'. A value in the
 interval [0,1) that determines the minimum reduction in AIC/ BIC (relative to the
-current AIC/ BIC) a candidate eigenvector need to achieve in order to be selected}
+current AIC/ BIC) a candidate eigenvector needs to achieve in order to be selected}
 
 \item{boot.MI}{number of iterations used to estimate the variance of Moran's I
-(default = 100). Alternatively, if \code{boot.MI = NULL}, analytical results will
+(default is 100). Alternatively, if \code{boot.MI = NULL}, analytical results will
 be used}
 
 \item{resid.type}{character string specifying the residual type to be used.
@@ -89,7 +90,7 @@ information:
 \item{\code{varcovar}}{estimated variance-covariance matrix}
 \item{\code{EV}}{a matrix containing the summary statistics of selected eigenvectors}
 \item{\code{selvecs}}{vector/ matrix of selected eigenvectors}
-\item{\code{evMI}}{Moran coefficient of all eigenvectors}
+\item{\code{evMI}}{Moran coefficient of eigenvectors}
 \item{\code{moran}}{residual autocorrelation in the initial and the
 filtered model}
 \item{\code{fit}}{adjusted R-squared of the initial and the filtered model}
@@ -113,7 +114,8 @@ the stepwise regression procedure}
 \item{\code{siglevel}}{if \code{objfn = 'p'} or \code{objfn = 'pMI'}: actual
 (unadjusted/ adjusted) significance level}
 \item{\code{resid.type}}{residual type ('raw', 'deviance', or 'pearson')}
-\item{\code{pseudoR2}}{McFadden's pseudo R-squared (filtered vs. unfiltered model)}
+\item{\code{pseudoR2}}{McFadden's (adjusted) pseudo R-squared (filtered vs.
+unfiltered model) based on the models' likelihood functions}
 }
 }
 }
@@ -149,6 +151,9 @@ The Bonferroni correction is only possible if eigenvector selection is based on
 the significance level of the eigenvectors (\code{objfn = 'p'}). It is set to
 FALSE if eigenvectors are added to the model until the residuals exhibit no
 significant level of spatial autocorrelation (\code{objfn = 'pMI'}).
+
+For the negative binomial model, deviance residuals are currently not computed.
+The function sets \code{resid.type = 'pearson'} and prints a message to the console.
 }
 \note{
 If the condition number (\code{condnum}) suggests high levels of
@@ -164,7 +169,8 @@ In contrast to eigenvector-based spatial filtering in linear regression models,
 Chun (2014) notes that only a limited number of studies address the problem
 of measuring spatial autocorrelation in generalized linear model residuals.
 Consequently, eigenvector selection may be based on an objective function that
-maximizes model fit rather than minimizes residual spatial autocorrelation.
+maximizes model fit rather than a function that minimizes residual spatial
+autocorrelation.
 }
 \examples{
 data(fakedata)

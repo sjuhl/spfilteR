@@ -7,9 +7,10 @@ summary.spfilter <- function(object, EV = FALSE, ...) {
   # Print Output
   #####
   # head
+  mod <- ifelse(object$other$model == "nb", "NegBin", object$other$model)
   cat("\n\t- Spatial Filtering with Eigenvectors"
-      ,paste0("(", paste0(toupper(substring(object$other$model, 1, 1)),
-                          substring(object$other$model, 2)), " Model)")," -\n\n")
+      ,paste0("(", paste0(toupper(substring(mod, 1, 1)),
+                          substring(mod, 2)), " Model)")," -\n\n")
 
   # estimates & model fit
   signif <- star(p = object$estimates[, "p-value"])
@@ -17,7 +18,7 @@ summary.spfilter <- function(object, EV = FALSE, ...) {
   colnames(estimates) <- c(colnames(object$estimates), "")
   cat("Coefficients",paste0(ifelse(object$other$model == "linear"
                                    & !("condnum" %in% names(object$other)),
-                                   "(OLS)", "(ML)"), ":\n"))
+                                   "(OLS)", "(MLE)"), ":\n"))
   print(estimates)
   if (object$other$model == "linear") {
     cat("\nAdjusted R-squared:\n")
@@ -31,7 +32,7 @@ summary.spfilter <- function(object, EV = FALSE, ...) {
   cat(paste("\nFiltered for", object$other$dependence, "spatial autocorrelation\n"))
   cat(paste(object$other$nev, "out of", object$other$ncandidates,
             "candidate eigenvectors selected\n"))
-  if (object$other$model!="linear" & object$other$nev>0) {
+  if (object$other$model != "linear" & object$other$nev > 0) {
     cat(paste0("Condition Number (Multicollinearity): ", object$other$condnum, "\n"))
   }
   cat(paste0("Objective Function: \"", object$other$objfn, "\""))
@@ -39,7 +40,7 @@ summary.spfilter <- function(object, EV = FALSE, ...) {
     if (object$other$bonferroni) {
       cat(paste0("\ (significance level = ", round(object$other$siglevel * object$other$ncandidates, 5),
                  ")\n"))
-      cat(paste0("Bonferroni correction: ", object$other$bonferroni,""))
+      cat(paste0("Bonferroni correction: ", object$other$bonferroni, ""))
       cat(paste0("\ (adjusted significance level = ", round(object$other$siglevel, 5), ")\n"))
     } else {
       cat(paste0("\ (significance level = ", round(object$other$siglevel, 5), ")\n"))
@@ -69,14 +70,14 @@ summary.spfilter <- function(object, EV = FALSE, ...) {
   cat(paste0("\n","Moran's I ", ifelse(object$other$model != "linear",
                                 paste0("(", toupper(substring(object$other$resid.type, 1, 1)),
                                        substring(object$other$resid.type, 2), ""), "("),
-             "Residuals):\n"))
+             " Residuals):\n"))
   print(moran)
 }
 
 
 #' @export
 print.spfilter <- function(x, ...) {
-  cat(paste(x$other$nev, "out of", x$other$ncandidates, "candidate eigenvectors selected"))
+  cat(paste(x$other$nev, "out of", x$other$ncandidates, "candidate eigenvectors selected\n"))
 }
 
 

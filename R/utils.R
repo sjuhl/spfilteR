@@ -57,9 +57,9 @@ candsetsize <- function(npos, zMI) {
 #' @name residfun
 #' @noRd
 
-residfun <- function(y, fitvals, model) {
-  if (!(model %in% c("linear", "probit", "logit", "poisson"))) {
-    stop("'model' must be either 'linear', 'probit', 'logit', or 'poisson'")
+residfun <- function(y, fitvals, size = NULL, model) {
+  if (!(model %in% c("linear", "probit", "logit", "poisson", "nb"))) {
+    stop("'model' must be either 'linear', 'probit', 'logit', 'poisson', or 'nb'")
   }
   # raw residuals
   raw <- y - fitvals
@@ -73,6 +73,9 @@ residfun <- function(y, fitvals, model) {
     sign <- ifelse(y > fitvals, 1, -1)
     ratio <- ifelse(y == 0, 1, y / fitvals)
     deviance <- sign * sqrt(2 * (y * log(ratio) - (y - fitvals)))
+  } else if (model == "nb") {
+    pearson <- (y - fitvals) / sqrt((fitvals + (fitvals^2 / size)))
+    deviance <- Inf
   } else if (model == "linear") {
     pearson <- deviance <- raw
   }
@@ -87,7 +90,7 @@ residfun <- function(y, fitvals, model) {
 #' @noRd
 
 fittedval <- function(x, params, model) {
-  mu <- x %*% params
+  if(model != "nb") mu <- x %*% params
   if (model == "linear") {
     yhat <- mu
   } else if (model == "probit") {
@@ -95,6 +98,9 @@ fittedval <- function(x, params, model) {
   } else if (model == "logit") {
     yhat <- exp(mu) / (1 + exp(mu))
   } else if (model == "poisson") {
+    yhat <- exp(mu)
+  } else if (model == "nb"){
+    mu <- x %*% params[-length(params)]
     yhat <- exp(mu)
   }
   return(yhat)
@@ -137,7 +143,8 @@ getICs <- function(negloglik, n, df) {
 pseudoR2 <- function(negloglik_n, negloglik_f, nev) {
   R2 <- 1 - (-negloglik_n / -negloglik_f)
   adjR2 <- 1 - ((-negloglik_n - nev) / -negloglik_f)
-  return(R2)
+  out <- data.frame(R2, adjR2)
+  return(out)
 }
 
 
