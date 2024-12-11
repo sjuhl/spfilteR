@@ -63,7 +63,7 @@ autocorrelation at which the eigenvector selection terminates}
 \item{boot.MI}{number of iterations used to estimate the variance of Moran's I.
 If \code{boot.MI = NULL} (default), analytical results will be used}
 
-\item{na.rm}{remove observations with missing values (TRUE/ FALSE)}
+\item{na.rm}{listwise deletion of observations with missing values (TRUE/ FALSE)}
 
 \item{object}{an object of class \code{spfilter}}
 
@@ -79,7 +79,7 @@ information:
 \item{\code{varcovar}}{estimated variance-covariance matrix}
 \item{\code{EV}}{a matrix containing the summary statistics of selected eigenvectors}
 \item{\code{selvecs}}{vector/ matrix of selected eigenvectors}
-\item{\code{evMI}}{Moran coefficient of all eigenvectors}
+\item{\code{evMI}}{Moran coefficient of eigenvectors}
 \item{\code{moran}}{residual autocorrelation in the initial and the
 filtered model}
 \item{\code{fit}}{adjusted R-squared of the initial and the filtered model}

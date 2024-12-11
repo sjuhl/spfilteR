@@ -37,7 +37,7 @@
 #' autocorrelation at which the eigenvector selection terminates
 #' @param boot.MI number of iterations used to estimate the variance of Moran's I.
 #' If \code{boot.MI = NULL} (default), analytical results will be used
-#' @param na.rm remove observations with missing values (TRUE/ FALSE)
+#' @param na.rm listwise deletion of observations with missing values (TRUE/ FALSE)
 #' @param object an object of class \code{spfilter}
 #' @param EV display summary statistics for selected eigenvectors (TRUE/ FALSE)
 #' @param ... additional arguments
@@ -49,7 +49,7 @@
 #' \item{\code{varcovar}}{estimated variance-covariance matrix}
 #' \item{\code{EV}}{a matrix containing the summary statistics of selected eigenvectors}
 #' \item{\code{selvecs}}{vector/ matrix of selected eigenvectors}
-#' \item{\code{evMI}}{Moran coefficient of all eigenvectors}
+#' \item{\code{evMI}}{Moran coefficient of eigenvectors}
 #' \item{\code{moran}}{residual autocorrelation in the initial and the
 #' filtered model}
 #' \item{\code{fit}}{adjusted R-squared of the initial and the filtered model}
@@ -141,29 +141,30 @@ lmFilter <- function(y, x = NULL, W, objfn = "MI", MX = NULL, sig = .05,
                      alpha = .25, tol = .1, boot.MI = NULL, na.rm = TRUE) {
 
   if (!is.null(MX)) {
-    MX <- as.matrix(MX)
+    MX <- data.matrix(MX)
   }
   if (!is.null(x)) {
-    x <- as.matrix(x)
-  }
-  if (!is.null(colnames(x))) {
-    nams <- colnames(x)
-  } else {
-    nams <- NULL
+    x <- data.matrix(x)
+    if (!is.null(colnames(x))) {
+      nams <- colnames(x)[colnames(x) != "1"]
+    } else {
+      nams <- NULL
+    }
+    x <- unname(x)
   }
 
   # missing values
   if (na.rm) {
     if (!is.null(x)) {
       miss <- apply(cbind(y, x), 1, anyNA)
-      x <- as.matrix(x[!miss,])
+      x <- data.matrix(x[!miss,])
     } else {
       miss <- is.na(y)
     }
     y <- y[!miss]
     W <- W[!miss, !miss]
     if (!is.null(MX)) {
-      MX[!miss,]
+      MX <- MX[!miss,]
     }
   }
 
@@ -174,7 +175,7 @@ lmFilter <- function(y, x = NULL, W, objfn = "MI", MX = NULL, sig = .05,
   if (is.null(x)) {
     x <- as.matrix(rep(1, n))
   }
-  if (!isTRUE(all.equal(x[, 1], rep(1, n)))) {
+  if (!any(apply(x, 2, sd) == 0)) {
     x <- cbind(1, x)
   }
   if (!is.null(MX) && any(apply(MX, 2, sd) == 0)) {
