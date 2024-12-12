@@ -14,8 +14,6 @@ vp(y, x = NULL, evecs = NULL, msr = 100)
 \item{evecs}{selected eigenvectors}
 
 \item{msr}{number of permutations to compute the expected value under H0}
-
-\item{obj}{an object of class \code{vpart}}
 }
 \value{
 Returns an object of class \code{vpart} which provides the following

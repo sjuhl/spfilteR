@@ -12,7 +12,6 @@
 #' @param x vector/ matrix of covariates
 #' @param evecs selected eigenvectors
 #' @param msr number of permutations to compute the expected value under H0
-#' @param obj an object of class \code{vpart}
 #'
 #' @return Returns an object of class \code{vpart} which provides the following
 #' information:
