@@ -12,6 +12,7 @@
 #' @param x vector/ matrix of covariates
 #' @param evecs selected eigenvectors
 #' @param msr number of permutations to compute the expected value under H0
+#' @param obj an object of class \code{vpart}
 #'
 #' @return Returns an object of class \code{vpart} which provides the following
 #' information:
@@ -162,6 +163,7 @@ vp <- function(y, x = NULL, evecs = NULL, msr = 100) {
   return(out)
 }
 
+#' @rdname vp
 #' @export
 print.vpart <- function(obj) {
   res <- data.frame(cbind(format(round(obj$adjR2, 7), nsmall = 7),
