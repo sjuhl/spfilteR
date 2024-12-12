@@ -163,12 +163,12 @@ vp <- function(y, x = NULL, evecs = NULL, msr = 100) {
 }
 
 #' @export
-print.vpart <- function(object, ...) {
-  res <- data.frame(cbind(format(round(object$adjR2, 7), nsmall = 7),
-                          format(round(object$R2, 7), nsmall = 7)),
+print.vpart <- function(x, ...) {
+  res <- data.frame(cbind(format(round(x$adjR2, 7), nsmall = 7),
+                          format(round(x$R2, 7), nsmall = 7)),
                           row.names = c("ab", "bc", "abc", "a", "b", "c", "d"))
   colnames(res) <- c("Adj. R2", "R2")
   cat("\t - Variation Partitioning -\n\n")
   print(res)
-  cat(paste("---\n","Permutations:", object$msr))
+  cat(paste("---\n","Permutations:", x$msr))
 }
