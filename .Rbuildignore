@@ -2,6 +2,7 @@
 ^\.Rproj\.user$
 ^\.travis\.yml$
 ^\.Rhistory
+^\.github$
 ^LICENSE\.md$
 ^README\.Rmd$
 ^docs$
