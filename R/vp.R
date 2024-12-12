@@ -12,8 +12,6 @@
 #' @param x vector/ matrix of covariates
 #' @param evecs selected eigenvectors
 #' @param msr number of permutations to compute the expected value under H0
-#' @param obj an object of class \code{vpart}
-#' @param ... additional arguments
 #'
 #' @return Returns an object of class \code{vpart} which provides the following
 #' information:
@@ -164,14 +162,13 @@ vp <- function(y, x = NULL, evecs = NULL, msr = 100) {
   return(out)
 }
 
-#' @rdname vp
 #' @export
-print.vpart <- function(obj, ...) {
-  res <- data.frame(cbind(format(round(obj$adjR2, 7), nsmall = 7),
-                          format(round(obj$R2, 7), nsmall = 7)),
+print.vpart <- function(object, ...) {
+  res <- data.frame(cbind(format(round(object$adjR2, 7), nsmall = 7),
+                          format(round(object$R2, 7), nsmall = 7)),
                           row.names = c("ab", "bc", "abc", "a", "b", "c", "d"))
   colnames(res) <- c("Adj. R2", "R2")
   cat("\t - Variation Partitioning -\n\n")
   print(res)
-  cat(paste("---\n","Permutations:", obj$msr))
+  cat(paste("---\n","Permutations:", object$msr))
 }
