@@ -852,7 +852,7 @@ test_that("residfun() takes as model types 'linear', 'probit'
                 y <- fakedataset$count
                 fit <- round(fakedataset$x1 + rnorm(length(y), 0, .3))
               }
-              res <- try(residfun(y = y, fitvals = fit, model = model[i])
+              res <- try(residfun(y = y, fitvals = fit, size = 1, model = model[i])
                          ,silent = TRUE)
               out[i] <- class(res) != "try-error"
             }
