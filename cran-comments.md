@@ -9,6 +9,9 @@
 - bug fixes
     - bug fix in help pages of MI.local() and MI.vec() functions
     - resolves an error in `lmFilter()` and `glmFilter()` occurring when covariates are supplied as data.frame
+- assign variable names to output (if provided)
+- improve the handling of missingness in `MI.vec()`, `MI.decomp()`, and `MI.local()`
+- update tests
 
 
 # Test Results:
