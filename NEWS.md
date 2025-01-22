@@ -1,4 +1,4 @@
-# spfilteR 2.0
+# spfilteR 2.0.0
 
 - allow for unsupervised eigenvector selection in negative binomial models
     - `glmFilter()` now supports 'nb' (for negative binomial) as model type

@@ -1,4 +1,4 @@
-# spfilteR 2.0
+# spfilteR 2.0.0
 
 # NEWS.md:
 - allow for unsupervised eigenvector selection in negative binomial models
