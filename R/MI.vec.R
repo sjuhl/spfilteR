@@ -57,11 +57,13 @@
 #' @export
 
 MI.vec <- function(x, W, alternative = "greater", symmetrize = TRUE) {
+  
   # convert x to a matrix and save names (if provided)
-  x <- as.matrix(x)
+  x <- data.matrix(x)
   if (!is.null(colnames(x))) {
     nams <- colnames(x)
   }
+  x <- unname(x)
 
   #####
   # Input
@@ -120,7 +122,7 @@ MI.vec <- function(x, W, alternative = "greater", symmetrize = TRUE) {
     out[i, "pI"] <- pfunc(z = out[i, "zI"], alternative = alternative)
     out[i, 6] <- star(p = out[i, "pI"])
   }
-  if (!is.null(colnames(x))) {
+  if (exists('nams')) {
     rownames(out) <- nams
   }
 

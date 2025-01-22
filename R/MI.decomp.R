@@ -54,12 +54,13 @@
 #' @export
 
 MI.decomp <- function(x, W, nsim = 100) {
-
+  
   # convert x to a matrix and save names (if provided)
-  x <- as.matrix(x)
+  x <- data.matrix(x)
   if (!is.null(colnames(x))) {
     nams <- colnames(x)
   }
+  x <- unname(x)
 
   #####
   # Input
@@ -128,7 +129,7 @@ MI.decomp <- function(x, W, nsim = 100) {
     out[i, 8] <- star(p = out[i, "pI-"])
     out[i, 10] <- star(p = out[i, "pItwo.sided"])
   }
-  if (!is.null(colnames(x))) {
+  if (exists('nams')) {
     rownames(out) <- nams
   }
 
