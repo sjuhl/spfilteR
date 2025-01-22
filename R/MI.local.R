@@ -66,11 +66,6 @@ MI.local <- function(x, W, alternative = "greater") {
          'lower', or 'two.sided'")
   }
 
-  # save names (if provided)
-  if (!is.null(names(x))) {
-    nams <- names(x)
-  }
-
   # define variables
   n <- length(x)
   z <- x - mean(x)
@@ -96,11 +91,6 @@ MI.local <- function(x, W, alternative = "greater") {
   out[, "pIi"] <- vapply(out[, "zIi"], pfunc ,alternative = alternative
                         ,FUN.VALUE = numeric(1))
   out[, 6] <- vapply(out[, "pIi"], star, FUN.VALUE = character(1))
-
-  # attach names (if provided)
-  if (!is.null(names(x))) {
-    rownames(out) <- nams
-  }
 
   # return
   return(out)
