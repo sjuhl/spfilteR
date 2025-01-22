@@ -2,7 +2,7 @@
 
 <!-- badges: start -->
 [![codecov](https://codecov.io/gh/sjuhl/spfilteR/branch/master/graph/badge.svg)](https://app.codecov.io/gh/sjuhl/spfilteR)
-[![Travis build status](https://travis-ci.org/sjuhl/spfilteR.svg?branch=master)](https://travis-ci.org/sjuhl/spfilteR)
+[![Travis build status](https://travis-ci.org/sjuhl/spfilteR.svg?branch=master)](https://app.travis-ci.com/sjuhl/spfilteR)
 [![license](https://img.shields.io/badge/license-GPL--3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0.en.html)
 ![CRAN/METACRAN](https://img.shields.io/cran/v/spfilteR?label=CRAN)
 <!-- badges: end -->

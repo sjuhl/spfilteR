@@ -1,9 +1,9 @@
 citHeader("To cite spfilteR in publications use:")
 
-citEntry(
-  entry    = "Article",
+bibentry(
+  bibtype    = "Article",
   title    = "spfilteR: An R Package for Semiparametric Spatial Filtering with Eigenvectors in (Generalized) Linear Models",
-  author   = as.person("Sebastian Juhl"),
+  author   = person("Sebastian Juhl"),
   journal  = "The R Journal",
   year     = "2021",
   volume = "13",
