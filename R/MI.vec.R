@@ -11,7 +11,8 @@
 #' @param alternative specification of alternative hypothesis as 'greater' (default),
 #' 'lower', or 'two.sided'
 #' @param symmetrize symmetrizes the connectivity matrix \emph{\strong{W}}
-#' by: 1/2 * (\emph{\strong{W}} + \emph{\strong{W}}') (TRUE/ FALSE).
+#' by: 1/2 * (\emph{\strong{W}} + \emph{\strong{W}}') (TRUE/ FALSE)
+#' @param na.rm listwise deletion of observations with missing values (TRUE/ FALSE)
 #'
 #' @return Returns an object of class \code{data.frame} that contains the
 #' following information for each variable:
@@ -56,14 +57,21 @@
 #'
 #' @export
 
-MI.vec <- function(x, W, alternative = "greater", symmetrize = TRUE) {
-  
+MI.vec <- function(x, W, alternative = "greater", symmetrize = TRUE, na.rm = TRUE) {
+
   # convert x to a matrix and save names (if provided)
   x <- data.matrix(x)
   if (!is.null(colnames(x))) {
     nams <- colnames(x)
   }
   x <- unname(x)
+
+  # missing values
+  if (na.rm) {
+    miss <- apply(x, 1, anyNA)
+    x <- data.matrix(x[!miss,])
+    W <- W[!miss, !miss]
+  }
 
   #####
   # Input

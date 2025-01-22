@@ -4,7 +4,7 @@
 \alias{MI.decomp}
 \title{Decomposition of the Moran Coefficient}
 \usage{
-MI.decomp(x, W, nsim = 100)
+MI.decomp(x, W, nsim = 100, na.rm = TRUE)
 }
 \arguments{
 \item{x}{a vector or matrix}
@@ -12,6 +12,8 @@ MI.decomp(x, W, nsim = 100)
 \item{W}{spatial connectivity matrix}
 
 \item{nsim}{number of iterations to simulate the null distribution}
+
+\item{na.rm}{listwise deletion of observations with missing values (TRUE/ FALSE)}
 }
 \value{
 Returns a \code{data.frame} that contains the following information

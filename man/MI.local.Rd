@@ -4,7 +4,7 @@
 \alias{MI.local}
 \title{Local Moran Coefficient}
 \usage{
-MI.local(x, W, alternative = "greater")
+MI.local(x, W, alternative = "greater", na.rm = TRUE)
 }
 \arguments{
 \item{x}{a vector}
@@ -13,6 +13,8 @@ MI.local(x, W, alternative = "greater")
 
 \item{alternative}{specification of alternative hypothesis as 'greater' (default),
 'lower', or 'two.sided'}
+
+\item{na.rm}{listwise deletion of observations with missing values (TRUE/ FALSE)}
 }
 \value{
 Returns an object of class \code{data.frame} that contains the

@@ -4,7 +4,7 @@
 \alias{MI.vec}
 \title{Moran Test for Spatial Autocorrelation}
 \usage{
-MI.vec(x, W, alternative = "greater", symmetrize = TRUE)
+MI.vec(x, W, alternative = "greater", symmetrize = TRUE, na.rm = TRUE)
 }
 \arguments{
 \item{x}{a vector or matrix}
@@ -15,7 +15,9 @@ MI.vec(x, W, alternative = "greater", symmetrize = TRUE)
 'lower', or 'two.sided'}
 
 \item{symmetrize}{symmetrizes the connectivity matrix \emph{\strong{W}}
-by: 1/2 * (\emph{\strong{W}} + \emph{\strong{W}}') (TRUE/ FALSE).}
+by: 1/2 * (\emph{\strong{W}} + \emph{\strong{W}}') (TRUE/ FALSE)}
+
+\item{na.rm}{listwise deletion of observations with missing values (TRUE/ FALSE)}
 }
 \value{
 Returns an object of class \code{data.frame} that contains the
