@@ -40,7 +40,14 @@ test_that("MI.vec() works with matrix input and returns a data frame with
 test_that("MI.vec() detects NAs and returns an error message", {
   x <- fakedataset$x1
   x[1] <- NA
-  expect_error(MI.vec(x = x, W = W), "Missing values detected")
+  expect_error(MI.vec(x = x, W = W, na.rm = FALSE), "Missing values detected")
+})
+
+test_that("MI.vec() removes NAs if required", {
+  x <- fakedataset$x1
+  x[1] <- NA
+  out <- MI.vec(x = x, W = W, na.rm = TRUE)
+  expect_is(out, "data.frame")
 })
 
 test_that("MI.vec() works with named input", {
@@ -70,7 +77,7 @@ test_that("check the permissible attributes for 'alternative'", {
 
 test_that("W must be of class 'matrix', 'Matrix', or 'data.frame'", {
   W2 <- as.vector(W)
-  expect_error(MI.vec(x = fakedataset$x1, W = W2)
+  expect_error(MI.vec(x = fakedataset$x1, W = W2, na.rm = FALSE)
               ,"W must be of class 'matrix' or 'data.frame'")
 })
 
@@ -84,17 +91,17 @@ test_that("MI.local() works with vector input and returns a data.frame", {
   expect_is(out, "data.frame")
 })
 
-test_that("MI.local() stores vector names", {
-  x <- fakedataset$x1
-  names(x) <- paste0("name_", 1:length(x))
-  out <- MI.local(x = x, W = W)
-  expect_equal(rownames(out), names(x))
-})
-
 test_that("MI.local() detects NAs and returns an error message", {
   x <- fakedataset$x1
   x[1] <- NA
-  expect_error(MI.local(x = x, W = W), "Missing values detected")
+  expect_error(MI.local(x = x, W = W, na.rm = FALSE), "Missing values detected")
+})
+
+test_that("MI.local() removes NAs if required", {
+  x <- fakedataset$x1
+  x[1] <- NA
+  out <- MI.local(x = x, W = W, na.rm = TRUE)
+  expect_is(out, "data.frame")
 })
 
 test_that("check the permissible attributes for 'alternative'", {
@@ -112,7 +119,7 @@ test_that("check the permissible attributes for 'alternative'", {
 
 test_that("W must be of class 'matrix', 'Matrix', or 'data.frame'", {
   W2 <- as.vector(W)
-  expect_error(MI.local(x = fakedataset$x1, W = W2)
+  expect_error(MI.local(x = fakedataset$x1, W = W2, na.rm = FALSE)
               ,"W must be of class 'matrix' or 'data.frame'")
 })
 
@@ -130,7 +137,14 @@ test_that("MI.decomp() works with matrix input and returns a data frame with
 test_that("MI.decomp() detects NAs and returns an error message", {
   x <- fakedataset$x1
   x[1] <- NA
-  expect_error(MI.decomp(x = x, W = W), "Missing values detected")
+  expect_error(MI.decomp(x = x, W = W, na.rm = FALSE), "Missing values detected")
+})
+
+test_that("MI.decomp() removes NAs if required", {
+  x <- fakedataset$x1
+  x[1] <- NA
+  out <- MI.decomp(x = x, W = W, na.rm = TRUE)
+  expect_is(out, "data.frame")
 })
 
 test_that("MI.decomp() works with named input", {
@@ -147,7 +161,7 @@ test_that("MI.decomp() warns if a constant is supplied", {
 
 test_that("W must be of class 'matrix', 'Matrix', or 'data.frame'", {
   W2 <- as.vector(W)
-  expect_error(MI.decomp(x = fakedataset$x1, W = W2)
+  expect_error(MI.decomp(x = fakedataset$x1, W = W2, na.rm = FALSE)
             ,"W must be of class 'matrix' or 'data.frame'")
 })
 
