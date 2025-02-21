@@ -12,8 +12,8 @@
 
 
 # Test Results:
-── R CMD check results ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── spfilteR 2.0 ────
-Duration: 49s
+── R CMD check results ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── spfilteR 2.1.0 ────
+Duration: 54s
 
 ❯ checking for future file timestamps ... NOTE
   unable to verify current time
