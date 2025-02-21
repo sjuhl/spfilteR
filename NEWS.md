@@ -1,3 +1,17 @@
+# spfilteR 2.1.0
+
+- update vignette to include an example of the negative binomial model
+- imrprovement in the console output of function `vp()`
+- improvements and bug fixes in `MI.vec()` and `MI.decomp()`:
+    - correctly handle missing values in each variable separately if multiple variables are supplied
+    - check for variable names only inside the function and not in the global environment
+    - removal of constant terms supplied to the functions
+- improve the handling of missingness in `MI.resid()`
+- minor adjustments to helper functions
+- update tests
+
+---
+
 # spfilteR 2.0.0
 
 - allow for unsupervised eigenvector selection in negative binomial models
@@ -6,7 +20,7 @@
     - update tests for negative binomial model
 - `glmFilter()` also provides McFadden's adjusted pseudo R-squared for the filtered vs. the unfiltered model
 - bug fixes
-    - bug fix in help pages of MI.local() and MI.vec() functions
+    - bug fix in help pages of `MI.local()` and `MI.vec()` functions
     - resolves an error in `lmFilter()` and `glmFilter()` occurring when covariates are supplied as data.frame
 - assign variable names to output (if provided)
 - improve the handling of missingness in `MI.vec()`, `MI.decomp()`, and `MI.local()`

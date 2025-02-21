@@ -37,10 +37,16 @@ test_that("MI.vec() works with matrix input and returns a data frame with
   expect_equal(nrow(out), ncol(X))
 })
 
-test_that("MI.vec() detects NAs and returns an error message", {
+test_that("MI.vec() detects NAs in x and returns an error message", {
   x <- fakedataset$x1
   x[1] <- NA
-  expect_error(MI.vec(x = x, W = W, na.rm = FALSE), "Missing values detected")
+  expect_error(MI.vec(x = x, W = W, na.rm = FALSE), "Missing values in x detected")
+})
+
+test_that("MI.vec() detects NAs in W and returns an error message", {
+  x <- fakedataset$x1
+  W[2, 1] <- NA
+  expect_error(MI.vec(x = x, W = W, na.rm = FALSE), "Missing values in W detected")
 })
 
 test_that("MI.vec() removes NAs if required", {
@@ -59,7 +65,7 @@ test_that("MI.vec() works with named input", {
 
 test_that("MI.vec() warns if a constant is supplied", {
   X <- cbind(1, fakedataset$x1)
-  expect_warning(MI.vec(x = X, W = W), "Constant term detected in x")
+  expect_warning(MI.vec(x = X, W = W), "Constant term removed from x")
 })
 
 test_that("check the permissible attributes for 'alternative'", {
@@ -134,10 +140,16 @@ test_that("MI.decomp() works with matrix input and returns a data frame with
             expect_equal(nrow(out), ncol(X))
           })
 
-test_that("MI.decomp() detects NAs and returns an error message", {
+test_that("MI.decomp() detects NAs in x and returns an error message", {
   x <- fakedataset$x1
   x[1] <- NA
-  expect_error(MI.decomp(x = x, W = W, na.rm = FALSE), "Missing values detected")
+  expect_error(MI.decomp(x = x, W = W, na.rm = FALSE), "Missing values in x detected")
+})
+
+test_that("MI.decomp() detects NAs in W and returns an error message", {
+  x <- fakedataset$x1
+  W[2, 1] <- NA
+  expect_error(MI.decomp(x = x, W = W, na.rm = FALSE), "Missing values in W detected")
 })
 
 test_that("MI.decomp() removes NAs if required", {
@@ -156,7 +168,7 @@ test_that("MI.decomp() works with named input", {
 
 test_that("MI.decomp() warns if a constant is supplied", {
   X <- cbind(1,fakedataset$x1)
-  expect_warning(MI.decomp(x = X, W = W), "Constant term detected in x")
+  expect_warning(MI.decomp(x = X, W = W), "Constant term removed from x")
 })
 
 test_that("W must be of class 'matrix', 'Matrix', or 'data.frame'", {
@@ -219,7 +231,7 @@ test_that("W must be of class 'matrix', 'Matrix', or 'data.frame'", {
               ,"W must be of class 'matrix' or 'data.frame'")
 })
 
-test_that("MI.resid() warns if boot<100", {
+test_that("MI.resid() warns if boot < 100", {
   y <- fakedataset$x1
   x <- as.matrix(rep(1, length(y)))
   resid <- y - x %*% solve(crossprod(x)) %*% crossprod(x,y)
@@ -240,6 +252,26 @@ test_that("If boot < 100, MI.resid() sets boot = 100", {
   set.seed(123)
   moran2 <- MI.resid(resid = resid, W = W, boot = boot2)
   expect_equal(moran1$VarI, moran2$VarI)
+})
+
+test_that("MI.resid() detects NAs and returns an error message", {
+  y <- fakedataset$x1
+  x <- as.matrix(rep(1, length(y)))
+  resid <- y - x %*% solve(crossprod(x)) %*% crossprod(x,y)
+  x[1] <- NA
+  resid <- resid[2:100]
+  expect_error(MI.resid(resid = resid, x = x, W = W, na.rm = FALSE)
+              ,"Missing values detected in x")
+})
+
+test_that("MI.resid() removes NAs if required", {
+  y <- fakedataset$x1
+  x <- as.matrix(rep(1, length(y)))
+  resid <- y - x %*% solve(crossprod(x)) %*% crossprod(x,y)
+  x[1] <- NA
+  resid <- resid[2:100]
+  out <- MI.resid(resid = resid, x = x, W = W, na.rm = TRUE)
+  expect_is(out, "data.frame")
 })
 
 

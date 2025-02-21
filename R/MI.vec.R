@@ -67,18 +67,15 @@ MI.vec <- function(x, W, alternative = "greater", symmetrize = TRUE, na.rm = TRU
   x <- unname(x)
 
   # missing values
-  if (na.rm) {
-    miss <- apply(x, 1, anyNA)
-    x <- data.matrix(x[!miss,])
-    W <- W[!miss, !miss]
-  }
+  miss <- is.na(x)
 
   #####
   # Input
   # Checks
   #####
-  if (0 %in% apply(x, 2, sd)) {
-    warning("Constant term detected in x")
+  if (0 %in% apply(x, 2, sd, na.rm = TRUE)) {
+    warning("Constant term removed from x")
+    x <- data.matrix(x[, apply(x, 2, sd, na.rm = TRUE) != 0])
   }
   if (!any(class(W) %in% c("matrix", "Matrix", "data.frame"))) {
     stop("W must be of class 'matrix' or 'data.frame'")
@@ -86,51 +83,62 @@ MI.vec <- function(x, W, alternative = "greater", symmetrize = TRUE, na.rm = TRU
   if (any(class(W) != "matrix")) {
     W <- as.matrix(W)
   }
-  if (anyNA(x) | anyNA(W)) {
-    stop("Missing values detected")
+  if (anyNA(W)) {
+    stop("Missing values in W detected")
+  }
+  if (!na.rm & anyNA(x)) {
+    stop("Missing values in x detected")
   }
   if (!(alternative %in% c("greater", "lower", "two.sided"))) {
     stop("Invalid input: 'alternative' must be either 'greater',
          'lower', or 'two.sided'")
   }
 
-  #####
-  # Additional
-  # Variables
-  #####
+  # nr of input variables
+  nx <- ncol(x)
+
+  # symmetrize W
   if (symmetrize) {
     W <- .5 * (W + t(W))
   }
-  nx <- ncol(x)
-  n <- nrow(W)
-  df <- n - 1 # only one variable considered at a time
-  S0 <- t(rep(1, n)) %*% W %*% rep(1, n)
-  S1 <- sum((W * W) + (W * t(W)))
-  S2 <- sum((rowSums(W) + colSums(W))^2)
-
-  # projection matrix M
-  M <- diag(n) - rep(1, n) %*% t(rep(1, n)) / n
-  MWM <- M %*% W %*% M
 
   #####
   # Output
   #####
   out <- data.frame(matrix(NA, nrow = nx, ncol = 6))
   colnames(out) <- c("I", "EI", "VarI", "zI", "pI", "")
-  for (i in 1:nx) {
+  for (i in seq_len(nx)) {
+    # nr of observations
+    n <- sum(!miss[, i])
+
+    # projection matrix M
+    M <- diag(n) - rep(1, n) %*% t(rep(1, n)) / n
+    MWM <- M %*% W[!miss[, i], !miss[, i]] %*% M
+
+    # additional variables
+    S0 <- t(rep(1, n)) %*% W[!miss[, i], !miss[, i]] %*% rep(1, n)
+    S1 <- sum((W[!miss[, i], !miss[, i]] * W[!miss[, i], !miss[, i]]) + (W[!miss[, i], !miss[, i]] * t(W[!miss[, i], !miss[, i]])))
+    S2 <- sum((rowSums(W[!miss[, i], !miss[, i]]) + colSums(W[!miss[, i], !miss[, i]]))^2)
+
     # observed
-    out[i, "I"] <- (n / S0) * t(x[, i]) %*% MWM %*% x[, i] / crossprod(x[, i], M) %*% x[, i]
+    out[i, "I"] <- (n / S0) * t(x[!miss[, i], i]) %*% MWM %*% x[!miss[, i], i] / crossprod(x[!miss[, i], i], M) %*% x[!miss[, i], i]
+    
     # expected
     out[i, "EI"] <- -1 / (n - 1)
+    
     # variance (normality assumption)
     out[i, "VarI"] <- ((n^2 * S1 - n * S2 + 3 * S0^2) / (S0^2 * (n^2 - 1))) - out[i, "EI"]^2
+    
     # test statistic
     out[i, "zI"] <- (out[i, "I"] - out[i, "EI"]) / sqrt(out[i, "VarI"])
+    
     # pI
     out[i, "pI"] <- pfunc(z = out[i, "zI"], alternative = alternative)
     out[i, 6] <- star(p = out[i, "pI"])
   }
-  if (exists('nams')) {
+
+  # add variable names
+  if (exists('nams', inherits = FALSE)) {
     rownames(out) <- nams
   }
 

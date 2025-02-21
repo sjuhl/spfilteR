@@ -141,7 +141,7 @@ If users wish to select eigenvectors based on individual selection criteria, the
 ### Extension to Generalized Linear Models
 The ESF approach outlined above easily extends to generalized linear models (GLMs) as well [see also @griffith2019]. Therefore, the `spfilteR` package contains the function `glmFilter()` which uses maximum likelihood estimation (MLE) to fit a spatially filtered GLM and performs an unsupervised eigenvector search based on alternative objective functions.
 
-Except for minor differences, `glmFilter()` works similar to the `lmFilter()` function discussed above. The option `model` defines the model that needs to be estimated. Currently, unsupervised spatial filtering is possible for logit, probit, and poisson models. Moreover, the option `optim.method` specifies the optimization method used to maximize the log-likelihood function. Finally, `resid.type` allows users to define the type of residuals used to calculate Moran's *I* and `boot.MI` is an integer specifying the number of bootstrap permutations to obtain the variance of Moran's *I*.
+Except for minor differences, `glmFilter()` works similar to the `lmFilter()` function discussed above. The option `model` defines the model that needs to be estimated. Currently, unsupervised spatial filtering is possible for logit, probit, poisson, and negative binomial models. Moreover, the option `optim.method` specifies the optimization method used to maximize the log-likelihood function. Finally, `resid.type` allows users to define the type of residuals used to calculate Moran's *I* and `boot.MI` is an integer specifying the number of bootstrap permutations to obtain the variance of Moran's *I*.
 
 ```{r}
 # define outcome variables
@@ -162,6 +162,11 @@ y.count <- fakedataset$count
 
 # ESF poisson model
 (poisson.esf <- glmFilter(y = y.count, x = NULL, W = W, objfn = 'BIC', model = 'poisson',
+                          optim.method = 'BFGS', positive = TRUE, ideal.setsize = FALSE,
+                          alpha = .25, resid.type = 'deviance', boot.MI = 100))
+
+# ESF negative binomial model
+(poisson.esf <- glmFilter(y = y.count, x = NULL, W = W, objfn = 'BIC', model = 'nb',
                           optim.method = 'BFGS', positive = TRUE, ideal.setsize = FALSE,
                           alpha = .25, resid.type = 'deviance', boot.MI = 100))
 ```

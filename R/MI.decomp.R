@@ -64,18 +64,15 @@ MI.decomp <- function(x, W, nsim = 100, na.rm = TRUE) {
   x <- unname(x)
 
   # missing values
-  if (na.rm) {
-    miss <- apply(x, 1, anyNA)
-    x <- data.matrix(x[!miss,])
-    W <- W[!miss, !miss]
-  }
+  miss <- is.na(x)
 
   #####
   # Input
   # Checks
   #####
-  if (0 %in% apply(x, 2, sd)) {
-    warning("Constant term detected in x")
+  if (0 %in% apply(x, 2, sd, na.rm = TRUE)) {
+    warning("Constant term removed from x")
+    x <- data.matrix(x[, apply(x, 2, sd, na.rm = TRUE) != 0])
   }
   if (!any(class(W) %in% c("matrix", "Matrix", "data.frame"))) {
     stop("W must be of class 'matrix' or 'data.frame'")
@@ -83,36 +80,28 @@ MI.decomp <- function(x, W, nsim = 100, na.rm = TRUE) {
   if (any(class(W) != "matrix")) {
     W <- as.matrix(W)
   }
-  if (anyNA(x) | anyNA(W)) {
-    stop("Missing values detected")
+  if (anyNA(W)) {
+    stop("Missing values in W detected")
+  }
+  if (!na.rm & anyNA(x)) {
+    stop("Missing values in x detected")
   }
   if (nsim < 100) {
     warning(paste0("Number of permutations (",nsim,") too small. Set to 100"))
     nsim <- 100
   }
 
+  # nr of input variables
+  nx <- ncol(x)
+
   # symmetrize W
   W <- .5 * (W + t(W))
 
   # z-score transformation
-  nx <- ncol(x)
-  Z <- Zscore(x)
-
-  # expected value
-  n <- nrow(W)
-  EI <- -1 / (n - 1)
+  Z <- Zscore(x, na.rm = na.rm)
 
   # eigendecomposition
-  eigen <- getEVs(W=W)
-
-  # null distribution
-  Ip <- In <- matrix(NA, nrow = nx, ncol = nsim)
-  for (i in seq_len(nsim)) {
-    ind <- sample(1:n, replace = TRUE)
-    c2 <- cor(Z[ind,], eigen$vectors, method = "pearson")^2
-    Ip[, i] <- c2[, eigen$values > EI] %*% eigen$moran[eigen$values > EI]
-    In[, i] <- c2[, eigen$values < EI] %*% eigen$moran[eigen$values < EI]
-  }
+  eigen <- getEVs(W = W)
 
   #####
   # Output
@@ -121,23 +110,41 @@ MI.decomp <- function(x, W, nsim = 100, na.rm = TRUE) {
   colnames(out) <- c("I+", "VarI+", "pI+", "",
                      "I-", "VarI-", "pI-", "",
                      "pItwo.sided","")
-  # observed
-  cor2 <- cor(Z, eigen$vectors, method = "pearson")^2
-  out[, "I+"] <- cor2[, eigen$values > EI] %*% eigen$moran[eigen$values > EI]
-  out[, "I-"] <- cor2[, eigen$values < EI] %*% eigen$moran[eigen$values < EI]
-  # variance
-  out[, "VarI+"] <- apply(Ip, 1, var)
-  out[, "VarI-"] <- apply(In, 1, var)
-  # significance
+
   for (i in seq_len(nx)) {
-    out[i, "pI+"] <- pfunc(z = out[i, "I+"], alternative = "greater", draws = Ip[i,])
-    out[i, "pI-"] <- pfunc(z = out[i, "I-"], alternative = "lower", draws = In[i,])
+    # expected value
+    n <- sum(!miss[, i])
+    EI <- -1 / (n - 1)
+
+    # null distribution
+    Ip <- In <- NULL
+    for (k in seq_len(nsim)) {
+      ind <- sample(which(Z[, i] != miss[, i]), replace = TRUE)
+      c2 <- cor(Z[ind, i], eigen$vectors[!miss[, i], !miss[, i]], method = "pearson")^2
+      Ip[k] <- c2[, eigen$values[!miss[, i]] > EI] %*% eigen$moran[eigen$values > EI & !miss[, i]]
+      In[k] <- c2[, eigen$values[!miss[, i]] < EI] %*% eigen$moran[eigen$values < EI & !miss[, i]]
+    }
+
+    # observed
+    cor2 <- cor(Z[!miss[, i], i], eigen$vectors[!miss[, i], !miss[, i]], method = "pearson")^2
+    out[i, "I+"] <- cor2[, eigen$values[!miss[, i]] > EI] %*% eigen$moran[eigen$values > EI & !miss[, i]]
+    out[i, "I-"] <- cor2[, eigen$values[!miss[, i]] < EI] %*% eigen$moran[eigen$values < EI & !miss[, i]]
+
+    # variance
+    out[i, "VarI+"] <- var(Ip)
+    out[i, "VarI-"] <- var(In)
+
+    # significance
+    out[i, "pI+"] <- pfunc(z = out[i, "I+"], alternative = "greater", draws = Ip)
+    out[i, "pI-"] <- pfunc(z = out[i, "I-"], alternative = "lower", draws = In)
     out[i, "pItwo.sided"] <- 2 * min(out[i, c("pI+", "pI-")])
     out[i, 4] <- star(p = out[i, "pI+"])
     out[i, 8] <- star(p = out[i, "pI-"])
     out[i, 10] <- star(p = out[i, "pItwo.sided"])
   }
-  if (exists('nams')) {
+
+  # add variable names
+  if (exists('nams', inherits = FALSE)) {
     rownames(out) <- nams
   }
 

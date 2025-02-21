@@ -4,7 +4,14 @@
 \alias{MI.resid}
 \title{Moran Test for Residual Spatial Autocorrelation}
 \usage{
-MI.resid(resid, x = NULL, W, alternative = "greater", boot = NULL)
+MI.resid(
+  resid,
+  x = NULL,
+  W,
+  alternative = "greater",
+  boot = NULL,
+  na.rm = TRUE
+)
 }
 \arguments{
 \item{resid}{residual vector}
@@ -18,6 +25,8 @@ MI.resid(resid, x = NULL, W, alternative = "greater", boot = NULL)
 
 \item{boot}{optional integer specifying the number of simulation iterations to
 compute the variance. If NULL (default), variance calculated under assumed normality}
+
+\item{na.rm}{listwise deletion of observations with missing values (TRUE/ FALSE)}
 }
 \value{
 A \code{data.frame} object with the following elements:

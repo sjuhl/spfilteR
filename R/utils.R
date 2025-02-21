@@ -152,8 +152,8 @@ pseudoR2 <- function(negloglik_n, negloglik_f, nev) {
 #' @importFrom stats sd
 #' @noRd
 
-Zscore <- function(x) {
+Zscore <- function(x, na.rm = TRUE) {
   x <- as.matrix(x)
-  Z <- apply(x, 2, function(v) (v - mean(v)) / sd(v))
+  Z <- apply(x, 2, function(v) (v - mean(v, na.rm = na.rm)) / sd(v, na.rm = na.rm))
   return(Z)
 }

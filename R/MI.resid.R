@@ -13,6 +13,7 @@
 #' 'lower', or 'two.sided'
 #' @param boot optional integer specifying the number of simulation iterations to
 #' compute the variance. If NULL (default), variance calculated under assumed normality
+#' @param na.rm listwise deletion of observations with missing values (TRUE/ FALSE)
 #'
 #' @return A \code{data.frame} object with the following elements:
 #' \describe{
@@ -61,8 +62,12 @@
 #'
 #' @export
 
-MI.resid <- function(resid, x = NULL, W, alternative = "greater", boot = NULL) {
+MI.resid <- function(resid, x = NULL, W, alternative = "greater", boot = NULL, na.rm = TRUE) {
 
+  #####
+  # Input
+  # Checks
+  #####
   if (!(alternative %in% c("greater", "lower", "two.sided"))) {
     stop("Invalid input: 'alternative' must be either 'greater', 'lower', or 'two.sided'")
   }
@@ -72,14 +77,26 @@ MI.resid <- function(resid, x = NULL, W, alternative = "greater", boot = NULL) {
   if (any(class(W) != "matrix")) {
     W <- as.matrix(W)
   }
-
-  n <- nrow(W)
-
-  if (is.null(x)) {
-    x <- rep(1, n)
+  if (!is.null(x) & anyNA(x) & na.rm == FALSE) {
+    stop("Missing values detected in x")
   }
-  x <- as.matrix(x)
-  if (!isTRUE(all.equal(x[, 1], rep(1, n)))) {
+
+  n <- length(resid)
+  if (is.null(x)) {
+    x <- data.matrix(rep(1, n))
+  } else {
+    x <- data.matrix(x)
+    # remove missing values
+    if (na.rm) {
+      miss <- apply(x, 1, anyNA)
+      x <- data.matrix(x[!miss,])
+      W <- W[!miss, !miss]
+    }
+  }
+  
+  # add intercept term if required
+  #if (!isTRUE(all.equal(x[, 1], rep(1, n)))) {
+  if (!isTRUE(any(apply(x, 2, function(c) all(1 == c))))) {
     x <- cbind(1, x)
   }
 

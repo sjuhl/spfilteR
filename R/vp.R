@@ -170,5 +170,5 @@ print.vpart <- function(x, ...) {
   colnames(res) <- c("Adj. R2", "R2")
   cat("\t - Variation Partitioning -\n\n")
   print(res)
-  cat(paste("---\n","Permutations:", x$msr))
+  cat(paste("---\n", "Permutations:", x$msr, "\n"))
 }
