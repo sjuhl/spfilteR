@@ -168,7 +168,7 @@ print.vpart <- function(x, ...) {
                           format(round(x$R2, 7), nsmall = 7)),
                           row.names = c("ab", "bc", "abc", "a", "b", "c", "d"))
   colnames(res) <- c("Adj. R2", "R2")
-  cat("\t - Variation Partitioning -\n\n")
+  cat("\n\t - Variation Partitioning -\n\n")
   print(res)
   cat(paste("---\n", "Permutations:", x$msr, "\n"))
 }
