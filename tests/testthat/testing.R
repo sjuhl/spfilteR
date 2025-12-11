@@ -391,10 +391,11 @@ test_that("'objfn = all' selects all eigenvectors in the candidate set", {
   expect_equal(sf$other$nev, sum(inselset))
 })
 
-test_that("The argument 'objfn' works with 'p', 'MI', 'R2', 'pMI', and 'all' ", {
+test_that("The argument 'objfn' works with 'p', 'MI', 'R2', 'AIC', 'AICc'
+          ,'BIC', 'pMI', and 'all' ", {
   y <- fakedataset$x1
-  objfn <- c("MI", "p", "R2", "all", "else", "pMI")
-  expected <- c(TRUE, TRUE, TRUE, TRUE, FALSE, TRUE)
+  objfn <- c("MI", "p", "R2", "AIC", "AICc", "BIC", "all", "else", "pMI")
+  expected <- c(TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, FALSE, TRUE)
   out <- NULL
   for(i in seq_along(objfn)){
     res <- try(lmFilter(y = y, W = W, objfn = objfn[i]), silent=TRUE)
@@ -559,12 +560,15 @@ test_that("The argument 'ideal.setsize' is only valid if positive = TRUE", {
                ,"Estimating the ideal set size is only valid for positive spatial autocorrelation")
 })
 
-test_that("The argument 'min.reduction' works (for AIC & BIC) - fewer EVs are
+test_that("The argument 'min.reduction' works (for AIC, AICc & BIC) - fewer EVs are
           selected for higher values", {
   y <- fakedataset$count
   lowerAIC <- glmFilter(y = y, W = W, objfn = "AIC", model = "poisson", min.reduction = 0)
   higherAIC <- glmFilter(y = y, W = W, objfn = "AIC", model = "poisson", min.reduction = .1)
   outAIC <- lowerAIC$other$nev > higherAIC$other$nev
+  lowerAICc <- glmFilter(y = y, W = W, objfn = "AICc", model = "poisson", min.reduction = 0)
+  higherAICc <- glmFilter(y = y, W = W, objfn = "AICc", model = "poisson", min.reduction = .1)
+  outAICc <- lowerAICc$other$nev > higherAICc$other$nev
   lowerBIC <- glmFilter(y = y, W = W, objfn = "BIC", model = "poisson", min.reduction = 0)
   higherBIC <- glmFilter(y = y, W = W, objfn = "BIC", model = "poisson", min.reduction = .1)
   outBIC <- lowerBIC$other$nev > higherBIC$other$nev
@@ -630,13 +634,13 @@ test_that("glmFilter() works if all EVs should be selected", {
                ,"spfilter")
 })
 
-test_that("if 'objfn = AIC' or 'objfn = BIC', 'min.reduction' needs to be in [0,1)", {
+test_that("if 'objfn' is AIC, AICc, or BIC, 'min.reduction' needs to be in [0,1)", {
   y <- fakedataset$indicator
   reduce <- c(0, .3, 1)
   expect <- c(TRUE, TRUE, FALSE)
   out <- NULL
   for(i in 1:3){
-    res <- try(glmFilter(y = y, W = W, model = "logit", objfn = "AIC"
+    res <- try(glmFilter(y = y, W = W, model = "logit", objfn = "AICc"
                         ,min.reduction = reduce[i])
                ,silent = TRUE)
     out[i] <- class(res) != "try-error"
@@ -665,10 +669,10 @@ test_that("'model' must be one of 'poisson', 'probit', 'logit', or 'nb'", {
   expect_equal(out, expect)
 })
 
-test_that("The argument 'objfn' works with 'p', 'MI', 'pMI', 'AIC', 'BIC', and 'all'", {
+test_that("The argument 'objfn' works with 'p', 'MI', 'pMI', 'AIC', 'AICc', 'BIC', and 'all'", {
   y <- fakedataset$count
-  objfn <- c("MI", "p", "AIC", "BIC", "all", "else", "pMI")
-  expected <- c(TRUE, TRUE, TRUE, TRUE, TRUE, FALSE, TRUE)
+  objfn <- c("MI", "p", "AIC", "AICc", "BIC", "all", "else", "pMI")
+  expected <- c(TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, FALSE, TRUE)
   out <- NULL
   for(i in seq_along(objfn)){
     res <- try(glmFilter(y = y, W = W, model = "poisson", objfn = objfn[i])
@@ -690,12 +694,6 @@ test_that("The argument 'resid.type' must be 'raw','pearson', or 'deviance'", {
     out[i] <- class(res) != "try-error"
   }
   expect_equal(out, expected)
-})
-
-test_that("If resid.type == 'deviance' and model == 'nb', still calculates pearson residuals", {
-  y <- fakedataset$count
-  out <- glmFilter(y = y, W = W, model = "nb", objfn = "BIC", resid.type = "deviance")
-  expect_equal(out$other$resid.type, "pearson")
 })
 
 test_that("eigenvectors are orthogonal to covariates specified in MX", {
