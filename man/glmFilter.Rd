@@ -9,7 +9,7 @@ glmFilter(
   y,
   x = NULL,
   W,
-  objfn = "AIC",
+  objfn = "AICc",
   MX = NULL,
   model,
   optim.method = "BFGS",
@@ -19,7 +19,7 @@ glmFilter(
   ideal.setsize = FALSE,
   min.reduction = 0.05,
   boot.MI = 100,
-  resid.type = "pearson",
+  resid.type = "deviance",
   alpha = 0.25,
   tol = 0.1,
   na.rm = TRUE
@@ -34,7 +34,7 @@ glmFilter(
 
 \item{objfn}{the objective function to be used for eigenvector
 selection. Possible criteria are: the maximization of model fit
-('AIC' or 'BIC'), minimization of residual autocorrelation ('MI'),
+('AIC', 'AICc', or 'BIC'), minimization of residual autocorrelation ('MI'),
 significance level of candidate eigenvectors ('p'), significance of residual spatial
 autocorrelation ('pMI'), or all eigenvectors in the candidate set ('all')}
 
@@ -62,16 +62,17 @@ levels of spatial autocorrelation (TRUE/ FALSE)}
 Chun et al. (2016) to determine the ideal size of the candidate set
 (TRUE/ FALSE)}
 
-\item{min.reduction}{if \code{objfn} is either 'AIC' or 'BIC'. A value in the
-interval [0,1) that determines the minimum reduction in AIC/ BIC (relative to the
-current AIC/ BIC) a candidate eigenvector needs to achieve in order to be selected}
+\item{min.reduction}{if \code{objfn} is 'AIC', 'AICc' or 'BIC'. A value in the
+interval [0,1) that determines the minimum reduction in the selected information
+criterion (relative to its current value) a candidate eigenvector needs to achieve
+in order to be selected}
 
 \item{boot.MI}{number of iterations used to estimate the variance of Moran's I
 (default is 100). Alternatively, if \code{boot.MI = NULL}, analytical results will
 be used}
 
 \item{resid.type}{character string specifying the residual type to be used.
-Options are 'raw', 'deviance', and 'pearson' (default)}
+Options are 'raw', 'pearson', and 'deviance' (default)}
 
 \item{alpha}{a value in (0,1] indicating the range of candidate eigenvectors
 according to their associated level of spatial autocorrelation, see e.g.,
@@ -170,7 +171,9 @@ Chun (2014) notes that only a limited number of studies address the problem
 of measuring spatial autocorrelation in generalized linear model residuals.
 Consequently, eigenvector selection may be based on an objective function that
 maximizes model fit rather than a function that minimizes residual spatial
-autocorrelation.
+autocorrelation, e.g., the corrected Akaike information criterion ('AICc')
+which includes a small-sample penalty to account for the tendency to choose
+overparameterized models.
 }
 \examples{
 data(fakedata)
@@ -192,7 +195,7 @@ summary(probit, EV = TRUE)
 # logit model - AIC objective function
 y_logit <- fakedataset$indicator
 logit <- glmFilter(y = y_logit, x = NULL, W = W, objfn = "AIC", positive = FALSE,
-model = "logit", min.reduction = .05)
+model = "logit", min.reduction = .01)
 print(logit)
 summary(logit, EV = FALSE)
 
