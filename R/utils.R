@@ -75,7 +75,9 @@ residfun <- function(y, fitvals, size = NULL, model) {
     deviance <- sign * sqrt(2 * (y * log(ratio) - (y - fitvals)))
   } else if (model == "nb") {
     pearson <- (y - fitvals) / sqrt((fitvals + (fitvals^2 / size)))
-    deviance <- Inf
+    y_safe <- ifelse(y == 0, 1e-12, y) # avoids log(0)
+    devi <- 2 * (y_safe * log((y_safe * (size + fitvals)) / (fitvals * (size + y_safe)) ) + size * log( (size + fitvals) / (size + y_safe) ))
+    deviance <- sign(y - fitvals) * sqrt(devi)
   } else if (model == "linear") {
     pearson <- deviance <- raw
   }
@@ -130,8 +132,9 @@ conditionNumber <- function(evecs = NULL, round = 8) {
 
 getICs <- function(negloglik, n, df) {
   AIC <- 2 * negloglik + 2 * df
+  AICc <- AIC + (2 * df * (df + 1)) / (n - df - 1)
   BIC <- 2 * negloglik + log(n) * df
-  out <- data.frame(AIC, BIC)
+  out <- data.frame(AIC, AICc, BIC)
   return(out)
 }
 
