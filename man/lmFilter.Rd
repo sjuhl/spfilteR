@@ -83,6 +83,7 @@ information:
 \item{\code{moran}}{residual autocorrelation in the initial and the
 filtered model}
 \item{\code{fit}}{adjusted R-squared of the initial and the filtered model}
+\item{\code{ICs}}{information criteria (AIC, AICc, and BIC) of the initial and the filtered model}
 \item{\code{residuals}}{initial and filtered model residuals}
 \item{\code{other}}{a list providing supplementary information:
 \describe{

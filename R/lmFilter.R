@@ -53,6 +53,7 @@
 #' \item{\code{moran}}{residual autocorrelation in the initial and the
 #' filtered model}
 #' \item{\code{fit}}{adjusted R-squared of the initial and the filtered model}
+#' \item{\code{ICs}}{information criteria (AIC, AICc, and BIC) of the initial and the filtered model}
 #' \item{\code{residuals}}{initial and filtered model residuals}
 #' \item{\code{other}}{a list providing supplementary information:
 #' \describe{
@@ -204,8 +205,8 @@ lmFilter <- function(y, x = NULL, W, objfn = "MI", MX = NULL, sig = .05,
   if (any(class(W) != "matrix")) {
     W <- as.matrix(W)
   }
-  if (!(objfn %in% c("R2", "p", "MI", "pMI", "all"))) {
-    stop("Invalid argument: objfn must be one of 'R2', 'p', 'MI', 'pMI', or'all'")
+  if (!(objfn %in% c("R2", "AIC", "AICc", "BIC", "p", "MI", "pMI", "all"))) {
+    stop("Invalid argument: objfn must be one of 'R2', 'AIC', 'AICc', 'BIC', 'p', 'MI', 'pMI', or'all'")
   }
   if (positive == FALSE & ideal.setsize == TRUE) {
     stop("Estimating the ideal set size is only valid for positive spatial autocorrelation")
@@ -225,6 +226,10 @@ lmFilter <- function(y, x = NULL, W, objfn = "MI", MX = NULL, sig = .05,
       TSS <- sum((y - mean(y))^2)
       R2 <- 1 - (sum(resid^2) / TSS)
       test <- -(1 - (1 - R2) * (n - 1) / (n - (ncol(xe))) ) # negative adjusted R-squared
+    } else if (objfn %in% c("AIC", "AICc", "BIC")) {
+      RSS <- sum(crossprod(resid))
+      negll <- 0.5 * n * (log(2 * pi) + 1 + log(RSS / n))
+      test <- getICs(negloglik = negll, n = n, df = ncol(xe))[objfn]
     } else if (objfn == "p") {
       est <- (solve(crossprod(xe)) %*% crossprod(xe, y))[ncol(xe),]
       se <- sqrt((solve(t(xe) %*% xe)[ncol(xe), ncol(xe)] * sum(resid^2)) / (nrow(W) - ncol(xe)))
@@ -257,14 +262,20 @@ lmFilter <- function(y, x = NULL, W, objfn = "MI", MX = NULL, sig = .05,
   coefs_init <- solve(crossprod(x)) %*% crossprod(x, y)
   fitvals <- fittedval(x = x, params = coefs_init, model = "linear")
   resid_init <- residfun(y = y, fitvals = fitvals, model = "linear")$raw
-  R2 <- 1 - (sum(crossprod(resid_init)) / TSS)
+  RSS <- sum(crossprod(resid_init))
+  R2 <- 1 - (RSS / TSS)
   adjR2_init <- 1 - (1 - R2) * (n - 1) / (n - nx)
+  negll_init <- 0.5 * n * (log(2 * pi) + 1 + log(RSS / n))
+  ICs_init <- getICs(negloglik = negll_init, n = n, df = length(coefs_init))
   zMI_init <- MI.resid(resid = resid_init, x = x, W = W, boot = boot.MI)$zI
   if (objfn == "MI") {
     oldZMI <- abs(zMI_init)
   }
   if (objfn == "R2") {
     adjR2 <- -adjR2_init
+  }
+  if (objfn %in% c("AIC", "AICc", "BIC")) {
+    IC <- ICs_init[objfn]
   }
 
   #####
@@ -344,6 +355,13 @@ lmFilter <- function(y, x = NULL, W, objfn = "MI", MX = NULL, sig = .05,
         } else {
           break
         }
+      } else if (objfn %in% c("AIC", "AICc", "BIC")) {
+        if (ref < IC) {
+          IC <- ref
+          sel_id <- c(sel_id, sid)
+        } else {
+          break
+        }
       } else if (objfn == "p") {
         if (ref < sig) {
           sel_id <- c(sel_id, sid)
@@ -393,8 +411,13 @@ lmFilter <- function(y, x = NULL, W, objfn = "MI", MX = NULL, sig = .05,
   # fit & spatial autocorrelation
   fitvals <- fittedval(x = xev, params = coefs, model = "linear")
   resid <- residfun(y = y, fitvals = fitvals, model = "linear")$raw
-  R2 <- 1 - (sum(crossprod(resid)) / TSS)
+  RSS <- sum(crossprod(resid))
+  R2 <- 1 - (RSS / TSS)
   adjR2 <- 1 - (1 - R2) * (n - 1) / (n - ncol(xev))
+
+  negll <- 0.5 * n * (log(2 * pi) + 1 + log(RSS / n))
+  ICs <- getICs(negloglik = negll, n = n, df = length(coefs))
+
   MI_filtered <- MI.resid(resid = resid, x = xev, W = W, boot = boot.MI,
                           alternative = ifelse(dep == "positive", "greater", "lower"))
   MI_init <- MI.resid(resid = resid_init, x = x, W = W, boot = boot.MI,
@@ -447,6 +470,8 @@ lmFilter <- function(y, x = NULL, W, objfn = "MI", MX = NULL, sig = .05,
   # model fit
   fit <- c(adjR2_init, adjR2)
   names(fit) <- c("Initial", "Filtered")
+  IC <- rbind(ICs_init, ICs)
+  rownames(IC) <- c("Initial", "Filtered")
 
   # residuals
   residuals <- cbind(resid_init, resid)
@@ -460,6 +485,7 @@ lmFilter <- function(y, x = NULL, W, objfn = "MI", MX = NULL, sig = .05,
                    evMI = evMI,
                    moran = moran,
                    fit = fit,
+                   ICs = IC,
                    residuals = residuals,
                    other = list(ncandidates = ncandidates,
                                 nev = count,
