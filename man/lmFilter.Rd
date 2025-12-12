@@ -32,6 +32,7 @@ lmFilter(
 
 \item{objfn}{the objective function to be used for eigenvector selection.
 Possible criteria are: the maximization of the adjusted R-squared ('R2'),
+minimization of different information criteria ('AIC', 'AICc', or 'BIC'),
 minimization of residual autocorrelation ('MI'), significance level of
 candidate eigenvectors ('p'), significance of residual spatial
 autocorrelation ('pMI') or all eigenvectors in the candidate set ('all')}
