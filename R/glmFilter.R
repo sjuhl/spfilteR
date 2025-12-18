@@ -44,7 +44,7 @@
 #' (default is 100). Alternatively, if \code{boot.MI = NULL}, analytical results will
 #' be used
 #' @param resid.type character string specifying the residual type to be used.
-#' Options are 'raw', 'pearson', and 'deviance' (default)
+#' Options are 'raw', 'pearson', and 'deviance'
 #' @param alpha a value in (0,1] indicating the range of candidate eigenvectors
 #' according to their associated level of spatial autocorrelation, see e.g.,
 #' Griffith (2003)
@@ -181,7 +181,7 @@
 
 glmFilter <- function(y, x = NULL, W, objfn = "AICc", MX = NULL, model, optim.method = "BFGS",
                       sig = .05, bonferroni = TRUE, positive = TRUE, ideal.setsize = FALSE,
-                      min.reduction = .05, boot.MI = 100, resid.type = "deviance",
+                      min.reduction = .05, boot.MI = 100, resid.type = "pearson",
                       alpha = .25, tol = .1, na.rm = TRUE) {
 
   if (!is.null(MX)) {
@@ -229,6 +229,13 @@ glmFilter <- function(y, x = NULL, W, objfn = "AICc", MX = NULL, model, optim.me
     MX <- as.matrix(MX[, apply(MX, 2, sd) != 0])
   }
   nx <- ncol(x)
+
+  #####
+  # Default change in future release
+  #####
+  if (resid.type == 'pearson') {
+    warning("Note: The default value of `resid.type` will change from 'pearson' to 'deviance' in a future release.")
+  }
 
   #####
   # Input Checks

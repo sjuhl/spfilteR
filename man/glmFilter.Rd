@@ -19,7 +19,7 @@ glmFilter(
   ideal.setsize = FALSE,
   min.reduction = 0.05,
   boot.MI = 100,
-  resid.type = "deviance",
+  resid.type = "pearson",
   alpha = 0.25,
   tol = 0.1,
   na.rm = TRUE
@@ -72,7 +72,7 @@ in order to be selected}
 be used}
 
 \item{resid.type}{character string specifying the residual type to be used.
-Options are 'raw', 'pearson', and 'deviance' (default)}
+Options are 'raw', 'pearson', and 'deviance'}
 
 \item{alpha}{a value in (0,1] indicating the range of candidate eigenvectors
 according to their associated level of spatial autocorrelation, see e.g.,
