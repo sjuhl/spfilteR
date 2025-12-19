@@ -9,7 +9,7 @@ glmFilter(
   y,
   x = NULL,
   W,
-  objfn = "AICc",
+  objfn = "AIC",
   MX = NULL,
   model,
   optim.method = "BFGS",

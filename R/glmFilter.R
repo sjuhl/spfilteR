@@ -179,7 +179,7 @@
 #'
 #' @export
 
-glmFilter <- function(y, x = NULL, W, objfn = "AICc", MX = NULL, model, optim.method = "BFGS",
+glmFilter <- function(y, x = NULL, W, objfn = "AIC", MX = NULL, model, optim.method = "BFGS",
                       sig = .05, bonferroni = TRUE, positive = TRUE, ideal.setsize = FALSE,
                       min.reduction = .05, boot.MI = 100, resid.type = "pearson",
                       alpha = .25, tol = .1, na.rm = TRUE) {
@@ -231,7 +231,7 @@ glmFilter <- function(y, x = NULL, W, objfn = "AICc", MX = NULL, model, optim.me
   nx <- ncol(x)
 
   #####
-  # Default change in future release
+  # default change in future release
   #####
   if (resid.type == 'pearson') {
     warning("Note: The default value of `resid.type` will change from 'pearson' to 'deviance' in a future release.")
