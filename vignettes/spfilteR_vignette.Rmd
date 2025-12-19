@@ -1,7 +1,7 @@
 ---
 title: "spfilteR: Semiparametric Spatial Filtering with Eigenvectors in (Generalized) Linear Models"
 author: "Sebastian Juhl"
-date: "2025-12-11"
+date: "2025-12-19"
 output: rmarkdown::html_vignette
 bibliography: references.bib
 vignette: >
@@ -99,7 +99,7 @@ ols.resid <- resid(lm(y ~ X))
 MI.resid(resid = ols.resid, W = W, alternative = 'greater')
 ```
 
-The results show that the residuals are significantly autocorrelated which violates the assumption of uncorrelated errors. In order to resolve this problem of spatial autocorrelation in regression residuals, the function `lmFilter()` estimates a spatially filtered linear regression model using an unsupervised stepwise regression to identify relevant eigenvectors derived from the transformed connectivity matrix. Below, the unsupervised eigenvector search algorithm selects eigenvectors based on the reduction in residual autocorrelation. The output is a class `spfilter` object.
+The results show that the residuals are significantly autocorrelated which violates the assumption of uncorrelated errors. In order to resolve this problem of spatial autocorrelation in regression residuals, the function `lmFilter()` estimates a spatially filtered linear regression model using an unsupervised stepwise regression (or a lasso-based selection) to identify relevant eigenvectors derived from the transformed connectivity matrix. Below, the unsupervised eigenvector search algorithm selects eigenvectors based on the reduction in residual autocorrelation. The output is a class `spfilter` object.
 
 ```{r}
 # ESF model
@@ -137,6 +137,9 @@ lmFilter(y = y, x = X, W = W, objfn = 'p', sig = .1, bonferroni = TRUE,
 
 # all eigenvectors in the candidate set
 lmFilter(y = y, x = X, W = W, objfn = 'all', positive = TRUE, ideal.setsize = TRUE)
+
+# Moran's I lasso
+lmFilter(y = y, x = X, W = W, objfn = 'MI-lasso', positive = TRUE, conditional.se = TRUE)
 ```
 
 If users wish to select eigenvectors based on individual selection criteria, they can obtain the eigenvectors using the function `getEVs()` and perform a supervised selection procedure using the basic [`stats::lm()`](https://www.rdocumentation.org/packages/stats/versions/3.6.2/topics/lm) command.
