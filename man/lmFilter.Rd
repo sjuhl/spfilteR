@@ -15,6 +15,7 @@ lmFilter(
   bonferroni = TRUE,
   positive = TRUE,
   ideal.setsize = FALSE,
+  conditional.se = FALSE,
   alpha = 0.25,
   tol = 0.1,
   boot.MI = NULL,
@@ -30,12 +31,14 @@ lmFilter(
 
 \item{W}{spatial connectivity matrix}
 
-\item{objfn}{the objective function to be used for eigenvector selection.
-Possible criteria are: the maximization of the adjusted R-squared ('R2'),
-minimization of different information criteria ('AIC', 'AICc', or 'BIC'),
-minimization of residual autocorrelation ('MI'), significance level of
-candidate eigenvectors ('p'), significance of residual spatial
-autocorrelation ('pMI') or all eigenvectors in the candidate set ('all')}
+\item{objfn}{the objective function to be used for eigenvector selection. For
+stepwise selection, possible criteria are: the maximization of the adjusted
+R-squared ('R2'), minimization of different information criteria ('AIC', 'AICc',
+or 'BIC'), minimization of residual autocorrelation ('MI'), significance level
+of candidate eigenvectors ('p'), or significance of residual spatial autocorrelation
+('pMI'). The lasso-based selection ('MI-lasso') implements the procedure
+suggested by Barde et al. (2025). Alternatively, all eigenvectors in the candidate
+set ('all') can be included as well which does not require any selection procedure.}
 
 \item{MX}{covariates used to construct the projection matrix (default = NULL) - see
 Details}
@@ -53,6 +56,11 @@ levels of spatial autocorrelation (TRUE/ FALSE)}
 \item{ideal.setsize}{if \code{positive = TRUE}, uses the formula proposed by
 Chun et al. (2016) to determine the ideal size of the candidate set
 (TRUE/ FALSE)}
+
+\item{conditional.se}{report standard errors of the regression coefficients
+assosiated with the covariates conditional on the selected eigenvectors using
+a partial regression framework (TRUE/ FALSE). Recommended if \code{objfn =
+'MI-lasso'} (Barde et al. (2025)) - see Details}
 
 \item{alpha}{a value in (0,1] indicating the range of candidate eigenvectors
 according to their associated level of spatial autocorrelation, see e.g.,
@@ -99,6 +107,7 @@ filtered model}
 the stepwise regression procedure}
 \item{\code{bonferroni}}{TRUE/ FALSE: Bonferroni-adjusted significance level
 (if \code{objfn = 'p'})}
+\item{\code{conditional.se}}{TRUE/ FALSE: conditional standard errors used}
 \item{\code{siglevel}}{if \code{objfn = 'p'} or \code{objfn = 'pMI'}: actual
 (unadjusted/ adjusted) significance level}
 }
@@ -108,10 +117,11 @@ the stepwise regression procedure}
 \description{
 This function implements the eigenvector-based semiparametric
 spatial filtering approach in a linear regression framework using ordinary least
-squares (OLS). Eigenvectors are selected by an unsupervised stepwise regression
-technique. Supported selection criteria are the minimization of residual
-autocorrelation, maximization of model fit, significance of residual autocorrelation,
-and the statistical significance of eigenvectors. Alternatively, all eigenvectors in
+squares (OLS). Eigenvectors are selected either by an unsupervised stepwise
+regression procedure or by a penalized regression approach. The stepwise procedure
+supports selection criteria based on the minimization of residual autocorrelation,
+maximization of model fit, significance of residual autocorrelation, and the
+statistical significance of eigenvectors. Alternatively, all eigenvectors in
 the candidate set can be included as well.
 }
 \details{
@@ -129,18 +139,30 @@ to the regressors specified in \code{MX}. Alternatively, if \code{MX = NULL}, th
 projection matrix becomes \strong{M} = \strong{I} - \strong{11}'/*n*,
 where \strong{1} is a vector of ones and *n* represents the number of
 observations. Griffith and Tiefelsdorf (2007) show how the choice of the appropriate
-\strong{M} depends on the underlying process that generates the spatial
-dependence.
+\strong{M} depends on the underlying spatial process. For inference on regression
+coefficients when the DGP is unknown, Moran eigenvectors should be derived
+independently of the regressors (\code{MX = NULL}). Projecting \strong{W} onto the
+space orthogonal to \strong{X} may alter the estimand of the regression coefficients
+and is therefore not recommended for general inference.
 
 The Bonferroni correction is only possible if eigenvector selection is based on
 the significance level of the eigenvectors (\code{objfn = 'p'}). It is set to
 FALSE if eigenvectors are added to the model until the residuals exhibit no
 significant level of spatial autocorrelation (\code{objfn = 'pMI'}).
+
+For inference on regression coefficients, Barde et al. (2025) compute standard
+errors using a partial regression framework (see also Chernozhukov et al. (2015)).
+Both the outcome and the covariates are residualized with respect to the selected
+eigenvectors, and the variance–covariance matrix is calculated from these
+residualized variables. This approach treats the selected eigenvectors as fixed
+regressors and provides valid post-selection inference when eigenvector selection
+is stable. When \code{objfn = "MI-lasso"}, conditional standard errors are therefore
+generally recommended for inference on regression coefficients.
 }
 \examples{
 data(fakedata)
 y <- fakedataset$x1
-X <- cbind(fakedataset$x2, fakedataset$x3, fakedataset$x4)
+X <- cbind(fakedataset$x2, fakedataset$x3)
 
 res <- lmFilter(y = y, x = X, W = W, objfn = 'MI', positive = FALSE)
 print(res)
@@ -173,6 +195,15 @@ Environment and Planning A: Economy and Space, 45 (9): pp. 2227 - 2242.
 Tiefelsdorf, Michael and Barry Boots (1995): The Exact Distribution
 of Moran's I. Environment and Planning A: Economy and Space, 27 (6):
 pp. 985 - 999.
+
+Barde, Sylvain, Rowan Cherodian, Guy Tchuente (2025): Moran’s I lasso
+for models with spatially correlated data. The Econometrics Journal,
+28 (3): pp. 423 - 441.
+
+Chernozhukov, Victor, Christian Hansen and Martin Spindler (2015):
+Post-selection and post-regularization inference in linear models with
+many controls and instruments. American Economic Review, 105 (5), pp.
+486 - 490.
 }
 \seealso{
 \code{\link{glmFilter}}, \code{\link{getEVs}}, \code{\link{MI.resid}}
