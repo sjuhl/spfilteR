@@ -234,7 +234,7 @@ glmFilter <- function(y, x = NULL, W, objfn = "AIC", MX = NULL, model, optim.met
   # default change in future release
   #####
   if (resid.type == 'pearson') {
-    warning("Note: The default value of `resid.type` will change from 'pearson' to 'deviance' in a future release.")
+    warning("Note: The default value of `resid.type` will change from 'pearson' to 'deviance' in a future release")
   }
 
   #####
