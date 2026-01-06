@@ -58,7 +58,7 @@ Chun et al. (2016) to determine the ideal size of the candidate set
 (TRUE/ FALSE)}
 
 \item{conditional.se}{report standard errors of the regression coefficients
-assosiated with the covariates conditional on the selected eigenvectors using
+associated with the covariates conditional on the selected eigenvectors using
 a partial regression framework (TRUE/ FALSE). Recommended if \code{objfn =
 'MI-lasso'} (Barde et al. (2025)) - see Details}
 
