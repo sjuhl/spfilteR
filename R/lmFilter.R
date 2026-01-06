@@ -219,7 +219,7 @@ lmFilter <- function(y, x = NULL, W, objfn = "MI", MX = NULL, sig = .05,
   # Input Checks
   #####
   if (objfn == 'MI-lasso' & !conditional.se) {
-    warning("Note: Conditional standard errors are recommended for erence on regression coefficients when using MI-lasso.")
+    warning("Note: Conditional standard errors are recommended for inference on regression coefficients when using MI-lasso")
   }
   if (anyNA(y) | anyNA(x) | anyNA(W)) {
     stop("Missing values detected")
@@ -241,7 +241,7 @@ lmFilter <- function(y, x = NULL, W, objfn = "MI", MX = NULL, sig = .05,
   }
   if (!(objfn %in% c("R2", "AIC", "AICc", "BIC", "p", "MI", "pMI", "MI-lasso", "all"))) {
     stop("Invalid argument: objfn must be one of 'MI-lasso', 'R2', 'AIC', 'AICc'
-        ,'BIC', 'p', 'MI', 'pMI', or'all'")
+        ,'BIC', 'p', 'MI', 'pMI', or 'all'")
   }
   if (positive == FALSE & ideal.setsize == TRUE) {
     stop("Estimating the ideal set size is only valid for positive spatial autocorrelation")
