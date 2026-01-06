@@ -1,7 +1,7 @@
 ---
-title: "spfilteR: Spatial Filtering with Eigenvectors"
+title: "spfilteR: Semiparametric Spatial Filtering with Eigenvectors in (Generalized) Linear Models"
 author: "Sebastian Juhl"
-date: "2021-08-13"
+date: "2025-12-19"
 output: rmarkdown::html_vignette
 bibliography: references.bib
 vignette: >
@@ -99,7 +99,7 @@ ols.resid <- resid(lm(y ~ X))
 MI.resid(resid = ols.resid, W = W, alternative = 'greater')
 ```
 
-The results show that the residuals are significantly autocorrelated which violates the assumption of uncorrelated errors. In order to resolve this problem of spatial autocorrelation in regression residuals, the function `lmFilter()` estimates a spatially filtered linear regression model using an unsupervised stepwise regression to identify relevant eigenvectors derived from the transformed connectivity matrix. Below, the unsupervised eigenvector search algorithm selects eigenvectors based on the reduction in residual autocorrelation. The output is a class `spfilter` object.
+The results show that the residuals are significantly autocorrelated which violates the assumption of uncorrelated errors. In order to resolve this problem of spatial autocorrelation in regression residuals, the function `lmFilter()` estimates a spatially filtered linear regression model using an unsupervised stepwise regression (or a lasso-based selection) to identify relevant eigenvectors derived from the transformed connectivity matrix. Below, the unsupervised eigenvector search algorithm selects eigenvectors based on the reduction in residual autocorrelation. The output is a class `spfilter` object.
 
 ```{r}
 # ESF model
@@ -109,7 +109,7 @@ The results show that the residuals are significantly autocorrelated which viola
 summary(lm.esf, EV = TRUE)
 ```
 
-While the `print` method shows that 8 eigenvectors were selected from the candidate set consisting of 22 eigenvectors, the `summary` method provides additional information. Besides the ordinary least squares (OLS) parameter estimates, the output shows that the ESF model filters for positive spatial autocorrelation using the minimization of residual autocorrelation as objective function during the eigenvector search. A comparison between the filtered and the nonspatial OLS model with respect to model fit and residual autocorrelation is also provided. Since the option `EV` is set to `TRUE`, the `summary` method also displays information on the selected eigenvectors. As the results show, the ESF model successfully removes the spatial pattern from model residuals.
+While the `print` method shows that `r lm.esf$other$nev` eigenvectors were selected from the candidate set consisting of `r lm.esf$other$ncandidates` eigenvectors, the `summary` method provides additional information. Besides the ordinary least squares (OLS) parameter estimates, the output shows that the ESF model filters for positive spatial autocorrelation using the minimization of residual autocorrelation as objective function during the eigenvector search. A comparison between the filtered and the nonspatial OLS model with respect to model fit and residual autocorrelation is also provided. Since the option `EV` is set to `TRUE`, the `summary` method also displays information on the selected eigenvectors. As the results show, the ESF model successfully removes the spatial pattern from model residuals.
 
 The `plot` method allows for an easy visualization of the results. The graph displays the Moran coefficient associated with each of the eigenvectors. The shaded area signifies the candidate set and selected eigenvectors are illustrated by black dots.
 
@@ -123,6 +123,9 @@ Moreover, `lmFilter()` also allows users to select eigenvectors based on alterna
 ### Alternative selection criteria:
 # maximization of model fit
 lmFilter(y = y, x = X, W = W, objfn = 'R2', positive = TRUE, ideal.setsize = TRUE)
+lmFilter(y = y, x = X, W = W, objfn = 'AIC', positive = TRUE, ideal.setsize = TRUE)
+lmFilter(y = y, x = X, W = W, objfn = 'AICc', positive = TRUE, ideal.setsize = TRUE)
+lmFilter(y = y, x = X, W = W, objfn = 'BIC', positive = TRUE, ideal.setsize = TRUE)
 
 # significance of residual autocorrelation
 lmFilter(y = y, x = X, W = W, objfn = 'pMI', sig = .1, bonferroni = FALSE,
@@ -134,6 +137,9 @@ lmFilter(y = y, x = X, W = W, objfn = 'p', sig = .1, bonferroni = TRUE,
 
 # all eigenvectors in the candidate set
 lmFilter(y = y, x = X, W = W, objfn = 'all', positive = TRUE, ideal.setsize = TRUE)
+
+# Moran's I lasso
+lmFilter(y = y, x = X, W = W, objfn = 'MI-lasso', positive = TRUE, conditional.se = TRUE)
 ```
 
 If users wish to select eigenvectors based on individual selection criteria, they can obtain the eigenvectors using the function `getEVs()` and perform a supervised selection procedure using the basic [`stats::lm()`](https://www.rdocumentation.org/packages/stats/versions/3.6.2/topics/lm) command.
@@ -161,12 +167,12 @@ y.count <- fakedataset$count
                          resid.type = 'deviance', boot.MI = 100))
 
 # ESF poisson model
-(poisson.esf <- glmFilter(y = y.count, x = NULL, W = W, objfn = 'BIC', model = 'poisson',
+(poisson.esf <- glmFilter(y = y.count, x = NULL, W = W, objfn = 'AICc', model = 'poisson',
                           optim.method = 'BFGS', positive = TRUE, ideal.setsize = FALSE,
                           alpha = .25, resid.type = 'deviance', boot.MI = 100))
 
 # ESF negative binomial model
-(poisson.esf <- glmFilter(y = y.count, x = NULL, W = W, objfn = 'BIC', model = 'nb',
+(nb.esf <- glmFilter(y = y.count, x = NULL, W = W, objfn = 'AICc', model = 'nb',
                           optim.method = 'BFGS', positive = TRUE, ideal.setsize = FALSE,
                           alpha = .25, resid.type = 'deviance', boot.MI = 100))
 ```

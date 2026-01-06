@@ -348,6 +348,11 @@ test_that("vif.ev() returns error if missings in covariates but na.rm = FALSE", 
 #####
 # lmFilter()
 #####
+test_that("lmFilter() gives a warning if objfn = MI-lasso and conditional.se = FALSE", {
+  y <- fakedataset$x1
+  expect_warning(lmFilter(y = y, W = W, objfn = "MI-lasso", conditional.se = FALSE)
+                ,"Note: Conditional standard errors are recommended for erence on regression coefficients when using MI-lasso.")
+})
 test_that("lmFilter() detects perfect multicollinearity in covariates", {
   y <- fakedataset$x1
   X <- cbind(fakedataset$x2, fakedataset$x3, fakedataset$x2)
@@ -391,10 +396,11 @@ test_that("'objfn = all' selects all eigenvectors in the candidate set", {
   expect_equal(sf$other$nev, sum(inselset))
 })
 
-test_that("The argument 'objfn' works with 'p', 'MI', 'R2', 'pMI', and 'all' ", {
+test_that("The argument 'objfn' works with 'p', 'MI', 'R2', 'AIC', 'AICc'
+          ,'BIC', 'pMI', 'MI-lasso', and 'all' ", {
   y <- fakedataset$x1
-  objfn <- c("MI", "p", "R2", "all", "else", "pMI")
-  expected <- c(TRUE, TRUE, TRUE, TRUE, FALSE, TRUE)
+  objfn <- c("MI", "p", "R2", "AIC", "AICc", "BIC", "all", "MI-lasso", "else", "pMI")
+  expected <- c(TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, FALSE, TRUE)
   out <- NULL
   for(i in seq_along(objfn)){
     res <- try(lmFilter(y = y, W = W, objfn = objfn[i]), silent=TRUE)
@@ -514,59 +520,82 @@ test_that("selects no EVs if objfn=='pMI' and initial residuals are insignifican
   expect_equal(sf$other$nev, 0)
 })
 
+test_that("lmFilter() works if conditional.se is set to TRUE", {
+  y <- fakedataset$x1
+  res <- try(lmFilter(y = y, W = W, conditional.se = TRUE, na.rm = TRUE), silent=TRUE)
+  out <- class(res) != "try-error"
+  expect_true(out)
+})
+
+test_that("lmFilter() works if conditional.se is set to TRUE and no EVs are selected", {
+  y <- fakedataset$x3
+  res <- try(lmFilter(y = y, W = W, objfn = "p", conditional.se = TRUE
+                      ,alpha = .5), silent=TRUE)
+  out <- class(res) != "try-error"
+  expect_true(out)
+})
 
 
 #####
 # glmFilter()
 #####
+test_that("glmFilter() gives a warning if resid.type = pearson", {
+  y <- fakedataset$count
+  expect_warning(glmFilter(y = y, x = NULL, W = W, objfn = "MI", resid.type = 'pearson', model = "poisson")
+                ,"Note: The default value of `resid.type` will change from 'pearson' to 'deviance' in a future release.")
+})
+
 test_that("glmFilter() estimates poisson models", {
   y <- fakedataset$count
   X <- cbind(fakedataset$x1, fakedataset$x2, fakedataset$x3)
-  out <- glmFilter(y = y, x = X, W = W, objfn = "MI", model = "poisson")
+  out <- glmFilter(y = y, x = X, W = W, objfn = "MI", resid.type = 'deviance', model = "poisson")
   expect_is(out, "spfilter")
 })
 
 test_that("glmFilter() estimates probit models", {
   y <- fakedataset$indicator
-  out <- glmFilter(y = y,x = NULL, W = W, objfn = "MI", model = "probit")
+  out <- glmFilter(y = y,x = NULL, W = W, objfn = "MI", resid.type = 'deviance', model = "probit")
   expect_is(out, "spfilter")
 })
 
 test_that("glmFilter() estimates logit models", {
   y <- fakedataset$indicator
-  out <- glmFilter(y = y, W = W, objfn = "MI", model = "logit")
+  out <- glmFilter(y = y, W = W, objfn = "MI", resid.type = 'deviance', model = "logit")
   expect_is(out, "spfilter")
 })
 
 test_that("glmFilter() estimates negative binomial models", {
   y <- fakedataset$count
   X <- cbind(fakedataset$x1, fakedataset$x2, fakedataset$x3)
-  out <- glmFilter(y = y, x = X, W = W, objfn = "MI", model = "nb")
+  out <- glmFilter(y = y, x = X, W = W, objfn = "MI", resid.type = 'deviance', model = "nb")
   expect_is(out, "spfilter")
 })
 
 test_that("check ideal candidate set size", {
   y <- fakedataset$indicator
-  sf <- glmFilter(y = y, W = W, objfn = "p", model = "logit", positive = TRUE
+  sf <- glmFilter(y = y, W = W, objfn = "p", resid.type = 'deviance', model = "logit", positive = TRUE
                   ,ideal.setsize = TRUE)
   expect_is(sf, "spfilter")
 })
 
 test_that("The argument 'ideal.setsize' is only valid if positive = TRUE", {
   y <- fakedataset$indicator
-  expect_error(glmFilter(y = y, W = W, objfn = "p", model = "logit"
+  expect_error(glmFilter(y = y, W = W, objfn = "p", resid.type = 'deviance', model = "logit"
                         ,positive = FALSE, ideal.setsize = TRUE)
                ,"Estimating the ideal set size is only valid for positive spatial autocorrelation")
 })
 
-test_that("The argument 'min.reduction' works (for AIC & BIC) - fewer EVs are
+test_that("The argument 'min.reduction' works (for AIC, AICc & BIC) - fewer EVs are
           selected for higher values", {
   y <- fakedataset$count
-  lowerAIC <- glmFilter(y = y, W = W, objfn = "AIC", model = "poisson", min.reduction = 0)
-  higherAIC <- glmFilter(y = y, W = W, objfn = "AIC", model = "poisson", min.reduction = .1)
+  lowerAIC <- glmFilter(y = y, W = W, objfn = "AIC", resid.type = 'deviance', model = "poisson", min.reduction = 0)
+  higherAIC <- glmFilter(y = y, W = W, objfn = "AIC", resid.type = 'deviance', model = "poisson", min.reduction = .1)
   outAIC <- lowerAIC$other$nev > higherAIC$other$nev
-  lowerBIC <- glmFilter(y = y, W = W, objfn = "BIC", model = "poisson", min.reduction = 0)
-  higherBIC <- glmFilter(y = y, W = W, objfn = "BIC", model = "poisson", min.reduction = .1)
+  lowerAICc <- glmFilter(y = y, W = W, objfn = "AICc", resid.type = 'deviance', model = "poisson", min.reduction = 0)
+  higherAICc <- glmFilter(y = y, W = W, objfn = "AICc", resid.type = 'deviance', model = "poisson", min.reduction = .1)
+  outAICc <- lowerAICc$other$nev > higherAICc$other$nev
+  lowerBIC <- glmFilter(y = y, W = W, objfn = "BIC", resid.type = 'deviance', model = "poisson", min.reduction = 0)
+  higherBIC <- glmFilter(y = y, W = W, objfn = "BIC", resid.type = 'deviance', model = "poisson", min.reduction = .1)
   outBIC <- lowerBIC$other$nev > higherBIC$other$nev
   expect_true(all(outAIC, outBIC))
 })
@@ -575,7 +604,7 @@ test_that("glmFilter() works with named input", {
   y <- fakedataset$count
   x <- as.matrix(fakedataset$x1)
   colnames(x) <- "name"
-  out <- glmFilter(y = y, x = x, W = W, objfn = "p", bonferroni = FALSE
+  out <- glmFilter(y = y, x = x, W = W, objfn = "p", resid.type = 'deviance', bonferroni = FALSE
                    ,model = "poisson", sig = .05)
   expect_equal(rownames(out$estimates)[2], colnames(x))
 })
@@ -583,13 +612,14 @@ test_that("glmFilter() works with named input", {
 test_that("glmFilter() breaks if missings are present but na.rm = FALSE", {
   y <- fakedataset$count
   y[6] <- NA
-  expect_error(glmFilter(y = y, W = W, model = "poisson", na.rm = FALSE)
+  expect_error(glmFilter(y = y, W = W, resid.type = 'deviance', model = "poisson", na.rm = FALSE)
                ,"Missing values detected")
 })
 
 test_that("glmFilter() works even if no EVs are selected", {
   y <- fakedataset$count
-  res <- glmFilter(y = y, W = W, model = "poisson", objfn = "AIC", min.reduction = .9)
+  res <- glmFilter(y = y, W = W, model = "poisson", objfn = "AIC", resid.type = 'deviance'
+                  ,min.reduction = .9)
   expect_equal(res$other$nev, 0)
 })
 
@@ -601,7 +631,7 @@ test_that("glmFilter() returns an error message if 'alpha' is not contained
             out <- NULL
             for(i in seq_along(alpha)){
               res <- try(glmFilter(y = y, W = W, model = "logit"
-                                  ,objfn = "p", alpha = alpha[i])
+                                  ,objfn = "p", resid.type = 'deviance', alpha = alpha[i])
                          ,silent = TRUE)
               out[i] <- class(res) == "try-error"
             }
@@ -611,8 +641,8 @@ test_that("glmFilter() returns an error message if 'alpha' is not contained
 test_that("If 'alpha=0', glmFilter() sets 'alpha' to 1e-07", {
   y <- fakedataset$indicator
   x <- fakedataset$x3
-  res <- try(glmFilter(y = y, W = W, model = "probit", objfn = "BIC", alpha = 0)
-            ,silent = TRUE)
+  res <- try(glmFilter(y = y, W = W, model = "probit", resid.type = 'deviance'
+            ,objfn = "BIC", alpha = 0), silent = TRUE)
   out <- class(res) != "try-error"
   expect_true(out)
 })
@@ -620,24 +650,24 @@ test_that("If 'alpha=0', glmFilter() sets 'alpha' to 1e-07", {
 test_that("glmFilter() detects perfect multicollinearity", {
   y <- fakedataset$indicator
   X <- cbind(1, fakedataset$x2, fakedataset$x2)
-  expect_error(glmFilter(y = y, x = X, W = W, model = "probit", objfn = "p")
+  expect_error(glmFilter(y = y, x = X, W = W, resid.type = 'deviance', model = "probit", objfn = "p")
                ,"Perfect multicollinearity in covariates detected")
 })
 
 test_that("glmFilter() works if all EVs should be selected", {
   y <- fakedataset$count
-  expect_is(glmFilter(y = y, W = W, model = "poisson", objfn = "all")
+  expect_is(glmFilter(y = y, W = W, model = "poisson", resid.type = 'deviance', objfn = "all")
                ,"spfilter")
 })
 
-test_that("if 'objfn = AIC' or 'objfn = BIC', 'min.reduction' needs to be in [0,1)", {
+test_that("if 'objfn' is AIC, AICc, or BIC, 'min.reduction' needs to be in [0,1)", {
   y <- fakedataset$indicator
   reduce <- c(0, .3, 1)
   expect <- c(TRUE, TRUE, FALSE)
   out <- NULL
   for(i in 1:3){
-    res <- try(glmFilter(y = y, W = W, model = "logit", objfn = "AIC"
-                        ,min.reduction = reduce[i])
+    res <- try(glmFilter(y = y, W = W, model = "logit", objfn = "AICc"
+                        ,min.reduction = reduce[i], resid.type = 'deviance')
                ,silent = TRUE)
     out[i] <- class(res) != "try-error"
   }
@@ -647,7 +677,7 @@ test_that("if 'objfn = AIC' or 'objfn = BIC', 'min.reduction' needs to be in [0,
 test_that("W must be of class 'matrix', 'Matrix', or 'data.frame'", {
   W2 <- as.vector(W)
   expect_error(glmFilter(y = fakedataset$count, W = W2, model = "poisson"
-                        ,objfn = "all", na.rm = FALSE)
+                        ,objfn = "all", na.rm = FALSE, resid.type = 'deviance')
                ,"W must be of class 'matrix' or 'data.frame'")
 })
 
@@ -658,20 +688,20 @@ test_that("'model' must be one of 'poisson', 'probit', 'logit', or 'nb'", {
   for(i in seq_len(length(expect))){
     if(model[i] %in% c("probit", "logit")) y <- fakedataset$indicator
     else y <- fakedataset$count
-    res <- try(glmFilter(y = y, W = W, model = model[i], objfn = "BIC")
+    res <- try(glmFilter(y = y, W = W, model = model[i], resid.type = 'deviance', objfn = "BIC")
                ,silent = TRUE)
     out[i] <- class(res) != "try-error"
   }
   expect_equal(out, expect)
 })
 
-test_that("The argument 'objfn' works with 'p', 'MI', 'pMI', 'AIC', 'BIC', and 'all'", {
+test_that("The argument 'objfn' works with 'p', 'MI', 'pMI', 'AIC', 'AICc', 'BIC', and 'all'", {
   y <- fakedataset$count
-  objfn <- c("MI", "p", "AIC", "BIC", "all", "else", "pMI")
-  expected <- c(TRUE, TRUE, TRUE, TRUE, TRUE, FALSE, TRUE)
+  objfn <- c("MI", "p", "AIC", "AICc", "BIC", "all", "else", "pMI")
+  expected <- c(TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, FALSE, TRUE)
   out <- NULL
   for(i in seq_along(objfn)){
-    res <- try(glmFilter(y = y, W = W, model = "poisson", objfn = objfn[i])
+    res <- try(glmFilter(y = y, W = W, model = "poisson", resid.type = 'deviance', objfn = objfn[i])
               ,silent = TRUE)
     out[i] <- class(res) != "try-error"
   }
@@ -684,24 +714,19 @@ test_that("The argument 'resid.type' must be 'raw','pearson', or 'deviance'", {
   expected <- c(TRUE, TRUE, TRUE, FALSE)
   out <- NULL
   for(i in 1:4){
-    res <- try(glmFilter(y = y, W = W, model = "poisson", objfn = "BIC"
-                        ,resid.type = resid.type[i])
+    res <- try(suppressWarnings(glmFilter(y = y, W = W, model = "poisson", objfn = "BIC"
+                        ,resid.type = resid.type[i]))
                ,silent = TRUE)
     out[i] <- class(res) != "try-error"
   }
   expect_equal(out, expected)
 })
 
-test_that("If resid.type == 'deviance' and model == 'nb', still calculates pearson residuals", {
-  y <- fakedataset$count
-  out <- glmFilter(y = y, W = W, model = "nb", objfn = "BIC", resid.type = "deviance")
-  expect_equal(out$other$resid.type, "pearson")
-})
-
 test_that("eigenvectors are orthogonal to covariates specified in MX", {
   y <- fakedataset$indicator
   X <- cbind(1, fakedataset$x2)
-  res <- glmFilter(y = y, x = X, W = W, MX = X, model = "probit", objfn = "MI")
+  res <- glmFilter(y = y, x = X, W = W, MX = X, model = "probit", resid.type = 'deviance'
+                  ,objfn = "MI")
   correlation <- cor(cbind(X[, 2], res$selvecs), method = "pearson")
   offdiag <- correlation - diag(1, nrow(correlation))
   max <- max(offdiag)
@@ -710,25 +735,26 @@ test_that("eigenvectors are orthogonal to covariates specified in MX", {
 
 test_that("check that glmFilter() works with negative autocorrelation", {
   y <- fakedataset$negcount
-  res <- glmFilter(y = y, W = W, model = "poisson", objfn = "MI", positive = FALSE)
+  res <- glmFilter(y = y, W = W, model = "poisson", resid.type = 'deviance', objfn = "MI"
+                  ,positive = FALSE)
   expect_equal(res$other$dependence, "negative")
 })
 
 test_that("check 'pMI' with positive autocorrelation in glmFilter()", {
-  sf <- glmFilter(y = fakedataset$count, W = W, objfn = "pMI", model = "poisson"
-                  ,positive = TRUE, bonferroni = FALSE)
+  sf <- glmFilter(y = fakedataset$count, W = W, objfn = "pMI", resid.type = 'deviance'
+                  ,model = "poisson", positive = TRUE, bonferroni = FALSE)
   expect_is(sf, "spfilter")
 })
 
 test_that("glmFilter sets 'bonferroni = FALSE' for 'pMI'", {
-  sf <- glmFilter(y = fakedataset$count, W = W, objfn = "pMI", model = "poisson"
-                  ,positive = TRUE, bonferroni = TRUE)
+  sf <- glmFilter(y = fakedataset$count, W = W, objfn = "pMI", resid.type = 'deviance'
+                  ,model = "poisson", positive = TRUE, bonferroni = TRUE)
   expect_false(sf$other$bonferroni)
 })
 
 test_that("check 'pMI' with negative autocorrelation in glmFilter()", {
   sf <- glmFilter(y= fakedataset$negcount, W = W, objfn = "pMI", model = "poisson"
-                 ,positive = FALSE)
+                 ,positive = FALSE, resid.type = 'deviance')
   expect_equal(sf$other$dependence, "negative")
 })
 
@@ -736,8 +762,8 @@ test_that("selects EVs if objfn == 'pMI' and initial residuals are significant",
   y <- fakedataset$indicator
   X <- cbind(1, fakedataset$x3)
   sf <- glmFilter(y = y, x = X, W = W, objfn = "pMI", model = "poisson"
-                  ,sig = .15, positive = TRUE, bonferroni = FALSE
-                  ,boot.MI = NULL, resid.type = "deviance")
+                  ,sig = .15, positive = TRUE, bonferroni = FALSE, resid.type = 'deviance'
+                  ,boot.MI = NULL)
   expect_true(sf$other$nev > 0)
 })
 
@@ -814,7 +840,7 @@ test_that("summary function for glmFilter()", {
   y <- fakedataset$count
   X <- cbind(1, fakedataset$x1)
   sf <- glmFilter(y = fakedataset$count, x = X, W = W, model = "poisson"
-                  ,objfn = "MI")
+                  ,objfn = "MI", resid.type = 'deviance')
   expect_output(summary(sf))
 })
 
@@ -835,8 +861,9 @@ test_that("summary function summarizes eigenvectors", {
 
 test_that("plot method", {
   sf <- lmFilter(y = fakedataset$x1, W = W, objfn = "all")
-  out <- plot(sf)
-  expect_is(out, "NULL")
+  pdf(NULL)
+  on.exit(dev.off())
+  expect_silent(plot(sf))
 })
 
 test_that("check the print method", {

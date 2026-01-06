@@ -7,3 +7,5 @@ inst/doc
 docs/*
 misc/*
 CRAN-SUBMISSION
+/doc/
+/Meta/

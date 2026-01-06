@@ -23,6 +23,8 @@ summary.spfilter <- function(object, EV = FALSE, ...) {
   if (object$other$model == "linear") {
     cat("\nAdjusted R-squared:\n")
     print(object$fit)
+    cat("\nInformation Criteria:\n")
+    print(object$ICs)
   } else {
     cat("\nModel Fit:\n")
     print(object$fit)

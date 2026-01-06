@@ -16,7 +16,7 @@
 #' @param W spatial connectivity matrix
 #' @param objfn the objective function to be used for eigenvector
 #' selection. Possible criteria are: the maximization of model fit
-#' ('AIC' or 'BIC'), minimization of residual autocorrelation ('MI'),
+#' ('AIC', 'AICc', or 'BIC'), minimization of residual autocorrelation ('MI'),
 #' significance level of candidate eigenvectors ('p'), significance of residual spatial
 #' autocorrelation ('pMI'), or all eigenvectors in the candidate set ('all')
 #' @param MX covariates used to construct the projection matrix (default = NULL) - see
@@ -36,14 +36,15 @@
 #' @param ideal.setsize if \code{positive = TRUE}, uses the formula proposed by
 #' Chun et al. (2016) to determine the ideal size of the candidate set
 #' (TRUE/ FALSE)
-#' @param min.reduction if \code{objfn} is either 'AIC' or 'BIC'. A value in the
-#' interval [0,1) that determines the minimum reduction in AIC/ BIC (relative to the
-#' current AIC/ BIC) a candidate eigenvector needs to achieve in order to be selected
+#' @param min.reduction if \code{objfn} is 'AIC', 'AICc' or 'BIC'. A value in the
+#' interval [0,1) that determines the minimum reduction in the selected information
+#' criterion (relative to its current value) a candidate eigenvector needs to achieve
+#' in order to be selected
 #' @param boot.MI number of iterations used to estimate the variance of Moran's I
 #' (default is 100). Alternatively, if \code{boot.MI = NULL}, analytical results will
 #' be used
 #' @param resid.type character string specifying the residual type to be used.
-#' Options are 'raw', 'deviance', and 'pearson' (default)
+#' Options are 'raw', 'pearson', and 'deviance'
 #' @param alpha a value in (0,1] indicating the range of candidate eigenvectors
 #' according to their associated level of spatial autocorrelation, see e.g.,
 #' Griffith (2003)
@@ -127,7 +128,9 @@
 #' of measuring spatial autocorrelation in generalized linear model residuals.
 #' Consequently, eigenvector selection may be based on an objective function that
 #' maximizes model fit rather than a function that minimizes residual spatial
-#' autocorrelation.
+#' autocorrelation, e.g., the corrected Akaike information criterion ('AICc')
+#' which includes a small-sample penalty to account for the tendency to choose
+#' overparameterized models.
 #'
 #' @examples
 #' data(fakedata)
@@ -149,7 +152,7 @@
 #' # logit model - AIC objective function
 #' y_logit <- fakedataset$indicator
 #' logit <- glmFilter(y = y_logit, x = NULL, W = W, objfn = "AIC", positive = FALSE,
-#' model = "logit", min.reduction = .05)
+#' model = "logit", min.reduction = .01)
 #' print(logit)
 #' summary(logit, EV = FALSE)
 #'
@@ -228,6 +231,13 @@ glmFilter <- function(y, x = NULL, W, objfn = "AIC", MX = NULL, model, optim.met
   nx <- ncol(x)
 
   #####
+  # default change in future release
+  #####
+  if (resid.type == 'pearson') {
+    warning("Note: The default value of `resid.type` will change from 'pearson' to 'deviance' in a future release.")
+  }
+
+  #####
   # Input Checks
   #####
   if (anyNA(y) | anyNA(x) | anyNA(W)) {
@@ -254,15 +264,11 @@ glmFilter <- function(y, x = NULL, W, objfn = "AIC", MX = NULL, model, optim.met
   if (!(model %in% c("probit", "logit", "poisson", "nb"))) {
     stop("'model' must be either 'probit', 'logit', 'poisson', or 'nb'")
   }
-  if (!(objfn %in% c("p", "MI", "pMI", "AIC", "BIC", "all"))) {
-    stop("Invalid argument: objfn must be one of 'p', 'MI','pMI, 'AIC', 'BIC', or 'all'")
+  if (!(objfn %in% c("p", "MI", "pMI", "AIC", "AICc", "BIC", "all"))) {
+    stop("Invalid argument: objfn must be one of 'p', 'MI','pMI, 'AIC', 'AICc', 'BIC', or 'all'")
   }
   if (!(resid.type %in% c("raw", "pearson", "deviance"))) {
     stop("Invalid argument: resid.type must be one of 'raw', 'pearson', or 'deviance'")
-  }
-  if (resid.type == "deviance" & model == "nb") {
-    message(paste0("For negative binomial models, only 'raw' and 'pearson' residuals currently available. Set to 'pearson'"))
-    resid.type <- "pearson"
   }
   if (positive == FALSE & ideal.setsize == TRUE) {
     stop("Estimating the ideal set size is only valid for positive spatial autocorrelation")
@@ -318,10 +324,8 @@ glmFilter <- function(y, x = NULL, W, objfn = "AIC", MX = NULL, model, optim.met
       est <- o$par[ncol(xe)]
       se <- sqrt(diag(solve(o$hessian)))[ncol(xe)]
       test <- 2 * pt(abs(est / se), df = (n - ncol(xe)), lower.tail = FALSE) # p-value
-    } else if (objfn == "AIC") {
-      test <- getICs(negloglik = o$value, n = n, df = length(o$par))$AIC
-    } else if (objfn == "BIC") {
-      test <- getICs(negloglik = o$value, n = n, df = length(o$par))$BIC
+    } else if (objfn %in% c("AIC", "AICc", "BIC")) {
+      test <- getICs(negloglik = o$value, n = n, df = length(o$par))[objfn]
     } else if (objfn == "MI") {
       fitvals <- fittedval(x = xe, params = o$par, model = model)
       resid <- residfun(y = y, fitvals = fitvals, size = size, model = model)[, resid.type]
@@ -363,7 +367,7 @@ glmFilter <- function(y, x = NULL, W, objfn = "AIC", MX = NULL, model, optim.met
   zMI_init <- MI.resid(resid = resid_init, x = x, W = W, boot = boot.MI)$zI
   if (objfn == "MI") {
     oldZMI <- abs(zMI_init)
-  } else if (objfn %in% c("AIC", "BIC")) {
+  } else if (objfn %in% c("AIC", "AICc", "BIC")) {
     IC <- ICs_init[, objfn]
     mindiff <- abs(IC * min.reduction)
   } else {
@@ -442,7 +446,7 @@ glmFilter <- function(y, x = NULL, W, objfn = "AIC", MX = NULL, model, optim.met
       }
 
       # stopping rules
-      if (objfn %in% c("AIC", "BIC")) {
+      if (objfn %in% c("AIC", "AICc", "BIC")) {
         if (ref < IC & abs(IC - ref) >= mindiff) {
           IC <- ref
           sel_id <- c(sel_id, sid)
@@ -549,7 +553,7 @@ glmFilter <- function(y, x = NULL, W, objfn = "AIC", MX = NULL, model, optim.met
   # model fit
   fit <- rbind(c(-ll_init, ICs_init), c(-ll_out, ICs_out))
   rownames(fit) <- c("Initial", "Filtered")
-  colnames(fit) <- c("logL", "AIC", "BIC")
+  colnames(fit) <- c("logL", "AIC", "AICc", "BIC")
 
   # McFadden's pseudo-R2
   pRsqr <- pseudoR2(negloglik_n = ll_init, negloglik_f = ll_out, nev = count)
