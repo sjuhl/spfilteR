@@ -351,7 +351,7 @@ test_that("vif.ev() returns error if missings in covariates but na.rm = FALSE", 
 test_that("lmFilter() gives a warning if objfn = MI-lasso and conditional.se = FALSE", {
   y <- fakedataset$x1
   expect_warning(lmFilter(y = y, W = W, objfn = "MI-lasso", conditional.se = FALSE)
-                ,"Note: Conditional standard errors are recommended for erence on regression coefficients when using MI-lasso.")
+                ,"Note: Conditional standard errors are recommended for inference on regression coefficients when using MI-lasso")
 })
 test_that("lmFilter() detects perfect multicollinearity in covariates", {
   y <- fakedataset$x1
@@ -403,7 +403,7 @@ test_that("The argument 'objfn' works with 'p', 'MI', 'R2', 'AIC', 'AICc'
   expected <- c(TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, FALSE, TRUE)
   out <- NULL
   for(i in seq_along(objfn)){
-    res <- try(lmFilter(y = y, W = W, objfn = objfn[i]), silent=TRUE)
+    res <- try(lmFilter(y = y, W = W, objfn = objfn[i], conditional.se = TRUE), silent=TRUE)
     out[i] <- class(res) != "try-error"
   }
   expect_equal(out, expected)
@@ -542,7 +542,7 @@ test_that("lmFilter() works if conditional.se is set to TRUE and no EVs are sele
 test_that("glmFilter() gives a warning if resid.type = pearson", {
   y <- fakedataset$count
   expect_warning(glmFilter(y = y, x = NULL, W = W, objfn = "MI", resid.type = 'pearson', model = "poisson")
-                ,"Note: The default value of `resid.type` will change from 'pearson' to 'deviance' in a future release.")
+                ,"Note: The default value of `resid.type` will change from 'pearson' to 'deviance' in a future release")
 })
 
 test_that("glmFilter() estimates poisson models", {
