@@ -1,7 +1,6 @@
-pandoc: '2.2'
-pkgdown: 2.0.6
+pandoc: 3.0.1
+pkgdown: 2.2.0
 pkgdown_sha: ~
 articles:
   spfilteR_vignette: spfilteR_vignette.html
-last_built: 2022-08-22T18:23Z
-
+last_built: 2026-01-09T08:17Z
